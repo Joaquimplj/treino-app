@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Treino</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --card: #161616;
+    --border: #222222;
+    --accent: #c8f542;
+    --accent2: #f5a142;
+    --text: #f0f0f0;
+    --muted: #666;
+    --done: #1a2a00;
+    --done-border: #3a5a00;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  [hidden] { display: none !important; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 28px 16px 210px;
+  }
+
+  /* ===== HEADER ===== */
+  .header { text-align: center; margin-bottom: 28px; position: relative; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(44px, 9vw, 80px);
+    letter-spacing: 4px; line-height: 1; color: var(--accent);
+  }
+  .header p { color: var(--muted); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-top: 8px; }
+  .versao-chip { margin-top: 8px; font-size: 10px; color: #555; letter-spacing: 2px; text-transform: uppercase; }
+  .icon-btn {
+    position: absolute; right: 0; top: 2px;
+    background: var(--card); border: 1px solid var(--border);
+    color: var(--muted); width: 40px; height: 40px; border-radius: 50%;
+    font-size: 17px; cursor: pointer; transition: all .15s;
+  }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .meta { display: flex; justify-content: center; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .meta-item { background: var(--card); border: 1px solid var(--border); padding: 10px 16px; border-radius: 4px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .meta-item span { color: var(--accent); font-weight: 600; }
+
+  .goal-bar { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 18px 22px; border-radius: 4px; margin: 0 auto 28px; max-width: 800px; }
+  .goal-bar h3 { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--accent); margin-bottom: 6px; }
+  .goal-bar p { font-size: 14px; color: var(--text); font-weight: 300; }
+
+  /* ===== DIAS / ROTINA ===== */
+  .week { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+
+  .day { background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; transition: border-color 0.2s; }
+  .day:hover { border-color: #333; }
+  .day.day-complete { border-color: var(--done-border) !important; background: #0d1600; }
+
+  .day-header { display: flex; align-items: center; gap: 16px; padding: 18px 18px; cursor: pointer; user-select: none; }
+  .day-num { font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: var(--border); line-height: 1; min-width: 44px; }
+  .day.active .day-num { color: var(--accent); }
+  .day.day-complete .day-num { color: var(--done-border); }
+  .day-info { flex: 1; min-width: 0; }
+  .day-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .day-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--text); }
+  .day.active .day-name { color: var(--accent); }
+  .day.day-complete .day-name { color: #4a8a00; }
+
+  .day-tag { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; border: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
+  .day.active .day-tag { border-color: var(--accent); color: var(--accent); background: rgba(200,245,66,0.06); }
+  .day-rest .day-tag { border-color: #333; color: #444; }
+  .day.day-complete .day-tag { border-color: var(--done-border); color: #4a8a00; background: rgba(74,138,0,0.1); }
+
+  .chevron { color: var(--muted); font-size: 16px; transition: transform 0.3s; }
+  .day.open .chevron { transform: rotate(180deg); }
+
+  .day-body { display: none; padding: 0 18px 18px; }
+  .day.open .day-body { display: block; }
+
+  .exercise-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .exercise { padding: 13px 14px; background: var(--surface); border-radius: 4px; border: 1px solid transparent; transition: all 0.2s; }
+  .exercise:hover { border-color: var(--border); }
+  .exercise.highlight { border-color: rgba(200,245,66,0.2); background: rgba(200,245,66,0.04); }
+  .exercise.ex-done { background: var(--done) !important; border-color: var(--done-border) !important; opacity: 0.7; }
+
+  .ex-top { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; }
+  .ex-name { font-size: 14px; font-weight: 500; }
+  .ex-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .ex-sets-display { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); text-align: right; white-space: nowrap; }
+  .ex-reps { font-size: 11px; color: var(--muted); text-align: right; white-space: nowrap; }
+
+  .series-row { display: flex; align-items: center; gap: 7px; margin-top: 12px; flex-wrap: wrap; }
+  .series-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
+  .serie-dot {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 2px solid var(--border); background: transparent; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--muted);
+    transition: all 0.15s; user-select: none;
+  }
+  .serie-dot:hover { border-color: var(--accent); color: var(--accent); }
+  .serie-dot.done { background: var(--accent); border-color: var(--accent); color: #000; }
+  .mark-ex-btn {
+    margin-left: auto; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 3px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .mark-ex-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .mark-ex-btn.all-done { border-color: var(--done-border); color: #4a8a00; background: rgba(74,138,0,0.1); }
+
+  .section-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin: 18px 0 9px; padding-left: 4px; }
+  .rest-day-body { padding: 18px 4px 4px; color: var(--muted); font-size: 13px; line-height: 1.7; border-top: 1px solid var(--border); }
+
+  .tip { background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--accent2); padding: 13px 14px; border-radius: 4px; margin-top: 18px; font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .tip strong { color: var(--accent2); }
+
+  .reset-day-btn {
+    display: block; width: 100%; margin-top: 18px; padding: 10px;
+    background: transparent; border: 1px solid #2a2a2a; border-radius: 4px;
+    color: #444; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .reset-day-btn:hover { border-color: #555; color: var(--muted); }
+
+  .reset-week-btn {
+    display: block; width: 100%; max-width: 800px; margin: 20px auto 0; padding: 12px;
+    background: transparent; border: 1px solid #2a2a2a; border-radius: 4px;
+    color: #444; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+  }
+  .reset-week-btn:hover { border-color: #555; color: var(--muted); }
+
+  .progress-note { max-width: 800px; margin: 28px auto 0; background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 24px; }
+  .progress-note h3 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--accent); margin-bottom: 14px; }
+  .progress-note ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .progress-note li { font-size: 13px; color: var(--muted); padding-left: 16px; position: relative; line-height: 1.5; }
+  .progress-note li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+
+  .footer { text-align: center; margin-top: 40px; font-size: 11px; color: #333; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* ===== DIÁRIO ===== */
+  #view-diario { max-width: 800px; margin: 0 auto; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 20px; margin-bottom: 16px; }
+  .card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--accent); margin-bottom: 14px; }
+
+  .goal-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--muted); }
+  .goal-row b { color: var(--text); font-size: 16px; }
+  .goal-track { height: 10px; background: #0d0d0d; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-top: 10px; }
+  .goal-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width .4s; }
+
+  .dia-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .chip {
+    padding: 9px 18px; border-radius: 20px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 2px; cursor: pointer; transition: all .15s;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip-on { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  .dex { background: var(--surface); border-radius: 4px; padding: 13px 14px; margin-bottom: 10px; }
+  .dex-head { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; align-items: baseline; }
+  .dex-nome { font-size: 14px; font-weight: 500; }
+  .dex-meta { font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .set-row { display: grid; grid-template-columns: 34px 1fr 1fr; gap: 8px; margin-bottom: 6px; align-items: center; }
+  .set-n { font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--muted); }
+  .set-row input {
+    background: #0d0d0d; border: 1px solid var(--border); border-radius: 4px;
+    color: var(--text); padding: 11px 10px; font-size: 15px; width: 100%; font-family: 'DM Sans', sans-serif;
+  }
+  .set-row input:focus { outline: none; border-color: var(--accent); }
+
+  #diario-nota {
+    width: 100%; background: #0d0d0d; border: 1px solid var(--border); border-radius: 4px;
+    color: var(--text); padding: 12px; font-size: 14px; font-family: 'DM Sans', sans-serif;
+    min-height: 64px; resize: vertical; margin: 8px 0 14px;
+  }
+  #diario-nota:focus { outline: none; border-color: var(--accent); }
+
+  .btn-acao {
+    display: block; width: 100%; padding: 14px; background: var(--accent);
+    border: none; border-radius: 4px; color: #000;
+    font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; cursor: pointer;
+  }
+  .btn-acao:active { transform: scale(.99); }
+
+  .hist-title { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--accent); margin: 24px 0 12px; }
+  .hist-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 10px; overflow: hidden; }
+  .hist-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; cursor: pointer; user-select: none; }
+  .hist-data { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--accent); }
+  .hist-dia { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+  .hist-del { background: none; border: none; color: #444; font-size: 16px; cursor: pointer; padding: 6px 8px; }
+  .hist-del:hover { color: #f55; }
+  .hist-body { display: none; padding: 4px 16px 14px; border-top: 1px solid var(--border); }
+  .hist-card.open .hist-body { display: block; }
+  .hist-ex { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 8px 0; border-bottom: 1px dashed #1e1e1e; }
+  .hist-ex:last-of-type { border-bottom: none; }
+  .hist-sets { color: var(--muted); text-align: right; white-space: nowrap; overflow-x: auto; }
+  .hist-nota { font-size: 12px; color: var(--muted); font-style: italic; margin-top: 10px; }
+  .vazio { color: #444; font-size: 13px; text-align: center; padding: 30px; border: 1px dashed #222; border-radius: 6px; }
+
+  /* ===== TABS (barra inferior) ===== */
+  #tabbar {
+    position: fixed; bottom: 0; left: 0; right: 0; display: flex;
+    background: #0d0d0d; border-top: 1px solid var(--border); z-index: 1001;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .tab-btn {
+    flex: 1; padding: 15px 0 13px; background: none; border: none;
+    color: var(--muted); font-family: 'Bebas Neue', sans-serif; font-size: 18px;
+    letter-spacing: 3px; cursor: pointer; border-top: 2px solid transparent;
+  }
+  .tab-btn.active { color: var(--accent); border-top-color: var(--accent); }
+
+  /* ===== TIMER FLUTUANTE ===== */
+  #timer-widget {
+    position: fixed; bottom: calc(64px + env(safe-area-inset-bottom));
+    left: 50%; transform: translateX(-50%);
+    background: #111; border: 1px solid #2a2a2a; border-radius: 60px;
+    padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+    z-index: 1000; box-shadow: 0 8px 32px rgba(0,0,0,0.6); user-select: none;
+    max-width: calc(100vw - 16px); transition: border-color 0.3s;
+  }
+  #timer-widget.running { border-color: var(--accent); }
+  #timer-widget.finished { border-color: var(--accent2); animation: pulse-border 0.6s ease infinite alternate; }
+  @keyframes pulse-border { from { border-color: var(--accent2); } to { border-color: #ff6600; } }
+
+  #timer-display {
+    font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 3px;
+    color: var(--text); min-width: 76px; text-align: center; cursor: pointer;
+  }
+  #timer-widget.running #timer-display { color: var(--accent); }
+  #timer-widget.finished #timer-display { color: var(--accent2); }
+
+  .timer-presets { display: flex; gap: 5px; }
+  .preset-btn {
+    font-family: 'Bebas Neue', sans-serif; font-size: 14px; padding: 6px 10px;
+    border-radius: 20px; border: 1px solid var(--border); background: transparent;
+    color: var(--muted); cursor: pointer; transition: all 0.15s; letter-spacing: 1px;
+  }
+  .preset-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .preset-btn.active-preset { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  .timer-controls { display: flex; gap: 7px; }
+  .timer-btn {
+    width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+    background: transparent; color: var(--text); font-size: 15px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+  }
+  .timer-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .timer-btn.play-btn { background: var(--accent); border-color: var(--accent); color: #000; font-size: 13px; }
+
+  .timer-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #333; min-width: 44px; }
+  #timer-widget.running .timer-label { color: var(--muted); }
+
+  /* ===== MODAL AJUSTES ===== */
+  .modal { position: fixed; inset: 0; background: rgba(0,0,0,.72); z-index: 2000; display: flex; align-items: flex-end; justify-content: center; }
+  .modal-box {
+    background: #121212; border: 1px solid var(--border); border-radius: 14px 14px 0 0;
+    padding: 24px 20px calc(28px + env(safe-area-inset-bottom));
+    width: 100%; max-width: 560px; max-height: 85vh; overflow-y: auto;
+  }
+  .modal-box h2 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--accent); }
+  .modal-sub { font-size: 11px; color: #555; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+  .modal-sec { margin-top: 22px; }
+  .modal-sec h4 { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .btn-sec {
+    display: block; width: 100%; padding: 13px; background: transparent;
+    border: 1px solid var(--border); border-radius: 4px; color: #999;
+    font-size: 13px; letter-spacing: 1px; cursor: pointer; margin-bottom: 9px; text-align: left; transition: all .15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-sec:hover { border-color: var(--accent); color: var(--accent); }
+  #import-txt {
+    width: 100%; min-height: 110px; background: #0d0d0d; border: 1px solid var(--border);
+    border-radius: 4px; color: var(--text); padding: 12px; font-size: 12px;
+    font-family: monospace; resize: vertical;
+  }
+  #import-txt:focus { outline: none; border-color: var(--accent); }
+
+  /* ===== TOAST ===== */
+  #toast {
+    position: fixed; top: 18px; left: 50%;
+    transform: translateX(-50%) translateY(-90px);
+    background: var(--accent); color: #000; padding: 12px 22px; border-radius: 30px;
+    font-weight: 600; font-size: 14px; z-index: 3000;
+    transition: transform .3s; max-width: 92vw; text-align: center;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1 id="titulo-app">ROTINA 5 DIAS</h1>
+  <p id="subtitulo">Push · Pull · Legs · Upper · Lower</p>
+  <div class="versao-chip">treino <span id="versao-chip">v?</span></div>
+  <button class="icon-btn" id="btn-config" title="Ajustes">⚙</button>
+</div>
+
+<div class="meta" id="meta-bar"></div>
+
+<main>
+  <!-- ============ ABA ROTINA ============ -->
+  <section id="view-rotina">
+    <div class="goal-bar" id="goal-bar"></div>
+    <div class="week" id="week"></div>
+    <button class="reset-week-btn" id="btn-reset-semana">↺ Resetar semana inteira</button>
+    <div class="progress-note" id="progress-note"></div>
+    <div class="footer" id="rodape"></div>
+  </section>
+
+  <!-- ============ ABA DIÁRIO ============ -->
+  <section id="view-diario" hidden>
+    <div class="card" id="goal-card"></div>
+    <div class="card">
+      <h3>NOVA SESSÃO</h3>
+      <div class="dia-chips" id="dia-chips"></div>
+      <div id="form-exercicios"></div>
+      <textarea id="diario-nota" placeholder="Nota da sessão (opcional)... ex: leg press subiu fácil, joelho ok"></textarea>
+      <button class="btn-acao" id="btn-salvar">SALVAR SESSÃO</button>
+    </div>
+    <h3 class="hist-title">HISTÓRICO</h3>
+    <div id="historico"></div>
+  </section>
+</main>
+
+<!-- TIMER FLUTUANTE -->
+<div id="timer-widget">
+  <div class="timer-label" id="timer-label">DESCANSO</div>
+  <div id="timer-display">1:00</div>
+  <div class="timer-presets">
+    <button class="preset-btn active-preset" data-secs="60">1:00</button>
+    <button class="preset-btn" data-secs="90">1:30</button>
+    <button class="preset-btn" data-secs="120">2:00</button>
+  </div>
+  <div class="timer-controls">
+    <button class="timer-btn play-btn" id="play-btn">▶</button>
+    <button class="timer-btn" id="btn-timer-reset">↺</button>
+  </div>
+</div>
+
+<!-- BARRA DE ABAS -->
+<nav id="tabbar">
+  <button class="tab-btn active" data-tab="rotina">ROTINA</button>
+  <button class="tab-btn" data-tab="diario">DIÁRIO</button>
+</nav>
+
+<!-- MODAL DE AJUSTES -->
+<div id="modal-config" class="modal" hidden>
+  <div class="modal-box">
+    <h2>AJUSTES</h2>
+    <div class="modal-sub">treino <span id="cfg-versao-treino">v?</span></div>
+
+    <div class="modal-sec">
+      <h4>Atualização do treino</h4>
+      <button class="btn-sec" id="btn-buscar">⟳ &nbsp;Buscar atualização online</button>
+      <button class="btn-sec" id="btn-toggle-import">📋 &nbsp;Colar treino novo (JSON)</button>
+      <div id="import-wrap" hidden>
+        <textarea id="import-txt" placeholder='Cola aqui o JSON do treino novo (mesmo formato do rotina.json)...'></textarea>
+        <button class="btn-acao" id="btn-aplicar-import" style="margin-top:8px">APLICAR TREINO</button>
+      </div>
+    </div>
+
+    <div class="modal-sec">
+      <h4>Backup dos dados</h4>
+      <button class="btn-sec" id="btn-exportar">⬇ &nbsp;Exportar backup (diário + progresso)</button>
+      <button class="btn-sec" id="btn-importar-backup">⬆ &nbsp;Restaurar backup</button>
+      <input type="file" id="file-backup" accept=".json,application/json" hidden>
+    </div>
+
+    <button class="btn-sec" id="btn-fechar-modal" style="margin-top:22px;text-align:center">Fechar</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// =====================================================================
+// TREINO APP — rotina + diário com persistência local + atualização remota
+// =====================================================================
+
+// ---- Rotina padrão embutida (usada na 1ª abertura ou sem internet) ----
+const DEFAULT_ROTINA = {
+  "versao": "2026-06-10",
+  "nome": "ROTINA 5 DIAS",
+  "subtitulo": "Push · Pull · Legs · Upper · Lower",
+  "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
+  "info": [
+    { "rotulo": "Peso", "valor": "80 kg" },
+    { "rotulo": "Altura", "valor": "1,70 m" },
+    { "rotulo": "Meta", "valor": "600 kg Leg Press" },
+    { "rotulo": "Sessão", "valor": "~1h" }
+  ],
+  "metaPrincipal": {
+    "titulo": "META PRINCIPAL",
+    "texto": "Leg Press 600 kg + Supino Inclinado com Halteres como exercício âncora de peito. Divisão Push/Pull/Legs com upper e lower extra para maximizar frequência de pernas e peito."
+  },
+  "dias": [
+    {
+      "id": "day1", "num": "01", "label": "Segunda", "nome": "PUSH — Peito · Ombro · Tríceps", "tag": "Push", "descanso": false,
+      "secoes": [
+        { "titulo": "Principal", "exercicios": [
+          { "id": "d1-1", "nome": "Supino Inclinado com Halteres", "nota": "Exercício âncora · foco em amplitude", "series": 4, "reps": "8–10 reps", "destaque": true },
+          { "id": "d1-2", "nome": "Supino Reto com Barra", "nota": "Carga progressiva semanal", "series": 3, "reps": "6–8 reps" },
+          { "id": "d1-3", "nome": "Desenvolvimento com Halteres", "nota": "Amplitude completa", "series": 3, "reps": "10–12 reps" }
+        ]},
+        { "titulo": "Acessório", "exercicios": [
+          { "id": "d1-4", "nome": "Elevação Lateral", "series": 3, "reps": "15 reps" },
+          { "id": "d1-5", "nome": "Crossover / Pec Deck", "series": 3, "reps": "12–15 reps" },
+          { "id": "d1-6", "nome": "Tríceps Corda", "series": 3, "reps": "12 reps" }
+        ]}
+      ],
+      "dica": { "rotulo": "Nota", "texto": "Começa conservador no supino inclinado. Com 30kg/lado agora, foca em chegar a 42kg+ nas primeiras 6 semanas antes de adicionar volume." }
+    },
+    {
+      "id": "day2", "num": "02", "label": "Terça", "nome": "PULL — Costas · Bíceps", "tag": "Pull", "descanso": false,
+      "secoes": [
+        { "titulo": "Principal — Máquina Articulada (Hammer High Row)", "exercicios": [
+          { "id": "d2-1", "nome": "High Row Bilateral — Máquina Articulada", "nota": "Apoia o peito · as duas alças juntas · puxada completa", "series": 4, "reps": "8–10 reps", "destaque": true },
+          { "id": "d2-2", "nome": "High Row Unilateral — Máquina Articulada", "nota": "Uma alça de cada vez · mais amplitude · corrige assimetria", "series": 3, "reps": "10 reps cada lado", "destaque": true },
+          { "id": "d2-3", "nome": "Remada Curvada com Barra", "nota": "Complemento livre · coluna neutra", "series": 3, "reps": "8 reps" }
+        ]},
+        { "titulo": "Acessório", "exercicios": [
+          { "id": "d2-4", "nome": "Rosca Direta com Barra", "series": 3, "reps": "10 reps" },
+          { "id": "d2-5", "nome": "Rosca Martelo com Halteres", "series": 3, "reps": "12 reps" }
+        ]}
+      ],
+      "dica": { "rotulo": "Máquina articulada", "texto": "No bilateral foca em retrair a escápula no final do movimento. No unilateral, deixa o ombro protrair no início para maximizar o alongamento do dorsal." }
+    },
+    {
+      "id": "day3", "num": "03", "label": "Quarta", "nome": "LEGS — Quad · Posterior · Glúteo", "tag": "Legs", "descanso": false,
+      "secoes": [
+        { "titulo": "Principal — Meta 600 kg", "exercicios": [
+          { "id": "d3-1", "nome": "Leg Press 45°", "nota": "Exercício âncora · progressão semanal obrigatória", "series": 5, "reps": "8–12 reps", "destaque": true },
+          { "id": "d3-2", "nome": "Agachamento Livre", "nota": "Readaptação primeiro · foco técnico nas 4 primeiras semanas", "series": 4, "reps": "6–8 reps" },
+          { "id": "d3-3", "nome": "Cadeira Extensora", "series": 3, "reps": "12–15 reps" }
+        ]},
+        { "titulo": "Posterior", "exercicios": [
+          { "id": "d3-4", "nome": "Stiff com Barra", "nota": "Quadril atrás · não arredonda lombar", "series": 3, "reps": "10 reps" },
+          { "id": "d3-5", "nome": "Flexora Deitada", "series": 3, "reps": "12 reps" }
+        ]}
+      ],
+      "dica": { "rotulo": "Leg Press", "texto": "Anota a carga toda sessão. Adiciona 5–10 kg por semana. Quando travar, adiciona uma série antes de aumentar o peso." }
+    },
+    {
+      "id": "day4", "num": "04", "label": "Quinta", "nome": "UPPER — Peito · Costas · Ombro", "tag": "Upper", "descanso": false,
+      "secoes": [
+        { "titulo": "Peito", "exercicios": [
+          { "id": "d4-1", "nome": "Supino Inclinado com Halteres", "nota": "2ª frequência semanal · intensidade moderada", "series": 3, "reps": "10–12 reps", "destaque": true },
+          { "id": "d4-2", "nome": "Crossover ou Pec Deck", "series": 3, "reps": "15 reps" }
+        ]},
+        { "titulo": "Costas + Ombro", "exercicios": [
+          { "id": "d4-3", "nome": "High Row Unilateral — Máquina Articulada", "nota": "2ª frequência semanal · intensidade moderada", "series": 3, "reps": "12 reps cada lado", "destaque": true },
+          { "id": "d4-4", "nome": "Remada Baixa (Cabo)", "series": 3, "reps": "12 reps" },
+          { "id": "d4-5", "nome": "Elevação Lateral", "series": 4, "reps": "15 reps" }
+        ]},
+        { "titulo": "Braços", "exercicios": [
+          { "id": "d4-6", "nome": "Rosca Direta + Tríceps Testa", "nota": "Superset", "series": 3, "reps": "10 reps cada" }
+        ]}
+      ]
+    },
+    {
+      "id": "day5", "num": "05", "label": "Sexta ou Sábado", "nome": "LOWER — Pernas foco posterior", "tag": "Lower", "descanso": false,
+      "secoes": [
+        { "titulo": "Principal", "exercicios": [
+          { "id": "d5-1", "nome": "Leg Press 45°", "nota": "2ª frequência · carga um pouco menor que na quarta", "series": 4, "reps": "10–15 reps", "destaque": true },
+          { "id": "d5-2", "nome": "Agachamento Sumô ou Hack Squat", "nota": "Varia do dia 3 para não enjoar", "series": 3, "reps": "10 reps" }
+        ]},
+        { "titulo": "Posterior + Glúteo", "exercicios": [
+          { "id": "d5-3", "nome": "Mesa Flexora", "series": 4, "reps": "10–12 reps" },
+          { "id": "d5-4", "nome": "Elevação Pélvica (Hip Thrust)", "series": 3, "reps": "12 reps" },
+          { "id": "d5-5", "nome": "Panturrilha em Pé", "series": 4, "reps": "15–20 reps" }
+        ]}
+      ]
+    },
+    {
+      "id": "day6", "num": "06", "label": "Sábado / Domingo", "nome": "DESCANSO ATIVO", "tag": "Rest", "descanso": true,
+      "texto": "Caminhada leve, alongamento ou mobilidade de quadril. Nada de treino pesado. A recuperação é onde o músculo cresce — especialmente importante pra quem trabalha sentado o dia todo."
+    }
+  ],
+  "progressao": {
+    "titulo": "PROGRESSÃO — COMO CHEGAR NOS 600 KG",
+    "itens": [
+      "Semanas 1–4: readaptação, foca técnica no agachamento e mobilidade de quadril (escritório resseca o padrão motor)",
+      "Leg press: aumenta 5–10 kg por semana. Se falhar nas reps, mantém o peso e adiciona 1 série",
+      "Supino inclinado: meta de voltar aos 42kg/lado nas semanas 4–6, superar nas semanas 8–10",
+      "Quando enjoar dos exercícios (~3 meses), troca os acessórios — não a estrutura da divisão",
+      "Nos períodos de baixa motivação: reduz pra 3 dias full body mas mantém leg press e supino inclinado sempre"
+    ]
+  }
+};
+
+// ---- Estado + persistência ----
+const LSK = { rotina: 'ta_rotina_v1', prog: 'ta_prog_v1', diario: 'ta_diario_v1', tab: 'ta_tab_v1' };
+
+function ler(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+function el(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+let rotina = ler(LSK.rotina) || DEFAULT_ROTINA;
+let progresso = ler(LSK.prog) || {};   // { 'd1-1': [true,false,...] }
+let diario = ler(LSK.diario) || [];    // sessões, mais recente primeiro
+let diaSelecionado = null;
+
+// Índices exercício → dados / dia
+let mapEx = {}, mapExDia = {};
+function indexar() {
+  mapEx = {}; mapExDia = {};
+  (rotina.dias || []).forEach(d => (d.secoes || []).forEach(s => (s.exercicios || []).forEach(x => {
+    mapEx[x.id] = x; mapExDia[x.id] = d.id;
+  })));
+}
+
+function toast(msg) {
+  const t = el('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tm);
+  t._tm = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function diaDeHoje() {
+  const wd = new Date().getDay(); // 0=dom 1=seg ... 6=sáb
+  return ({ 1: 'day1', 2: 'day2', 3: 'day3', 4: 'day4', 5: 'day5', 6: 'day5' })[wd] || '';
+}
+
+// =====================================================================
+// RENDER — CABEÇALHO / ROTINA
+// =====================================================================
+function renderHeader() {
+  el('titulo-app').textContent = rotina.nome || 'TREINO';
+  el('subtitulo').textContent = rotina.subtitulo || '';
+  el('versao-chip').textContent = 'v' + (rotina.versao || '?');
+  el('cfg-versao-treino').textContent = 'v' + (rotina.versao || '?');
+}
+
+function normProg(ex) {
+  let a = progresso[ex.id];
+  if (!Array.isArray(a)) a = [];
+  a = a.slice(0, ex.series);
+  while (a.length < ex.series) a.push(false);
+  progresso[ex.id] = a;
+  return a;
+}
+
+function exHTML(ex) {
+  const a = normProg(ex);
+  const done = a.length > 0 && a.every(Boolean);
+  const dots = a.map((v, i) =>
+    `<div class="serie-dot${v ? ' done' : ''}" data-ex="${ex.id}" data-i="${i}">${i + 1}</div>`).join('');
+  return `<div class="exercise${ex.destaque ? ' highlight' : ''}${done ? ' ex-done' : ''}" id="ex-${ex.id}">
+    <div class="ex-top">
+      <div><div class="ex-name">${esc(ex.nome)}</div>${ex.nota ? `<div class="ex-note">${esc(ex.nota)}</div>` : ''}</div>
+      <div class="ex-sets-display">${ex.series}×</div>
+      <div class="ex-reps">${esc(ex.reps)}</div>
+    </div>
+    <div class="series-row">
+      <span class="series-label">Séries</span>${dots}
+      <button class="mark-ex-btn${done ? ' all-done' : ''}" data-tudo="${ex.id}">${done ? 'Feito ✓' : 'Tudo ✓'}</button>
+    </div>
+  </div>`;
+}
+
+function diaHTML(dia) {
+  if (dia.descanso) {
+    return `<div class="day day-rest" id="${dia.id}">
+      <div class="day-header" data-toggle="${dia.id}">
+        <div class="day-num" style="color:#222">${esc(dia.num)}</div>
+        <div class="day-info"><div class="day-label">${esc(dia.label)}</div><div class="day-name" style="color:#444">${esc(dia.nome)}</div></div>
+        <div class="day-tag">${esc(dia.tag)}</div><div class="chevron" style="color:#333">▾</div>
+      </div>
+      <div class="day-body"><div class="rest-day-body">${esc(dia.texto || '')}</div></div>
+    </div>`;
+  }
+  const aberto = dia.id === diaDeHoje() ? ' open' : '';
+  const secoes = (dia.secoes || []).map(s =>
+    `<div class="section-label">${esc(s.titulo)}</div><div class="exercise-list">${(s.exercicios || []).map(exHTML).join('')}</div>`).join('');
+  const dica = dia.dica ? `<div class="tip"><strong>${esc(dia.dica.rotulo)}:</strong> ${esc(dia.dica.texto)}</div>` : '';
+  return `<div class="day active${aberto}" id="${dia.id}">
+    <div class="day-header" data-toggle="${dia.id}">
+      <div class="day-num">${esc(dia.num)}</div>
+      <div class="day-info"><div class="day-label">${esc(dia.label)}</div><div class="day-name">${esc(dia.nome)}</div></div>
+      <div class="day-tag">${esc(dia.tag)}</div><div class="chevron">▾</div>
+    </div>
+    <div class="day-body">${secoes}${dica}<button class="reset-day-btn" data-reset="${dia.id}">↺ Resetar dia</button></div>
+  </div>`;
+}
+
+function renderRotina() {
+  el('meta-bar').innerHTML = (rotina.info || []).map(i =>
+    `<div class="meta-item">${esc(i.rotulo)} <span>${esc(i.valor)}</span></div>`).join('');
+  const gb = rotina.metaPrincipal;
+  el('goal-bar').innerHTML = gb ? `<h3>${esc(gb.titulo)}</h3><p>${esc(gb.texto)}</p>` : '';
+  el('goal-bar').style.display = gb ? '' : 'none';
+  el('week').innerHTML = (rotina.dias || []).map(diaHTML).join('');
+  const pn = rotina.progressao;
+  el('progress-note').innerHTML = pn ? `<h3>${esc(pn.titulo)}</h3><ul>${(pn.itens || []).map(i => `<li>${esc(i)}</li>`).join('')}</ul>` : '';
+  el('progress-note').style.display = pn ? '' : 'none';
+  el('rodape').textContent = rotina.rodape || '';
+  (rotina.dias || []).forEach(d => atualizarStatusDia(d.id));
+}
+
+function atualizarStatusEx(exId) {
+  const ex = mapEx[exId];
+  if (!ex) return;
+  const a = progresso[exId] || [];
+  const done = a.length === ex.series && a.every(Boolean);
+  const exEl = el('ex-' + exId);
+  if (!exEl) return;
+  exEl.classList.toggle('ex-done', done);
+  const btn = exEl.querySelector('.mark-ex-btn');
+  if (btn) { btn.classList.toggle('all-done', done); btn.textContent = done ? 'Feito ✓' : 'Tudo ✓'; }
+  atualizarStatusDia(mapExDia[exId]);
+}
+
+function atualizarStatusDia(diaId) {
+  const dia = (rotina.dias || []).find(d => d.id === diaId);
+  if (!dia || dia.descanso) return;
+  const all = (dia.secoes || []).every(s => (s.exercicios || []).every(x => {
+    const a = progresso[x.id] || [];
+    return a.length === x.series && a.every(Boolean);
+  }));
+  const dEl = el(diaId);
+  if (dEl) dEl.classList.toggle('day-complete', all);
+}
+
+function resetarDia(diaId) {
+  const dia = (rotina.dias || []).find(d => d.id === diaId);
+  if (!dia) return;
+  (dia.secoes || []).forEach(s => (s.exercicios || []).forEach(x => {
+    progresso[x.id] = Array(x.series).fill(false);
+    const exEl = el('ex-' + x.id);
+    if (!exEl) return;
+    exEl.querySelectorAll('.serie-dot').forEach(d => d.classList.remove('done'));
+    exEl.classList.remove('ex-done');
+    const btn = exEl.querySelector('.mark-ex-btn');
+    if (btn) { btn.classList.remove('all-done'); btn.textContent = 'Tudo ✓'; }
+  }));
+  gravar(LSK.prog, progresso);
+  const dEl = el(diaId);
+  if (dEl) dEl.classList.remove('day-complete');
+}
+
+// Delegação de cliques da rotina
+el('week').addEventListener('click', e => {
+  const dot = e.target.closest('.serie-dot');
+  if (dot) {
+    const id = dot.dataset.ex, i = +dot.dataset.i;
+    const ex = mapEx[id];
+    if (!ex) return;
+    const a = normProg(ex);
+    a[i] = !a[i];
+    gravar(LSK.prog, progresso);
+    dot.classList.toggle('done', a[i]);
+    atualizarStatusEx(id);
+    return;
+  }
+  const tudo = e.target.closest('[data-tudo]');
+  if (tudo) {
+    const id = tudo.dataset.tudo;
+    const ex = mapEx[id];
+    if (!ex) return;
+    const a = normProg(ex);
+    const all = a.every(Boolean);
+    a.fill(!all);
+    gravar(LSK.prog, progresso);
+    const exEl = el('ex-' + id);
+    if (exEl) exEl.querySelectorAll('.serie-dot').forEach((d, i) => d.classList.toggle('done', a[i]));
+    atualizarStatusEx(id);
+    return;
+  }
+  const rst = e.target.closest('[data-reset]');
+  if (rst) { resetarDia(rst.dataset.reset); return; }
+  const hdr = e.target.closest('[data-toggle]');
+  if (hdr) { const d = el(hdr.dataset.toggle); if (d) d.classList.toggle('open'); }
+});
+
+el('btn-reset-semana').addEventListener('click', () => {
+  if (confirm('Zerar todas as marcações da semana?')) {
+    progresso = {};
+    gravar(LSK.prog, progresso);
+    renderRotina();
+  }
+});
+
+// =====================================================================
+// RENDER — DIÁRIO
+// =====================================================================
+function ultimaSerie(exId) {
+  for (const s of diario) {
+    const ex = (s.exercicios || []).find(x => x.id === exId);
+    if (ex && ex.series && ex.series.length) return ex.series;
+  }
+  return null;
+}
+
+function renderDiarioForm() {
+  const dias = (rotina.dias || []).filter(d => !d.descanso);
+  if (!dias.length) { el('dia-chips').innerHTML = ''; el('form-exercicios').innerHTML = ''; return; }
+  if (!diaSelecionado || !dias.some(d => d.id === diaSelecionado)) {
+    const h = diaDeHoje();
+    diaSelecionado = dias.some(d => d.id === h) ? h : dias[0].id;
+  }
+  el('dia-chips').innerHTML = dias.map(d =>
+    `<button class="chip${d.id === diaSelecionado ? ' chip-on' : ''}" data-dia="${d.id}">${esc(d.tag)}</button>`).join('');
+  const dia = dias.find(d => d.id === diaSelecionado);
+  el('form-exercicios').innerHTML = (dia.secoes || []).map(s => (s.exercicios || []).map(ex => {
+    const ult = ultimaSerie(ex.id);
+    const rows = Array.from({ length: ex.series }, (_, i) => {
+      const p = ult && ult[i] && ult[i].peso != null ? ult[i].peso : '';
+      const r = ult && ult[i] && ult[i].reps != null ? ult[i].reps : '';
+      return `<div class="set-row"><span class="set-n">S${i + 1}</span>
+        <input class="in-peso" type="text" inputmode="decimal" placeholder="kg" value="${p}">
+        <input class="in-reps" type="text" inputmode="numeric" placeholder="reps" value="${r}">
+      </div>`;
+    }).join('');
+    return `<div class="dex" data-dex="${ex.id}">
+      <div class="dex-head"><span class="dex-nome">${esc(ex.nome)}</span><span class="dex-meta">${ex.series}× ${esc(ex.reps)}</span></div>
+      ${rows}
+    </div>`;
+  }).join('')).join('');
+}
+
+el('dia-chips').addEventListener('click', e => {
+  const c = e.target.closest('[data-dia]');
+  if (c) { diaSelecionado = c.dataset.dia; renderDiarioForm(); }
+});
+
+function salvarSessao() {
+  const dia = (rotina.dias || []).find(d => d.id === diaSelecionado);
+  if (!dia) return;
+  const exs = [];
+  (dia.secoes || []).forEach(s => (s.exercicios || []).forEach(ex => {
+    const wrap = document.querySelector(`[data-dex="${ex.id}"]`);
+    if (!wrap) return;
+    const series = [];
+    wrap.querySelectorAll('.set-row').forEach(row => {
+      const pTxt = row.querySelector('.in-peso').value.trim().replace(',', '.');
+      const rTxt = row.querySelector('.in-reps').value.trim();
+      const peso = pTxt === '' ? null : parseFloat(pTxt);
+      const reps = rTxt === '' ? null : parseInt(rTxt, 10);
+      const pesoOk = peso != null && !isNaN(peso);
+      const repsOk = reps != null && !isNaN(reps);
+      if (pesoOk || repsOk) series.push({ peso: pesoOk ? peso : null, reps: repsOk ? reps : null });
+    });
+    if (series.length) exs.push({ id: ex.id, nome: ex.nome, series });
+  }));
+  if (!exs.length) { toast('Preenche pelo menos uma série antes de salvar'); return; }
+  const nota = el('diario-nota').value.trim();
+  diario.unshift({
+    id: 's' + Math.random().toString(36).slice(2, 10),
+    data: new Date().toISOString(),
+    diaId: dia.id, diaNome: dia.nome, tag: dia.tag,
+    exercicios: exs, nota
+  });
+  gravar(LSK.diario, diario);
+  el('diario-nota').value = '';
+  renderHistorico();
+  renderGoalCard();
+  renderDiarioForm(); // re-preenche com os valores recém salvos
+  toast('Sessão salva ✓');
+}
+el('btn-salvar').addEventListener('click', salvarSessao);
+
+function fmtData(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }).replace(/\./g, '').toUpperCase();
+}
+
+function renderHistorico() {
+  if (!diario.length) {
+    el('historico').innerHTML = '<div class="vazio">Nenhuma sessão registrada ainda.<br>Marca os pesos do treino de hoje aí em cima 💪</div>';
+    return;
+  }
+  el('historico').innerHTML = diario.map(s => `
+    <div class="hist-card">
+      <div class="hist-head" data-histtoggle="${s.id}">
+        <div><div class="hist-data">${fmtData(s.data)}</div><div class="hist-dia">${esc(s.tag || '')} — ${esc(s.diaNome || '')}</div></div>
+        <button class="hist-del" data-del="${s.id}" title="Excluir">✕</button>
+      </div>
+      <div class="hist-body">
+        ${(s.exercicios || []).map(x => `<div class="hist-ex"><span>${esc(x.nome)}</span><span class="hist-sets">${(x.series || []).map(st => `${st.peso != null ? st.peso + 'kg' : '—'}×${st.reps != null ? st.reps : '—'}`).join(' · ')}</span></div>`).join('')}
+        ${s.nota ? `<div class="hist-nota">"${esc(s.nota)}"</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+el('historico').addEventListener('click', e => {
+  const del = e.target.closest('[data-del]');
+  if (del) {
+    if (confirm('Excluir esta sessão do histórico?')) {
+      diario = diario.filter(x => x.id !== del.dataset.del);
+      gravar(LSK.diario, diario);
+      renderHistorico();
+      renderGoalCard();
+    }
+    return;
+  }
+  const hd = e.target.closest('[data-histtoggle]');
+  if (hd) hd.closest('.hist-card').classList.toggle('open');
+});
+
+function renderGoalCard() {
+  const alvo = 600;
+  let melhor = 0;
+  diario.forEach(s => (s.exercicios || []).forEach(x => {
+    if (/leg ?press/i.test(x.nome)) (x.series || []).forEach(st => {
+      if (typeof st.peso === 'number' && st.peso > melhor) melhor = st.peso;
+    });
+  }));
+  const pct = Math.max(0, Math.min(100, Math.round(melhor / alvo * 100)));
+  el('goal-card').innerHTML = `<h3>RUMO AOS 600 KG</h3>
+    <div class="goal-row"><span>Melhor Leg Press: <b>${melhor ? melhor + ' kg' : '—'}</b></span><span>${pct}%</span></div>
+    <div class="goal-track"><div class="goal-fill" style="width:${pct}%"></div></div>`;
+}
+
+// =====================================================================
+// ABAS
+// =====================================================================
+function mudarTab(t) {
+  el('view-rotina').hidden = t !== 'rotina';
+  el('view-diario').hidden = t !== 'diario';
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+  gravar(LSK.tab, t);
+}
+document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => mudarTab(b.dataset.tab)));
+
+// =====================================================================
+// ATUALIZAÇÃO REMOTA DO TREINO + IMPORT/EXPORT
+// =====================================================================
+function aplicarRotina(nova) {
+  rotina = nova;
+  gravar(LSK.rotina, rotina);
+  indexar();
+  const ids = new Set(Object.keys(mapEx));
+  Object.keys(progresso).forEach(k => { if (!ids.has(k)) delete progresso[k]; });
+  gravar(LSK.prog, progresso);
+  renderHeader();
+  renderRotina();
+  renderDiarioForm();
+}
+
+async function buscarAtualizacao(manual) {
+  if (!location.protocol.startsWith('http')) {
+    if (manual) toast('Atualização online só funciona com o app hospedado');
+    return;
+  }
+  try {
+    const r = await fetch('rotina.json?t=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) throw new Error('http ' + r.status);
+    const nova = await r.json();
+    if (!nova || !Array.isArray(nova.dias)) throw new Error('formato');
+    if (nova.versao !== rotina.versao) {
+      aplicarRotina(nova);
+      toast('Treino atualizado: v' + nova.versao);
+    } else if (manual) {
+      toast('Treino já está na última versão');
+    }
+  } catch (e) {
+    if (manual) toast('Não consegui buscar a atualização');
+  }
+}
+
+// Modal de ajustes
+el('btn-config').addEventListener('click', () => { el('modal-config').hidden = false; });
+el('btn-fechar-modal').addEventListener('click', () => { el('modal-config').hidden = true; });
+el('modal-config').addEventListener('click', e => { if (e.target === el('modal-config')) el('modal-config').hidden = true; });
+el('btn-buscar').addEventListener('click', () => buscarAtualizacao(true));
+el('btn-toggle-import').addEventListener('click', () => { const w = el('import-wrap'); w.hidden = !w.hidden; });
+
+el('btn-aplicar-import').addEventListener('click', () => {
+  try {
+    const j = JSON.parse(el('import-txt').value);
+    if (!j || !Array.isArray(j.dias)) throw new Error('formato');
+    aplicarRotina(j);
+    el('import-txt').value = '';
+    el('import-wrap').hidden = true;
+    el('modal-config').hidden = true;
+    toast('Treino atualizado ✓');
+  } catch (e) {
+    toast('JSON inválido — confere o formato');
+  }
+});
+
+el('btn-exportar').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify({ rotina, progresso, diario }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'treino-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  toast('Backup exportado ⬇');
+});
+
+el('btn-importar-backup').addEventListener('click', () => el('file-backup').click());
+el('file-backup').addEventListener('change', ev => {
+  const f = ev.target.files[0];
+  if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const j = JSON.parse(rd.result);
+      if (j.diario) diario = j.diario;
+      if (j.progresso) progresso = j.progresso;
+      if (j.rotina && Array.isArray(j.rotina.dias)) rotina = j.rotina;
+      gravar(LSK.diario, diario);
+      gravar(LSK.prog, progresso);
+      gravar(LSK.rotina, rotina);
+      indexar();
+      renderHeader(); renderRotina(); renderDiarioForm(); renderHistorico(); renderGoalCard();
+      el('modal-config').hidden = true;
+      toast('Backup restaurado ✓');
+    } catch (e) {
+      toast('Arquivo de backup inválido');
+    }
+    ev.target.value = '';
+  };
+  rd.readAsText(f);
+});
+
+// =====================================================================
+// TIMER
+// =====================================================================
+let timerTotal = 60, timerLeft = 60, timerRunning = false, timerInterval = null, audioCtx = null;
+
+// AudioContext criado no primeiro toque (exigência do iOS/Android)
+document.addEventListener('pointerdown', () => {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  } catch (e) {}
+}, { passive: true });
+
+function apitar() {
+  if (audioCtx) {
+    try {
+      [0, 0.18, 0.36].forEach(t => {
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.connect(g); g.connect(audioCtx.destination);
+        o.frequency.value = 880;
+        const T = audioCtx.currentTime + t;
+        g.gain.setValueAtTime(0.3, T);
+        g.gain.exponentialRampToValueAtTime(0.001, T + 0.12);
+        o.start(T); o.stop(T + 0.16);
+      });
+    } catch (e) {}
+  }
+  if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+}
+
+function setPreset(secs, btn) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+  btn.classList.add('active-preset');
+  timerTotal = secs; timerLeft = secs; timerRunning = false;
+  clearInterval(timerInterval);
+  updateTimerDisplay(); updateTimerState();
+}
+
+function toggleTimer() {
+  if (timerLeft === 0) { resetTimer(); return; }
+  timerRunning = !timerRunning;
+  if (timerRunning) {
+    timerInterval = setInterval(() => {
+      timerLeft--;
+      updateTimerDisplay();
+      if (timerLeft <= 0) {
+        timerRunning = false;
+        clearInterval(timerInterval);
+        updateTimerState();
+        apitar();
+      }
+    }, 1000);
+  } else {
+    clearInterval(timerInterval);
+  }
+  updateTimerState();
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerLeft = timerTotal;
+  updateTimerDisplay(); updateTimerState();
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timerLeft / 60), s = timerLeft % 60;
+  el('timer-display').textContent = m + ':' + String(s).padStart(2, '0');
+}
+
+function updateTimerState() {
+  const w = el('timer-widget'), btn = el('play-btn'), label = el('timer-label');
+  w.classList.remove('running', 'finished');
+  if (timerLeft === 0) {
+    w.classList.add('finished'); btn.textContent = '↺'; label.textContent = 'PRONTO!';
+  } else if (timerRunning) {
+    w.classList.add('running'); btn.textContent = '⏸'; label.textContent = 'DESCANSANDO';
+  } else {
+    btn.textContent = '▶'; label.textContent = 'DESCANSO';
+  }
+}
+
+document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => setPreset(+b.dataset.secs, b)));
+el('timer-display').addEventListener('click', toggleTimer);
+el('play-btn').addEventListener('click', toggleTimer);
+el('btn-timer-reset').addEventListener('click', resetTimer);
+
+// =====================================================================
+// INICIALIZAÇÃO
+// =====================================================================
+indexar();
+renderHeader();
+renderRotina();
+renderDiarioForm();
+renderHistorico();
+renderGoalCard();
+mudarTab(ler(LSK.tab) || 'rotina');
+
+// Service worker (offline) — só em https/localhost
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+
+// Busca atualização do treino ao abrir (silencioso)
+buscarAtualizacao(false);
+</script>
+
+</body>
+</html>

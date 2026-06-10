@@ -1,0 +1,172 @@
+{
+  "versao": "2026-06-10",
+  "nome": "ROTINA 5 DIAS",
+  "subtitulo": "Push · Pull · Legs · Upper · Lower",
+  "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
+  "info": [
+    { "rotulo": "Peso", "valor": "80 kg" },
+    { "rotulo": "Altura", "valor": "1,70 m" },
+    { "rotulo": "Meta", "valor": "600 kg Leg Press" },
+    { "rotulo": "Sessão", "valor": "~1h" }
+  ],
+  "metaPrincipal": {
+    "titulo": "META PRINCIPAL",
+    "texto": "Leg Press 600 kg + Supino Inclinado com Halteres como exercício âncora de peito. Divisão Push/Pull/Legs com upper e lower extra para maximizar frequência de pernas e peito."
+  },
+  "dias": [
+    {
+      "id": "day1",
+      "num": "01",
+      "label": "Segunda",
+      "nome": "PUSH — Peito · Ombro · Tríceps",
+      "tag": "Push",
+      "descanso": false,
+      "secoes": [
+        {
+          "titulo": "Principal",
+          "exercicios": [
+            { "id": "d1-1", "nome": "Supino Inclinado com Halteres", "nota": "Exercício âncora · foco em amplitude", "series": 4, "reps": "8–10 reps", "destaque": true },
+            { "id": "d1-2", "nome": "Supino Reto com Barra", "nota": "Carga progressiva semanal", "series": 3, "reps": "6–8 reps" },
+            { "id": "d1-3", "nome": "Desenvolvimento com Halteres", "nota": "Amplitude completa", "series": 3, "reps": "10–12 reps" }
+          ]
+        },
+        {
+          "titulo": "Acessório",
+          "exercicios": [
+            { "id": "d1-4", "nome": "Elevação Lateral", "series": 3, "reps": "15 reps" },
+            { "id": "d1-5", "nome": "Crossover / Pec Deck", "series": 3, "reps": "12–15 reps" },
+            { "id": "d1-6", "nome": "Tríceps Corda", "series": 3, "reps": "12 reps" }
+          ]
+        }
+      ],
+      "dica": { "rotulo": "Nota", "texto": "Começa conservador no supino inclinado. Com 30kg/lado agora, foca em chegar a 42kg+ nas primeiras 6 semanas antes de adicionar volume." }
+    },
+    {
+      "id": "day2",
+      "num": "02",
+      "label": "Terça",
+      "nome": "PULL — Costas · Bíceps",
+      "tag": "Pull",
+      "descanso": false,
+      "secoes": [
+        {
+          "titulo": "Principal — Máquina Articulada (Hammer High Row)",
+          "exercicios": [
+            { "id": "d2-1", "nome": "High Row Bilateral — Máquina Articulada", "nota": "Apoia o peito · as duas alças juntas · puxada completa", "series": 4, "reps": "8–10 reps", "destaque": true },
+            { "id": "d2-2", "nome": "High Row Unilateral — Máquina Articulada", "nota": "Uma alça de cada vez · mais amplitude · corrige assimetria", "series": 3, "reps": "10 reps cada lado", "destaque": true },
+            { "id": "d2-3", "nome": "Remada Curvada com Barra", "nota": "Complemento livre · coluna neutra", "series": 3, "reps": "8 reps" }
+          ]
+        },
+        {
+          "titulo": "Acessório",
+          "exercicios": [
+            { "id": "d2-4", "nome": "Rosca Direta com Barra", "series": 3, "reps": "10 reps" },
+            { "id": "d2-5", "nome": "Rosca Martelo com Halteres", "series": 3, "reps": "12 reps" }
+          ]
+        }
+      ],
+      "dica": { "rotulo": "Máquina articulada", "texto": "No bilateral foca em retrair a escápula no final do movimento. No unilateral, deixa o ombro protrair no início para maximizar o alongamento do dorsal." }
+    },
+    {
+      "id": "day3",
+      "num": "03",
+      "label": "Quarta",
+      "nome": "LEGS — Quad · Posterior · Glúteo",
+      "tag": "Legs",
+      "descanso": false,
+      "secoes": [
+        {
+          "titulo": "Principal — Meta 600 kg",
+          "exercicios": [
+            { "id": "d3-1", "nome": "Leg Press 45°", "nota": "Exercício âncora · progressão semanal obrigatória", "series": 5, "reps": "8–12 reps", "destaque": true },
+            { "id": "d3-2", "nome": "Agachamento Livre", "nota": "Readaptação primeiro · foco técnico nas 4 primeiras semanas", "series": 4, "reps": "6–8 reps" },
+            { "id": "d3-3", "nome": "Cadeira Extensora", "series": 3, "reps": "12–15 reps" }
+          ]
+        },
+        {
+          "titulo": "Posterior",
+          "exercicios": [
+            { "id": "d3-4", "nome": "Stiff com Barra", "nota": "Quadril atrás · não arredonda lombar", "series": 3, "reps": "10 reps" },
+            { "id": "d3-5", "nome": "Flexora Deitada", "series": 3, "reps": "12 reps" }
+          ]
+        }
+      ],
+      "dica": { "rotulo": "Leg Press", "texto": "Anota a carga toda sessão. Adiciona 5–10 kg por semana. Quando travar, adiciona uma série antes de aumentar o peso." }
+    },
+    {
+      "id": "day4",
+      "num": "04",
+      "label": "Quinta",
+      "nome": "UPPER — Peito · Costas · Ombro",
+      "tag": "Upper",
+      "descanso": false,
+      "secoes": [
+        {
+          "titulo": "Peito",
+          "exercicios": [
+            { "id": "d4-1", "nome": "Supino Inclinado com Halteres", "nota": "2ª frequência semanal · intensidade moderada", "series": 3, "reps": "10–12 reps", "destaque": true },
+            { "id": "d4-2", "nome": "Crossover ou Pec Deck", "series": 3, "reps": "15 reps" }
+          ]
+        },
+        {
+          "titulo": "Costas + Ombro",
+          "exercicios": [
+            { "id": "d4-3", "nome": "High Row Unilateral — Máquina Articulada", "nota": "2ª frequência semanal · intensidade moderada", "series": 3, "reps": "12 reps cada lado", "destaque": true },
+            { "id": "d4-4", "nome": "Remada Baixa (Cabo)", "series": 3, "reps": "12 reps" },
+            { "id": "d4-5", "nome": "Elevação Lateral", "series": 4, "reps": "15 reps" }
+          ]
+        },
+        {
+          "titulo": "Braços",
+          "exercicios": [
+            { "id": "d4-6", "nome": "Rosca Direta + Tríceps Testa", "nota": "Superset", "series": 3, "reps": "10 reps cada" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "day5",
+      "num": "05",
+      "label": "Sexta ou Sábado",
+      "nome": "LOWER — Pernas foco posterior",
+      "tag": "Lower",
+      "descanso": false,
+      "secoes": [
+        {
+          "titulo": "Principal",
+          "exercicios": [
+            { "id": "d5-1", "nome": "Leg Press 45°", "nota": "2ª frequência · carga um pouco menor que na quarta", "series": 4, "reps": "10–15 reps", "destaque": true },
+            { "id": "d5-2", "nome": "Agachamento Sumô ou Hack Squat", "nota": "Varia do dia 3 para não enjoar", "series": 3, "reps": "10 reps" }
+          ]
+        },
+        {
+          "titulo": "Posterior + Glúteo",
+          "exercicios": [
+            { "id": "d5-3", "nome": "Mesa Flexora", "series": 4, "reps": "10–12 reps" },
+            { "id": "d5-4", "nome": "Elevação Pélvica (Hip Thrust)", "series": 3, "reps": "12 reps" },
+            { "id": "d5-5", "nome": "Panturrilha em Pé", "series": 4, "reps": "15–20 reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "day6",
+      "num": "06",
+      "label": "Sábado / Domingo",
+      "nome": "DESCANSO ATIVO",
+      "tag": "Rest",
+      "descanso": true,
+      "texto": "Caminhada leve, alongamento ou mobilidade de quadril. Nada de treino pesado. A recuperação é onde o músculo cresce — especialmente importante pra quem trabalha sentado o dia todo."
+    }
+  ],
+  "progressao": {
+    "titulo": "PROGRESSÃO — COMO CHEGAR NOS 600 KG",
+    "itens": [
+      "Semanas 1–4: readaptação, foca técnica no agachamento e mobilidade de quadril (escritório resseca o padrão motor)",
+      "Leg press: aumenta 5–10 kg por semana. Se falhar nas reps, mantém o peso e adiciona 1 série",
+      "Supino inclinado: meta de voltar aos 42kg/lado nas semanas 4–6, superar nas semanas 8–10",
+      "Quando enjoar dos exercícios (~3 meses), troca os acessórios — não a estrutura da divisão",
+      "Nos períodos de baixa motivação: reduz pra 3 dias full body mas mantém leg press e supino inclinado sempre"
+    ]
+  }
+}
