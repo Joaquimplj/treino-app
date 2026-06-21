@@ -1,6 +1,7 @@
 // Service worker — app de treino
-// Shell em cache (funciona offline); rotina.json sempre tenta a rede primeiro.
-const CACHE = 'treino-v3';
+// Shell (index.html) e rotina.json: NETWORK-FIRST (sempre pega a versao nova online,
+// cai pro cache só offline). Demais assets: cache-first (rapido + offline).
+const CACHE = 'treino-v4';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -20,17 +21,30 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
+  const mesmaOrigem = url.origin === location.origin;
 
-  // rotina.json: rede primeiro (é o canal de atualização), cache como fallback
-  if (url.origin === location.origin && url.pathname.endsWith('/rotina.json')) {
+  // rotina.json: rede primeiro (canal de atualizacao do treino), cache como fallback
+  if (mesmaOrigem && url.pathname.endsWith('/rotina.json')) {
+    e.respondWith(
+      fetch(e.request)
+        .then(r => { const cp = r.clone(); caches.open(CACHE).then(c => c.put('./rotina.json', cp)); return r; })
+        .catch(() => caches.match('./rotina.json'))
+    );
+    return;
+  }
+
+  // SHELL (navegacao / index.html): rede primeiro -> atualiza sozinho quando online
+  if (mesmaOrigem && (e.request.mode === 'navigate' || url.pathname.endsWith('/index.html'))) {
     e.respondWith(
       fetch(e.request)
         .then(r => {
-          const cp = r.clone();
-          caches.open(CACHE).then(c => c.put('./rotina.json', cp));
+          if (r && r.ok) {
+            const c1 = r.clone(), c2 = r.clone();
+            caches.open(CACHE).then(c => { c.put('./index.html', c1); c.put('./', c2); });
+          }
           return r;
         })
-        .catch(() => caches.match('./rotina.json'))
+        .catch(() => caches.match('./index.html').then(h => h || caches.match('./')))
     );
     return;
   }
@@ -40,7 +54,7 @@ self.addEventListener('fetch', e => {
     caches.match(e.request, { ignoreSearch: true }).then(hit =>
       hit ||
       fetch(e.request).then(r => {
-        if (url.origin === location.origin && r.ok) {
+        if (mesmaOrigem && r.ok) {
           const cp = r.clone();
           caches.open(CACHE).then(c => c.put(e.request, cp));
         }
