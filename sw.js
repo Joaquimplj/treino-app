@@ -1,6 +1,6 @@
 // Service worker — app de treino
 // Shell em cache (funciona offline); rotina.json sempre tenta a rede primeiro.
-const CACHE = 'treino-v2';
+const CACHE = 'treino-v3';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

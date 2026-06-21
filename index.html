@@ -30,13 +30,20 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   [hidden] { display: none !important; }
 
+  html, body { overflow-x: hidden; max-width: 100%; overscroll-behavior-x: none; }
+
   body {
     background: var(--bg);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
     padding: 28px 16px 210px;
+    position: relative; width: 100%;
+    touch-action: pan-y;
   }
+
+  @keyframes tabslide { from { opacity: .35; } to { opacity: 1; } }
+  .view-anim { animation: tabslide .18s ease; }
 
   /* ===== HEADER ===== */
   .header { text-align: center; margin-bottom: 24px; position: relative; max-width: 800px; margin-left: auto; margin-right: auto; }
@@ -282,16 +289,19 @@
     padding: 10px 14px; display: flex; align-items: center; gap: 10px;
     z-index: 1000; box-shadow: 0 8px 32px rgba(0,0,0,0.6); user-select: none;
     max-width: calc(100vw - 16px); transition: transform .25s ease, opacity .25s ease;
-    touch-action: pan-y;
+    touch-action: none;
   }
   #timer-widget.running { border-color: var(--accent); }
   #timer-widget.finished { border-color: var(--accent2); animation: pulse-border 0.6s ease infinite alternate; }
   #timer-widget.tucked { opacity: 0; pointer-events: none; }
   @keyframes pulse-border { from { border-color: var(--accent2); } to { border-color: #ff6600; } }
 
-  .timer-grip {
-    display: flex; flex-direction: column; gap: 3px; padding: 4px 2px; cursor: grab; touch-action: none;
+  .timer-drag {
+    display: flex; align-items: center; gap: 10px;
+    cursor: grab; touch-action: none; padding: 4px 2px 4px 4px; border-radius: 40px;
   }
+  .timer-drag:active { cursor: grabbing; }
+  .timer-grip { display: flex; flex-direction: column; gap: 3px; padding: 2px; }
   .timer-grip span { width: 4px; height: 4px; border-radius: 50%; background: #444; }
   #timer-widget.running .timer-grip span { background: var(--muted); }
 
@@ -421,8 +431,10 @@
 
 <!-- TIMER FLUTUANTE -->
 <div id="timer-widget">
-  <div class="timer-grip" id="timer-grip" title="Arraste para o lado para esconder"><span></span><span></span><span></span></div>
-  <div id="timer-display">1:00</div>
+  <div class="timer-drag" id="timer-drag" title="Arraste para o lado para esconder">
+    <div class="timer-grip"><span></span><span></span><span></span></div>
+    <div id="timer-display">1:00</div>
+  </div>
   <div class="timer-presets">
     <button class="preset-btn active-preset" data-secs="60">1:00</button>
     <button class="preset-btn" data-secs="90">1:30</button>
@@ -769,10 +781,10 @@ function atualizarStatusEx(exId) {
   exEl.classList.toggle('ex-done', done);
   const btn = exEl.querySelector('.mark-ex-btn');
   if (btn) { btn.classList.toggle('all-done', done); btn.textContent = done ? 'Feito ✓' : 'Tudo ✓'; }
-  atualizarStatusDia(mapExDia[exId]);
+  atualizarStatusDia(mapExDia[exId], true);
 }
 
-function atualizarStatusDia(diaId) {
+function atualizarStatusDia(diaId, fromUser) {
   const dia = (rotina.dias || []).find(d => d.id === diaId);
   if (!dia || dia.descanso) return;
   const all = (dia.secoes || []).every(s => (s.exercicios || []).every(x => {
@@ -780,7 +792,58 @@ function atualizarStatusDia(diaId) {
     return a.length === x.series && a.every(Boolean);
   }));
   const dEl = el(diaId);
-  if (dEl) dEl.classList.toggle('day-complete', all);
+  if (!dEl) return;
+  const antes = dEl.classList.contains('day-complete');
+  dEl.classList.toggle('day-complete', all);
+  if (fromUser && all && !antes) autoLogDia(diaId);
+}
+
+// Ao completar todas as séries de um dia, registra a sessão no diário
+// repetindo as cargas da última anotação (sem precisar digitar).
+function autoLogDia(diaId) {
+  const dia = (rotina.dias || []).find(d => d.id === diaId);
+  if (!dia || dia.descanso) return;
+  const hojeK = dateKey(new Date());
+  const existente = diario.find(s => s.diaId === diaId && keyFromISO(s.data) === hojeK);
+  if (existente && existente.editado) return; // já contabilizado e editado à mão
+
+  const exs = (dia.secoes || []).reduce((acc, s) => {
+    (s.exercicios || []).forEach(ex => {
+      const ult = ultimaSessaoEx(ex.id, existente ? existente.id : null);
+      if (Array.isArray(ex.componentes) && ex.componentes.length) {
+        const comps = ex.componentes.map(nomeC => {
+          let series = Array.from({ length: ex.series }, () => ({ peso: null, reps: null }));
+          if (ult && Array.isArray(ult.componentes)) {
+            const c = ult.componentes.find(cc => cc.nome === nomeC);
+            if (c) series = c.series.map(x => ({ peso: x.peso, reps: x.reps }));
+          }
+          return { nome: nomeC, series };
+        });
+        acc.push({ id: ex.id, nome: ex.nome, componentes: comps });
+      } else {
+        let series = Array.from({ length: ex.series }, () => ({ peso: null, reps: null }));
+        if (ult && Array.isArray(ult.series)) series = ult.series.map(x => ({ peso: x.peso, reps: x.reps }));
+        acc.push({ id: ex.id, nome: ex.nome, series });
+      }
+    });
+    return acc;
+  }, []);
+
+  if (existente) {
+    existente.exercicios = exs;
+    existente.semana = semana;
+  } else {
+    diario.unshift({
+      id: 's' + Math.random().toString(36).slice(2, 10),
+      data: new Date().toISOString(),
+      diaId: dia.id, diaNome: dia.nome, tag: dia.tag, semana: semana,
+      exercicios: exs, nota: '', auto: true
+    });
+  }
+  gravar(LSK.diario, diario);
+  renderCalendario();
+  renderGoalCard();
+  toast('Treino registrado no diário ✓ (cargas da última vez)');
 }
 
 function resetarDia(diaId) {
@@ -844,12 +907,11 @@ el('btn-reset-semana').addEventListener('click', () => {
 // =====================================================================
 // DIÁRIO — formulário (com suporte a superset)
 // =====================================================================
-function ultimaSessaoEx(exId) {
-  for (const s of diario) {
-    const ex = (s.exercicios || []).find(x => x.id === exId);
-    if (ex) return ex;
-  }
-  return null;
+function ultimaSessaoEx(exId, excluirId) {
+  const cands = (diario || []).filter(s => s.id !== excluirId && (s.exercicios || []).some(x => x.id === exId));
+  cands.sort((a, b) => new Date(b.data) - new Date(a.data));
+  if (!cands.length) return null;
+  return cands[0].exercicios.find(x => x.id === exId);
 }
 
 function setRowsHTML(qtd, prefSeries) {
@@ -939,20 +1001,30 @@ function salvarSessao() {
   if (!exs.length) { toast('Preenche pelo menos uma série antes de salvar'); return; }
   const nota = el('diario-nota').value.trim();
   const agora = new Date();
-  diario.unshift({
-    id: 's' + Math.random().toString(36).slice(2, 10),
-    data: agora.toISOString(),
-    diaId: dia.id, diaNome: dia.nome, tag: dia.tag, semana: semana,
-    exercicios: exs, nota
-  });
+  const hojeK = dateKey(agora);
+  const existente = diario.find(s => s.diaId === dia.id && keyFromISO(s.data) === hojeK);
+  if (existente) {
+    existente.exercicios = exs;
+    existente.nota = nota;
+    existente.semana = semana;
+    existente.editado = true;
+    delete existente.auto;
+  } else {
+    diario.unshift({
+      id: 's' + Math.random().toString(36).slice(2, 10),
+      data: agora.toISOString(),
+      diaId: dia.id, diaNome: dia.nome, tag: dia.tag, semana: semana,
+      exercicios: exs, nota, editado: true
+    });
+  }
   gravar(LSK.diario, diario);
   el('diario-nota').value = '';
   calRef = { ano: agora.getFullYear(), mes: agora.getMonth() };
-  calSel = dateKey(agora);
+  calSel = hojeK;
   renderCalendario();
   renderGoalCard();
   renderDiarioForm();
-  toast('Sessão salva ✓');
+  toast(existente ? 'Sessão de hoje atualizada ✓' : 'Sessão salva ✓');
 }
 el('btn-salvar').addEventListener('click', salvarSessao);
 
@@ -1070,13 +1142,38 @@ function renderGoalCard() {
 // =====================================================================
 // ABAS
 // =====================================================================
-function mudarTab(t) {
+const ABAS = ['rotina', 'diario'];
+function abaAtual() { return el('view-diario').hidden ? 'rotina' : 'diario'; }
+function mudarTab(t, animar) {
   el('view-rotina').hidden = t !== 'rotina';
   el('view-diario').hidden = t !== 'diario';
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
   gravar(LSK.tab, t);
+  if (animar) {
+    const v = el('view-' + t);
+    if (v) { v.classList.remove('view-anim'); void v.offsetWidth; v.classList.add('view-anim'); }
+  }
 }
 document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => mudarTab(b.dataset.tab)));
+
+// ---- trocar de aba arrastando a tela (swipe horizontal) ----
+let swX = null, swY = null, swValido = false;
+document.addEventListener('pointerdown', e => {
+  if (!e.isPrimary) { swValido = false; return; } // ignora multitouch
+  if (e.target.closest('#timer-widget, #timer-tab, #tabbar, input, textarea, .modal-box')) { swValido = false; return; }
+  if (!el('modal-config').hidden) { swValido = false; return; }
+  swX = e.clientX; swY = e.clientY; swValido = true;
+}, { passive: true });
+document.addEventListener('pointerup', e => {
+  if (!swValido || swX == null) { swX = null; swValido = false; return; }
+  const dx = e.clientX - swX, dy = e.clientY - swY;
+  swX = null; swValido = false;
+  if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+  const i = ABAS.indexOf(abaAtual());
+  const alvo = dx < 0 ? ABAS[i + 1] : ABAS[i - 1];
+  if (alvo) mudarTab(alvo, true);
+}, { passive: true });
+document.addEventListener('pointercancel', () => { swX = null; swValido = false; }, { passive: true });
 
 // =====================================================================
 // ATUALIZAÇÃO REMOTA + IMPORT/EXPORT
@@ -1250,15 +1347,14 @@ function updateTimerState() {
 }
 
 document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => setPreset(+b.dataset.secs, b)));
-el('timer-display').addEventListener('click', toggleTimer);
 el('play-btn').addEventListener('click', toggleTimer);
 el('btn-timer-reset').addEventListener('click', resetTimer);
 
 // ---- esconder/puxar o timer ----
-const timerWidget = el('timer-widget'), timerTab = el('timer-tab'), grip = el('timer-grip');
+const timerWidget = el('timer-widget'), timerTab = el('timer-tab'), timerDrag = el('timer-drag');
 function esconderTimer(save) {
   timerWidget.style.transition = 'transform .25s ease, opacity .25s ease';
-  timerWidget.style.transform = 'translateX(140%)';
+  timerWidget.style.transform = 'translateX(-50%)'; // continua centralizado: some por opacity (sem criar scroll horizontal)
   timerWidget.classList.add('tucked');
   timerTab.classList.add('show');
   if (save !== false) gravar(LSK.timerHidden, true);
@@ -1272,25 +1368,32 @@ function mostrarTimer(save) {
 }
 timerTab.addEventListener('click', () => mostrarTimer());
 
-let dragX0 = null, dragDx = 0;
-grip.addEventListener('pointerdown', e => {
-  dragX0 = e.clientX; dragDx = 0;
+// Área de arrasto = grip + mostrador (toda a parte esquerda do timer).
+// Arrastar pro lado esconde; tocar no mostrador (sem arrastar) liga/pausa.
+let dragX0 = null, dragY0 = null, dragDx = 0, dragMoved = false, dragOnDisplay = false;
+timerDrag.addEventListener('pointerdown', e => {
+  dragX0 = e.clientX; dragY0 = e.clientY; dragDx = 0; dragMoved = false;
+  // guarda ANTES do setPointerCapture (depois da captura, e.target vira o container)
+  dragOnDisplay = !!(e.target.closest && e.target.closest('#timer-display'));
   timerWidget.style.transition = 'none';
-  grip.setPointerCapture(e.pointerId);
+  try { timerDrag.setPointerCapture(e.pointerId); } catch (er) {}
 });
-grip.addEventListener('pointermove', e => {
+timerDrag.addEventListener('pointermove', e => {
   if (dragX0 == null) return;
-  dragDx = e.clientX - dragX0;
-  if (dragDx < 0) dragDx = 0;
+  const dx = e.clientX - dragX0;
+  dragDx = dx > 0 ? dx : 0;
+  if (Math.abs(dx) > 6 || Math.abs(e.clientY - dragY0) > 6) dragMoved = true;
   timerWidget.style.transform = `translateX(calc(-50% + ${dragDx}px))`;
 });
-grip.addEventListener('pointerup', e => {
+timerDrag.addEventListener('pointerup', () => {
   if (dragX0 == null) return;
-  const moved = dragDx;
+  const moved = dragDx, wasMoved = dragMoved, onDisp = dragOnDisplay;
   dragX0 = null;
-  if (moved > 70) esconderTimer();
-  else mostrarTimer(false);
+  if (moved > 70) { esconderTimer(); return; }
+  mostrarTimer(false);
+  if (!wasMoved && onDisp) toggleTimer();
 });
+timerDrag.addEventListener('pointercancel', () => { dragX0 = null; mostrarTimer(false); });
 
 // =====================================================================
 // INICIALIZAÇÃO
@@ -1305,7 +1408,15 @@ mudarTab(ler(LSK.tab) || 'rotina');
 if (ler(LSK.timerHidden)) esconderTimer(false);
 
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
+  // Quando uma versão nova do app ativa, recarrega 1x sozinho (não no primeiro install).
+  const tinhaController = !!navigator.serviceWorker.controller;
+  let recarregando = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (recarregando || !tinhaController) return;
+    recarregando = true;
+    location.reload();
+  });
+  navigator.serviceWorker.register('./sw.js').then(reg => { try { reg.update(); } catch (e) {} }).catch(() => {});
 }
 
 buscarAtualizacao(false);
