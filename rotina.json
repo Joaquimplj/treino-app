@@ -1,5 +1,5 @@
 {
-  "versao": "2026-06-10",
+  "versao": "2026-06-20",
   "nome": "ROTINA 5 DIAS",
   "subtitulo": "Push · Pull · Legs · Upper · Lower",
   "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
@@ -13,6 +13,16 @@
     "titulo": "META PRINCIPAL",
     "texto": "Leg Press 600 kg + Supino Inclinado com Halteres como exercício âncora de peito. Divisão Push/Pull/Legs com upper e lower extra para maximizar frequência de pernas e peito."
   },
+  "microciclo": {
+    "ativo": true,
+    "titulo": "MICROCICLO",
+    "semanas": [
+      { "n": 1, "tema": "Base", "desc": "Carga sólida e técnica limpa. Deixa 1–2 reps na reserva. Sem técnica avançada." },
+      { "n": 2, "tema": "Intensidade", "desc": "Drop set na última série dos exercícios-chave (Leg Press, Supino Inclinado, High Row)." },
+      { "n": 3, "tema": "Progressão", "desc": "Sobe a carga. Sem técnica — foco em bater mais peso/reps que na semana 1." },
+      { "n": 4, "tema": "Pico", "desc": "Rest-pause na última série dos exercícios-chave. Depois recomeça na semana 1." }
+    ]
+  },
   "dias": [
     {
       "id": "day1",
@@ -25,7 +35,7 @@
         {
           "titulo": "Principal",
           "exercicios": [
-            { "id": "d1-1", "nome": "Supino Inclinado com Halteres", "nota": "Exercício âncora · foco em amplitude", "series": 4, "reps": "8–10 reps", "destaque": true },
+            { "id": "d1-1", "nome": "Supino Inclinado com Halteres", "nota": "Exercício âncora · foco em amplitude", "series": 4, "reps": "8–10 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
             { "id": "d1-2", "nome": "Supino Reto com Barra", "nota": "Carga progressiva semanal", "series": 3, "reps": "6–8 reps" },
             { "id": "d1-3", "nome": "Desenvolvimento com Halteres", "nota": "Amplitude completa", "series": 3, "reps": "10–12 reps" }
           ]
@@ -52,7 +62,7 @@
         {
           "titulo": "Principal — Máquina Articulada (Hammer High Row)",
           "exercicios": [
-            { "id": "d2-1", "nome": "High Row Bilateral — Máquina Articulada", "nota": "Apoia o peito · as duas alças juntas · puxada completa", "series": 4, "reps": "8–10 reps", "destaque": true },
+            { "id": "d2-1", "nome": "High Row Bilateral — Máquina Articulada", "nota": "Apoia o peito · as duas alças juntas · puxada completa", "series": 4, "reps": "8–10 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
             { "id": "d2-2", "nome": "High Row Unilateral — Máquina Articulada", "nota": "Uma alça de cada vez · mais amplitude · corrige assimetria", "series": 3, "reps": "10 reps cada lado", "destaque": true },
             { "id": "d2-3", "nome": "Remada Curvada com Barra", "nota": "Complemento livre · coluna neutra", "series": 3, "reps": "8 reps" }
           ]
@@ -78,7 +88,7 @@
         {
           "titulo": "Principal — Meta 600 kg",
           "exercicios": [
-            { "id": "d3-1", "nome": "Leg Press 45°", "nota": "Exercício âncora · progressão semanal obrigatória", "series": 5, "reps": "8–12 reps", "destaque": true },
+            { "id": "d3-1", "nome": "Leg Press 45°", "nota": "Exercício âncora · progressão semanal obrigatória", "series": 5, "reps": "8–12 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
             { "id": "d3-2", "nome": "Agachamento Livre", "nota": "Readaptação primeiro · foco técnico nas 4 primeiras semanas", "series": 4, "reps": "6–8 reps" },
             { "id": "d3-3", "nome": "Cadeira Extensora", "series": 3, "reps": "12–15 reps" }
           ]
@@ -104,7 +114,7 @@
         {
           "titulo": "Peito",
           "exercicios": [
-            { "id": "d4-1", "nome": "Supino Inclinado com Halteres", "nota": "2ª frequência semanal · intensidade moderada", "series": 3, "reps": "10–12 reps", "destaque": true },
+            { "id": "d4-1", "nome": "Supino Inclinado com Halteres", "nota": "2ª frequência semanal · intensidade moderada", "series": 3, "reps": "10–12 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
             { "id": "d4-2", "nome": "Crossover ou Pec Deck", "series": 3, "reps": "15 reps" }
           ]
         },
@@ -119,7 +129,7 @@
         {
           "titulo": "Braços",
           "exercicios": [
-            { "id": "d4-6", "nome": "Rosca Direta + Tríceps Testa", "nota": "Superset", "series": 3, "reps": "10 reps cada" }
+            { "id": "d4-6", "nome": "Rosca Direta + Tríceps Testa", "nota": "Superset · anota os dois", "series": 3, "reps": "10 reps cada", "componentes": ["Rosca Direta", "Tríceps Testa"] }
           ]
         }
       ]
@@ -135,15 +145,15 @@
         {
           "titulo": "Principal",
           "exercicios": [
-            { "id": "d5-1", "nome": "Leg Press 45°", "nota": "2ª frequência · carga um pouco menor que na quarta", "series": 4, "reps": "10–15 reps", "destaque": true },
-            { "id": "d5-2", "nome": "Agachamento Sumô ou Hack Squat", "nota": "Varia do dia 3 para não enjoar", "series": 3, "reps": "10 reps" }
+            { "id": "d5-1", "nome": "Leg Press 45°", "nota": "2ª frequência · carga um pouco menor que na quarta", "series": 4, "reps": "10–15 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
+            { "id": "d5-2", "nome": "Agachamento Hack", "nota": "Quadríceps · varia do agachamento livre da quarta", "series": 3, "reps": "10 reps" }
           ]
         },
         {
-          "titulo": "Posterior + Glúteo",
+          "titulo": "Posterior",
           "exercicios": [
-            { "id": "d5-3", "nome": "Mesa Flexora", "series": 4, "reps": "10–12 reps" },
-            { "id": "d5-4", "nome": "Elevação Pélvica (Hip Thrust)", "series": 3, "reps": "12 reps" },
+            { "id": "d5-3", "nome": "Cadeira Flexora", "nota": "Sentado · varia da flexora deitada da quarta", "series": 4, "reps": "10–12 reps" },
+            { "id": "d5-4", "nome": "Stiff com Halteres", "nota": "Posterior de coxa · lombar neutra · carga moderada", "series": 3, "reps": "10–12 reps" },
             { "id": "d5-5", "nome": "Panturrilha em Pé", "series": 4, "reps": "15–20 reps" }
           ]
         }
@@ -162,9 +172,10 @@
   "progressao": {
     "titulo": "PROGRESSÃO — COMO CHEGAR NOS 600 KG",
     "itens": [
-      "Semanas 1–4: readaptação, foca técnica no agachamento e mobilidade de quadril (escritório resseca o padrão motor)",
+      "Microciclo de 4 semanas: S1 base, S2 drop set, S3 sobe carga, S4 rest-pause — depois recomeça",
       "Leg press: aumenta 5–10 kg por semana. Se falhar nas reps, mantém o peso e adiciona 1 série",
       "Supino inclinado: meta de voltar aos 42kg/lado nas semanas 4–6, superar nas semanas 8–10",
+      "Técnicas avançadas só nos exercícios-chave (Leg Press, Supino Inclinado, High Row) — o resto é carga limpa",
       "Quando enjoar dos exercícios (~3 meses), troca os acessórios — não a estrutura da divisão",
       "Nos períodos de baixa motivação: reduz pra 3 dias full body mas mantém leg press e supino inclinado sempre"
     ]

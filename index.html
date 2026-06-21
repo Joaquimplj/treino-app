@@ -39,7 +39,7 @@
   }
 
   /* ===== HEADER ===== */
-  .header { text-align: center; margin-bottom: 28px; position: relative; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .header { text-align: center; margin-bottom: 24px; position: relative; max-width: 800px; margin-left: auto; margin-right: auto; }
   .header h1 {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(44px, 9vw, 80px);
@@ -55,13 +55,29 @@
   }
   .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-  .meta { display: flex; justify-content: center; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .meta { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto; }
   .meta-item { background: var(--card); border: 1px solid var(--border); padding: 10px 16px; border-radius: 4px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
   .meta-item span { color: var(--accent); font-weight: 600; }
 
-  .goal-bar { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 18px 22px; border-radius: 4px; margin: 0 auto 28px; max-width: 800px; }
+  .goal-bar { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 18px 22px; border-radius: 4px; margin: 0 auto 24px; max-width: 800px; }
   .goal-bar h3 { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--accent); margin-bottom: 6px; }
   .goal-bar p { font-size: 14px; color: var(--text); font-weight: 300; }
+
+  /* ===== MICROCICLO (seletor de semana) ===== */
+  .microciclo { max-width: 800px; margin: 0 auto 24px; }
+  .micro-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .micro-head h3 { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--accent2); }
+  .week-chips { display: flex; gap: 8px; }
+  .week-chip {
+    flex: 1; padding: 11px 6px; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--card); color: var(--muted); cursor: pointer; transition: all .15s;
+    display: flex; flex-direction: column; align-items: center; gap: 2px; user-select: none;
+  }
+  .week-chip .wc-n { font-family: 'Bebas Neue', sans-serif; font-size: 20px; line-height: 1; letter-spacing: 1px; }
+  .week-chip .wc-t { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; }
+  .week-chip:hover { border-color: var(--accent2); }
+  .week-chip.wc-on { border-color: var(--accent2); background: rgba(245,161,66,0.1); color: var(--accent2); }
+  .semana-desc { margin-top: 10px; font-size: 12px; color: var(--muted); line-height: 1.55; padding-left: 10px; border-left: 2px solid var(--accent2); }
 
   /* ===== DIAS / ROTINA ===== */
   .week { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
@@ -103,6 +119,13 @@
   .ex-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .ex-sets-display { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); text-align: right; white-space: nowrap; }
   .ex-reps { font-size: 11px; color: var(--muted); text-align: right; white-space: nowrap; }
+
+  .tecnica-badge {
+    margin-top: 10px; font-size: 11px; letter-spacing: 1px; color: var(--accent2);
+    background: rgba(245,161,66,0.1); border: 1px solid rgba(245,161,66,0.35);
+    border-radius: 4px; padding: 7px 10px; display: flex; align-items: center; gap: 7px;
+  }
+  .tecnica-badge b { font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 10px; }
 
   .series-row { display: flex; align-items: center; gap: 7px; margin-top: 12px; flex-wrap: wrap; }
   .series-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
@@ -175,6 +198,7 @@
   .dex-head { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; align-items: baseline; }
   .dex-nome { font-size: 14px; font-weight: 500; }
   .dex-meta { font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .comp-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent2); margin: 12px 0 8px; }
   .set-row { display: grid; grid-template-columns: 34px 1fr 1fr; gap: 8px; margin-bottom: 6px; align-items: center; }
   .set-n { font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--muted); }
   .set-row input {
@@ -197,20 +221,45 @@
   }
   .btn-acao:active { transform: scale(.99); }
 
-  .hist-title { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--accent); margin: 24px 0 12px; }
-  .hist-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 10px; overflow: hidden; }
-  .hist-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; cursor: pointer; user-select: none; }
-  .hist-data { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--accent); }
-  .hist-dia { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
-  .hist-del { background: none; border: none; color: #444; font-size: 16px; cursor: pointer; padding: 6px 8px; }
-  .hist-del:hover { color: #f55; }
-  .hist-body { display: none; padding: 4px 16px 14px; border-top: 1px solid var(--border); }
-  .hist-card.open .hist-body { display: block; }
-  .hist-ex { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 8px 0; border-bottom: 1px dashed #1e1e1e; }
-  .hist-ex:last-of-type { border-bottom: none; }
-  .hist-sets { color: var(--muted); text-align: right; white-space: nowrap; overflow-x: auto; }
-  .hist-nota { font-size: 12px; color: var(--muted); font-style: italic; margin-top: 10px; }
-  .vazio { color: #444; font-size: 13px; text-align: center; padding: 30px; border: 1px dashed #222; border-radius: 6px; }
+  /* ===== CALENDÁRIO ===== */
+  .cal-title { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: var(--accent); margin: 24px 0 12px; }
+  .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .cal-mes { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--text); }
+  .cal-nav {
+    width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all .15s;
+  }
+  .cal-nav:hover { border-color: var(--accent); color: var(--accent); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+  .cal-wd { text-align: center; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding-bottom: 4px; }
+  .cal-cell {
+    aspect-ratio: 1 / 1; border-radius: 6px; border: 1px solid transparent;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    font-size: 14px; color: var(--muted); cursor: pointer; position: relative; transition: all .12s; user-select: none;
+  }
+  .cal-cell.empty { cursor: default; }
+  .cal-cell.tem { background: var(--surface); color: var(--text); }
+  .cal-cell.tem:hover { border-color: var(--accent); }
+  .cal-cell.hoje { border-color: #444; }
+  .cal-cell.sel { border-color: var(--accent) !important; background: rgba(200,245,66,0.08); color: var(--accent); }
+  .cal-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .cal-cell.sel .cal-dot { background: var(--accent); }
+
+  .dia-detalhe { margin-top: 18px; }
+  .det-data { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--accent); margin-bottom: 10px; }
+  .sess-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; margin-bottom: 10px; }
+  .sess-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .sess-dia { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  .sess-del { background: none; border: none; color: #444; font-size: 16px; cursor: pointer; padding: 4px 6px; }
+  .sess-del:hover { color: #f55; }
+  .sess-ex { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 7px 0; border-bottom: 1px dashed #1e1e1e; }
+  .sess-ex:last-of-type { border-bottom: none; }
+  .sess-ex .se-nome { color: var(--text); }
+  .sess-ex .se-sets { color: var(--muted); text-align: right; }
+  .sess-comp { color: var(--accent2); font-size: 12px; padding: 5px 0 2px; }
+  .sess-nota { font-size: 12px; color: var(--muted); font-style: italic; margin-top: 10px; }
+  .vazio { color: #444; font-size: 13px; text-align: center; padding: 26px; border: 1px dashed #222; border-radius: 6px; }
 
   /* ===== TABS (barra inferior) ===== */
   #tabbar {
@@ -230,17 +279,25 @@
     position: fixed; bottom: calc(64px + env(safe-area-inset-bottom));
     left: 50%; transform: translateX(-50%);
     background: #111; border: 1px solid #2a2a2a; border-radius: 60px;
-    padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; display: flex; align-items: center; gap: 10px;
     z-index: 1000; box-shadow: 0 8px 32px rgba(0,0,0,0.6); user-select: none;
-    max-width: calc(100vw - 16px); transition: border-color 0.3s;
+    max-width: calc(100vw - 16px); transition: transform .25s ease, opacity .25s ease;
+    touch-action: pan-y;
   }
   #timer-widget.running { border-color: var(--accent); }
   #timer-widget.finished { border-color: var(--accent2); animation: pulse-border 0.6s ease infinite alternate; }
+  #timer-widget.tucked { opacity: 0; pointer-events: none; }
   @keyframes pulse-border { from { border-color: var(--accent2); } to { border-color: #ff6600; } }
+
+  .timer-grip {
+    display: flex; flex-direction: column; gap: 3px; padding: 4px 2px; cursor: grab; touch-action: none;
+  }
+  .timer-grip span { width: 4px; height: 4px; border-radius: 50%; background: #444; }
+  #timer-widget.running .timer-grip span { background: var(--muted); }
 
   #timer-display {
     font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 3px;
-    color: var(--text); min-width: 76px; text-align: center; cursor: pointer;
+    color: var(--text); min-width: 70px; text-align: center; cursor: pointer;
   }
   #timer-widget.running #timer-display { color: var(--accent); }
   #timer-widget.finished #timer-display { color: var(--accent2); }
@@ -263,8 +320,17 @@
   .timer-btn:hover { border-color: var(--accent); color: var(--accent); }
   .timer-btn.play-btn { background: var(--accent); border-color: var(--accent); color: #000; font-size: 13px; }
 
-  .timer-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #333; min-width: 44px; }
-  #timer-widget.running .timer-label { color: var(--muted); }
+  /* aba lateral para puxar o timer de volta */
+  #timer-tab {
+    position: fixed; right: 0; bottom: calc(90px + env(safe-area-inset-bottom));
+    background: #111; border: 1px solid #2a2a2a; border-right: none;
+    border-radius: 30px 0 0 30px; padding: 14px 9px 14px 12px; z-index: 1000;
+    cursor: pointer; display: none; align-items: center; gap: 6px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6); color: var(--accent);
+  }
+  #timer-tab.show { display: flex; }
+  #timer-tab .tt-clock { font-size: 16px; }
+  #timer-tab .tt-time { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 1px; }
 
   /* ===== MODAL AJUSTES ===== */
   .modal { position: fixed; inset: 0; background: rgba(0,0,0,.72); z-index: 2000; display: flex; align-items: flex-end; justify-content: center; }
@@ -317,8 +383,15 @@
   <!-- ============ ABA ROTINA ============ -->
   <section id="view-rotina">
     <div class="goal-bar" id="goal-bar"></div>
+    <div class="microciclo" id="microciclo" hidden>
+      <div class="micro-head">
+        <h3 id="micro-titulo">MICROCICLO</h3>
+      </div>
+      <div class="week-chips" id="week-chips"></div>
+      <div class="semana-desc" id="semana-desc"></div>
+    </div>
     <div class="week" id="week"></div>
-    <button class="reset-week-btn" id="btn-reset-semana">↺ Resetar semana inteira</button>
+    <button class="reset-week-btn" id="btn-reset-semana">↺ Resetar marcações da semana</button>
     <div class="progress-note" id="progress-note"></div>
     <div class="footer" id="rodape"></div>
   </section>
@@ -333,14 +406,22 @@
       <textarea id="diario-nota" placeholder="Nota da sessão (opcional)... ex: leg press subiu fácil, joelho ok"></textarea>
       <button class="btn-acao" id="btn-salvar">SALVAR SESSÃO</button>
     </div>
-    <h3 class="hist-title">HISTÓRICO</h3>
-    <div id="historico"></div>
+
+    <div class="card">
+      <div class="cal-head">
+        <button class="cal-nav" id="cal-prev">‹</button>
+        <div class="cal-mes" id="cal-mes">—</div>
+        <button class="cal-nav" id="cal-next">›</button>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="dia-detalhe" id="dia-detalhe"></div>
+    </div>
   </section>
 </main>
 
 <!-- TIMER FLUTUANTE -->
 <div id="timer-widget">
-  <div class="timer-label" id="timer-label">DESCANSO</div>
+  <div class="timer-grip" id="timer-grip" title="Arraste para o lado para esconder"><span></span><span></span><span></span></div>
   <div id="timer-display">1:00</div>
   <div class="timer-presets">
     <button class="preset-btn active-preset" data-secs="60">1:00</button>
@@ -351,6 +432,12 @@
     <button class="timer-btn play-btn" id="play-btn">▶</button>
     <button class="timer-btn" id="btn-timer-reset">↺</button>
   </div>
+</div>
+
+<!-- ABA PARA PUXAR O TIMER DE VOLTA -->
+<div id="timer-tab">
+  <span class="tt-clock">⏱</span>
+  <span class="tt-time" id="tt-time">1:00</span>
 </div>
 
 <!-- BARRA DE ABAS -->
@@ -390,12 +477,11 @@
 
 <script>
 // =====================================================================
-// TREINO APP — rotina + diário com persistência local + atualização remota
+// TREINO APP — rotina + diário (calendário) + microciclo + atualização remota
 // =====================================================================
 
-// ---- Rotina padrão embutida (usada na 1ª abertura ou sem internet) ----
 const DEFAULT_ROTINA = {
-  "versao": "2026-06-10",
+  "versao": "2026-06-20",
   "nome": "ROTINA 5 DIAS",
   "subtitulo": "Push · Pull · Legs · Upper · Lower",
   "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
@@ -409,12 +495,21 @@ const DEFAULT_ROTINA = {
     "titulo": "META PRINCIPAL",
     "texto": "Leg Press 600 kg + Supino Inclinado com Halteres como exercício âncora de peito. Divisão Push/Pull/Legs com upper e lower extra para maximizar frequência de pernas e peito."
   },
+  "microciclo": {
+    "ativo": true, "titulo": "MICROCICLO",
+    "semanas": [
+      { "n": 1, "tema": "Base", "desc": "Carga sólida e técnica limpa. Deixa 1–2 reps na reserva. Sem técnica avançada." },
+      { "n": 2, "tema": "Intensidade", "desc": "Drop set na última série dos exercícios-chave (Leg Press, Supino Inclinado, High Row)." },
+      { "n": 3, "tema": "Progressão", "desc": "Sobe a carga. Sem técnica — foco em bater mais peso/reps que na semana 1." },
+      { "n": 4, "tema": "Pico", "desc": "Rest-pause na última série dos exercícios-chave. Depois recomeça na semana 1." }
+    ]
+  },
   "dias": [
     {
       "id": "day1", "num": "01", "label": "Segunda", "nome": "PUSH — Peito · Ombro · Tríceps", "tag": "Push", "descanso": false,
       "secoes": [
         { "titulo": "Principal", "exercicios": [
-          { "id": "d1-1", "nome": "Supino Inclinado com Halteres", "nota": "Exercício âncora · foco em amplitude", "series": 4, "reps": "8–10 reps", "destaque": true },
+          { "id": "d1-1", "nome": "Supino Inclinado com Halteres", "nota": "Exercício âncora · foco em amplitude", "series": 4, "reps": "8–10 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
           { "id": "d1-2", "nome": "Supino Reto com Barra", "nota": "Carga progressiva semanal", "series": 3, "reps": "6–8 reps" },
           { "id": "d1-3", "nome": "Desenvolvimento com Halteres", "nota": "Amplitude completa", "series": 3, "reps": "10–12 reps" }
         ]},
@@ -430,7 +525,7 @@ const DEFAULT_ROTINA = {
       "id": "day2", "num": "02", "label": "Terça", "nome": "PULL — Costas · Bíceps", "tag": "Pull", "descanso": false,
       "secoes": [
         { "titulo": "Principal — Máquina Articulada (Hammer High Row)", "exercicios": [
-          { "id": "d2-1", "nome": "High Row Bilateral — Máquina Articulada", "nota": "Apoia o peito · as duas alças juntas · puxada completa", "series": 4, "reps": "8–10 reps", "destaque": true },
+          { "id": "d2-1", "nome": "High Row Bilateral — Máquina Articulada", "nota": "Apoia o peito · as duas alças juntas · puxada completa", "series": 4, "reps": "8–10 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
           { "id": "d2-2", "nome": "High Row Unilateral — Máquina Articulada", "nota": "Uma alça de cada vez · mais amplitude · corrige assimetria", "series": 3, "reps": "10 reps cada lado", "destaque": true },
           { "id": "d2-3", "nome": "Remada Curvada com Barra", "nota": "Complemento livre · coluna neutra", "series": 3, "reps": "8 reps" }
         ]},
@@ -445,7 +540,7 @@ const DEFAULT_ROTINA = {
       "id": "day3", "num": "03", "label": "Quarta", "nome": "LEGS — Quad · Posterior · Glúteo", "tag": "Legs", "descanso": false,
       "secoes": [
         { "titulo": "Principal — Meta 600 kg", "exercicios": [
-          { "id": "d3-1", "nome": "Leg Press 45°", "nota": "Exercício âncora · progressão semanal obrigatória", "series": 5, "reps": "8–12 reps", "destaque": true },
+          { "id": "d3-1", "nome": "Leg Press 45°", "nota": "Exercício âncora · progressão semanal obrigatória", "series": 5, "reps": "8–12 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
           { "id": "d3-2", "nome": "Agachamento Livre", "nota": "Readaptação primeiro · foco técnico nas 4 primeiras semanas", "series": 4, "reps": "6–8 reps" },
           { "id": "d3-3", "nome": "Cadeira Extensora", "series": 3, "reps": "12–15 reps" }
         ]},
@@ -460,7 +555,7 @@ const DEFAULT_ROTINA = {
       "id": "day4", "num": "04", "label": "Quinta", "nome": "UPPER — Peito · Costas · Ombro", "tag": "Upper", "descanso": false,
       "secoes": [
         { "titulo": "Peito", "exercicios": [
-          { "id": "d4-1", "nome": "Supino Inclinado com Halteres", "nota": "2ª frequência semanal · intensidade moderada", "series": 3, "reps": "10–12 reps", "destaque": true },
+          { "id": "d4-1", "nome": "Supino Inclinado com Halteres", "nota": "2ª frequência semanal · intensidade moderada", "series": 3, "reps": "10–12 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
           { "id": "d4-2", "nome": "Crossover ou Pec Deck", "series": 3, "reps": "15 reps" }
         ]},
         { "titulo": "Costas + Ombro", "exercicios": [
@@ -469,7 +564,7 @@ const DEFAULT_ROTINA = {
           { "id": "d4-5", "nome": "Elevação Lateral", "series": 4, "reps": "15 reps" }
         ]},
         { "titulo": "Braços", "exercicios": [
-          { "id": "d4-6", "nome": "Rosca Direta + Tríceps Testa", "nota": "Superset", "series": 3, "reps": "10 reps cada" }
+          { "id": "d4-6", "nome": "Rosca Direta + Tríceps Testa", "nota": "Superset · anota os dois", "series": 3, "reps": "10 reps cada", "componentes": ["Rosca Direta", "Tríceps Testa"] }
         ]}
       ]
     },
@@ -477,12 +572,12 @@ const DEFAULT_ROTINA = {
       "id": "day5", "num": "05", "label": "Sexta ou Sábado", "nome": "LOWER — Pernas foco posterior", "tag": "Lower", "descanso": false,
       "secoes": [
         { "titulo": "Principal", "exercicios": [
-          { "id": "d5-1", "nome": "Leg Press 45°", "nota": "2ª frequência · carga um pouco menor que na quarta", "series": 4, "reps": "10–15 reps", "destaque": true },
-          { "id": "d5-2", "nome": "Agachamento Sumô ou Hack Squat", "nota": "Varia do dia 3 para não enjoar", "series": 3, "reps": "10 reps" }
+          { "id": "d5-1", "nome": "Leg Press 45°", "nota": "2ª frequência · carga um pouco menor que na quarta", "series": 4, "reps": "10–15 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
+          { "id": "d5-2", "nome": "Agachamento Hack", "nota": "Quadríceps · varia do agachamento livre da quarta", "series": 3, "reps": "10 reps" }
         ]},
-        { "titulo": "Posterior + Glúteo", "exercicios": [
-          { "id": "d5-3", "nome": "Mesa Flexora", "series": 4, "reps": "10–12 reps" },
-          { "id": "d5-4", "nome": "Elevação Pélvica (Hip Thrust)", "series": 3, "reps": "12 reps" },
+        { "titulo": "Posterior", "exercicios": [
+          { "id": "d5-3", "nome": "Cadeira Flexora", "nota": "Sentado · varia da flexora deitada da quarta", "series": 4, "reps": "10–12 reps" },
+          { "id": "d5-4", "nome": "Stiff com Halteres", "nota": "Posterior de coxa · lombar neutra · carga moderada", "series": 3, "reps": "10–12 reps" },
           { "id": "d5-5", "nome": "Panturrilha em Pé", "series": 4, "reps": "15–20 reps" }
         ]}
       ]
@@ -495,29 +590,34 @@ const DEFAULT_ROTINA = {
   "progressao": {
     "titulo": "PROGRESSÃO — COMO CHEGAR NOS 600 KG",
     "itens": [
-      "Semanas 1–4: readaptação, foca técnica no agachamento e mobilidade de quadril (escritório resseca o padrão motor)",
+      "Microciclo de 4 semanas: S1 base, S2 drop set, S3 sobe carga, S4 rest-pause — depois recomeça",
       "Leg press: aumenta 5–10 kg por semana. Se falhar nas reps, mantém o peso e adiciona 1 série",
       "Supino inclinado: meta de voltar aos 42kg/lado nas semanas 4–6, superar nas semanas 8–10",
+      "Técnicas avançadas só nos exercícios-chave (Leg Press, Supino Inclinado, High Row) — o resto é carga limpa",
       "Quando enjoar dos exercícios (~3 meses), troca os acessórios — não a estrutura da divisão",
       "Nos períodos de baixa motivação: reduz pra 3 dias full body mas mantém leg press e supino inclinado sempre"
     ]
   }
 };
 
-// ---- Estado + persistência ----
-const LSK = { rotina: 'ta_rotina_v1', prog: 'ta_prog_v1', diario: 'ta_diario_v1', tab: 'ta_tab_v1' };
+// ---- Persistência ----
+const LSK = { rotina: 'ta_rotina_v1', prog: 'ta_prog_v1', diario: 'ta_diario_v1', tab: 'ta_tab_v1', semana: 'ta_semana_v1', timerHidden: 'ta_timer_hidden_v1' };
 
 function ler(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
 function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 function el(id) { return document.getElementById(id); }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function pad2(n) { return String(n).padStart(2, '0'); }
 
 let rotina = ler(LSK.rotina) || DEFAULT_ROTINA;
-let progresso = ler(LSK.prog) || {};   // { 'd1-1': [true,false,...] }
-let diario = ler(LSK.diario) || [];    // sessões, mais recente primeiro
+let progresso = ler(LSK.prog) || {};
+let diario = ler(LSK.diario) || [];
 let diaSelecionado = null;
+let semana = ler(LSK.semana) || 1;
 
-// Índices exercício → dados / dia
+const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+const WD = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
 let mapEx = {}, mapExDia = {};
 function indexar() {
   mapEx = {}; mapExDia = {};
@@ -535,8 +635,48 @@ function toast(msg) {
 }
 
 function diaDeHoje() {
-  const wd = new Date().getDay(); // 0=dom 1=seg ... 6=sáb
+  const wd = new Date().getDay();
   return ({ 1: 'day1', 2: 'day2', 3: 'day3', 4: 'day4', 5: 'day5', 6: 'day5' })[wd] || '';
+}
+
+// =====================================================================
+// MICROCICLO (seletor de semana)
+// =====================================================================
+function renderMicrociclo() {
+  const mc = rotina.microciclo;
+  const wrap = el('microciclo');
+  if (!mc || !mc.ativo || !Array.isArray(mc.semanas) || !mc.semanas.length) { wrap.hidden = true; return; }
+  wrap.hidden = false;
+  el('micro-titulo').textContent = mc.titulo || 'MICROCICLO';
+  if (!mc.semanas.some(s => s.n === semana)) semana = mc.semanas[0].n;
+  el('week-chips').innerHTML = mc.semanas.map(s =>
+    `<div class="week-chip${s.n === semana ? ' wc-on' : ''}" data-semana="${s.n}"><span class="wc-n">S${s.n}</span><span class="wc-t">${esc(s.tema)}</span></div>`).join('');
+  const sem = mc.semanas.find(s => s.n === semana);
+  el('semana-desc').textContent = sem ? sem.desc : '';
+}
+
+el('week-chips').addEventListener('click', e => {
+  const c = e.target.closest('[data-semana]');
+  if (!c) return;
+  semana = +c.dataset.semana;
+  gravar(LSK.semana, semana);
+  renderMicrociclo();
+  atualizarTecnicas();
+});
+
+function tecnicaDaSemana(ex) {
+  if (!ex.tecnicas) return null;
+  return ex.tecnicas[String(semana)] || null;
+}
+
+function atualizarTecnicas() {
+  (rotina.dias || []).forEach(d => (d.secoes || []).forEach(s => (s.exercicios || []).forEach(x => {
+    const badge = el('tec-' + x.id);
+    if (!badge) return;
+    const t = tecnicaDaSemana(x);
+    if (t) { badge.hidden = false; badge.innerHTML = '<b>Técnica</b> ' + esc(t); }
+    else badge.hidden = true;
+  })));
 }
 
 // =====================================================================
@@ -563,12 +703,14 @@ function exHTML(ex) {
   const done = a.length > 0 && a.every(Boolean);
   const dots = a.map((v, i) =>
     `<div class="serie-dot${v ? ' done' : ''}" data-ex="${ex.id}" data-i="${i}">${i + 1}</div>`).join('');
+  const badge = ex.tecnicas ? `<div class="tecnica-badge" id="tec-${ex.id}" hidden></div>` : '';
   return `<div class="exercise${ex.destaque ? ' highlight' : ''}${done ? ' ex-done' : ''}" id="ex-${ex.id}">
     <div class="ex-top">
       <div><div class="ex-name">${esc(ex.nome)}</div>${ex.nota ? `<div class="ex-note">${esc(ex.nota)}</div>` : ''}</div>
       <div class="ex-sets-display">${ex.series}×</div>
       <div class="ex-reps">${esc(ex.reps)}</div>
     </div>
+    ${badge}
     <div class="series-row">
       <span class="series-label">Séries</span>${dots}
       <button class="mark-ex-btn${done ? ' all-done' : ''}" data-tudo="${ex.id}">${done ? 'Feito ✓' : 'Tudo ✓'}</button>
@@ -607,11 +749,13 @@ function renderRotina() {
   const gb = rotina.metaPrincipal;
   el('goal-bar').innerHTML = gb ? `<h3>${esc(gb.titulo)}</h3><p>${esc(gb.texto)}</p>` : '';
   el('goal-bar').style.display = gb ? '' : 'none';
+  renderMicrociclo();
   el('week').innerHTML = (rotina.dias || []).map(diaHTML).join('');
   const pn = rotina.progressao;
   el('progress-note').innerHTML = pn ? `<h3>${esc(pn.titulo)}</h3><ul>${(pn.itens || []).map(i => `<li>${esc(i)}</li>`).join('')}</ul>` : '';
   el('progress-note').style.display = pn ? '' : 'none';
   el('rodape').textContent = rotina.rodape || '';
+  atualizarTecnicas();
   (rotina.dias || []).forEach(d => atualizarStatusDia(d.id));
 }
 
@@ -656,7 +800,6 @@ function resetarDia(diaId) {
   if (dEl) dEl.classList.remove('day-complete');
 }
 
-// Delegação de cliques da rotina
 el('week').addEventListener('click', e => {
   const dot = e.target.closest('.serie-dot');
   if (dot) {
@@ -691,7 +834,7 @@ el('week').addEventListener('click', e => {
 });
 
 el('btn-reset-semana').addEventListener('click', () => {
-  if (confirm('Zerar todas as marcações da semana?')) {
+  if (confirm('Zerar todas as marcações de série da semana?')) {
     progresso = {};
     gravar(LSK.prog, progresso);
     renderRotina();
@@ -699,14 +842,25 @@ el('btn-reset-semana').addEventListener('click', () => {
 });
 
 // =====================================================================
-// RENDER — DIÁRIO
+// DIÁRIO — formulário (com suporte a superset)
 // =====================================================================
-function ultimaSerie(exId) {
+function ultimaSessaoEx(exId) {
   for (const s of diario) {
     const ex = (s.exercicios || []).find(x => x.id === exId);
-    if (ex && ex.series && ex.series.length) return ex.series;
+    if (ex) return ex;
   }
   return null;
+}
+
+function setRowsHTML(qtd, prefSeries) {
+  return Array.from({ length: qtd }, (_, i) => {
+    const p = prefSeries && prefSeries[i] && prefSeries[i].peso != null ? prefSeries[i].peso : '';
+    const r = prefSeries && prefSeries[i] && prefSeries[i].reps != null ? prefSeries[i].reps : '';
+    return `<div class="set-row"><span class="set-n">S${i + 1}</span>
+      <input class="in-peso" type="text" inputmode="decimal" placeholder="kg" value="${p}">
+      <input class="in-reps" type="text" inputmode="numeric" placeholder="reps" value="${r}">
+    </div>`;
+  }).join('');
 }
 
 function renderDiarioForm() {
@@ -720,18 +874,23 @@ function renderDiarioForm() {
     `<button class="chip${d.id === diaSelecionado ? ' chip-on' : ''}" data-dia="${d.id}">${esc(d.tag)}</button>`).join('');
   const dia = dias.find(d => d.id === diaSelecionado);
   el('form-exercicios').innerHTML = (dia.secoes || []).map(s => (s.exercicios || []).map(ex => {
-    const ult = ultimaSerie(ex.id);
-    const rows = Array.from({ length: ex.series }, (_, i) => {
-      const p = ult && ult[i] && ult[i].peso != null ? ult[i].peso : '';
-      const r = ult && ult[i] && ult[i].reps != null ? ult[i].reps : '';
-      return `<div class="set-row"><span class="set-n">S${i + 1}</span>
-        <input class="in-peso" type="text" inputmode="decimal" placeholder="kg" value="${p}">
-        <input class="in-reps" type="text" inputmode="numeric" placeholder="reps" value="${r}">
-      </div>`;
-    }).join('');
+    const ult = ultimaSessaoEx(ex.id);
+    let corpo;
+    if (Array.isArray(ex.componentes) && ex.componentes.length) {
+      corpo = ex.componentes.map(nomeC => {
+        let pref = null;
+        if (ult && Array.isArray(ult.componentes)) {
+          const c = ult.componentes.find(cc => cc.nome === nomeC);
+          if (c) pref = c.series;
+        }
+        return `<div class="comp-label">${esc(nomeC)}</div>${setRowsHTML(ex.series, pref)}`;
+      }).join('');
+    } else {
+      corpo = setRowsHTML(ex.series, ult ? ult.series : null);
+    }
     return `<div class="dex" data-dex="${ex.id}">
       <div class="dex-head"><span class="dex-nome">${esc(ex.nome)}</span><span class="dex-meta">${ex.series}× ${esc(ex.reps)}</span></div>
-      ${rows}
+      ${corpo}
     </div>`;
   }).join('')).join('');
 }
@@ -741,6 +900,20 @@ el('dia-chips').addEventListener('click', e => {
   if (c) { diaSelecionado = c.dataset.dia; renderDiarioForm(); }
 });
 
+function lerSetRows(rows) {
+  const series = [];
+  rows.forEach(row => {
+    const pTxt = row.querySelector('.in-peso').value.trim().replace(',', '.');
+    const rTxt = row.querySelector('.in-reps').value.trim();
+    const peso = pTxt === '' ? null : parseFloat(pTxt);
+    const reps = rTxt === '' ? null : parseInt(rTxt, 10);
+    const pesoOk = peso != null && !isNaN(peso);
+    const repsOk = reps != null && !isNaN(reps);
+    if (pesoOk || repsOk) series.push({ peso: pesoOk ? peso : null, reps: repsOk ? reps : null });
+  });
+  return series;
+}
+
 function salvarSessao() {
   const dia = (rotina.dias || []).find(d => d.id === diaSelecionado);
   if (!dia) return;
@@ -748,78 +921,143 @@ function salvarSessao() {
   (dia.secoes || []).forEach(s => (s.exercicios || []).forEach(ex => {
     const wrap = document.querySelector(`[data-dex="${ex.id}"]`);
     if (!wrap) return;
-    const series = [];
-    wrap.querySelectorAll('.set-row').forEach(row => {
-      const pTxt = row.querySelector('.in-peso').value.trim().replace(',', '.');
-      const rTxt = row.querySelector('.in-reps').value.trim();
-      const peso = pTxt === '' ? null : parseFloat(pTxt);
-      const reps = rTxt === '' ? null : parseInt(rTxt, 10);
-      const pesoOk = peso != null && !isNaN(peso);
-      const repsOk = reps != null && !isNaN(reps);
-      if (pesoOk || repsOk) series.push({ peso: pesoOk ? peso : null, reps: repsOk ? reps : null });
-    });
-    if (series.length) exs.push({ id: ex.id, nome: ex.nome, series });
+    if (Array.isArray(ex.componentes) && ex.componentes.length) {
+      // cada componente tem ex.series linhas, em ordem
+      const todasRows = [...wrap.querySelectorAll('.set-row')];
+      const comps = [];
+      ex.componentes.forEach((nomeC, idx) => {
+        const rows = todasRows.slice(idx * ex.series, (idx + 1) * ex.series);
+        const series = lerSetRows(rows);
+        if (series.length) comps.push({ nome: nomeC, series });
+      });
+      if (comps.length) exs.push({ id: ex.id, nome: ex.nome, componentes: comps });
+    } else {
+      const series = lerSetRows([...wrap.querySelectorAll('.set-row')]);
+      if (series.length) exs.push({ id: ex.id, nome: ex.nome, series });
+    }
   }));
   if (!exs.length) { toast('Preenche pelo menos uma série antes de salvar'); return; }
   const nota = el('diario-nota').value.trim();
+  const agora = new Date();
   diario.unshift({
     id: 's' + Math.random().toString(36).slice(2, 10),
-    data: new Date().toISOString(),
-    diaId: dia.id, diaNome: dia.nome, tag: dia.tag,
+    data: agora.toISOString(),
+    diaId: dia.id, diaNome: dia.nome, tag: dia.tag, semana: semana,
     exercicios: exs, nota
   });
   gravar(LSK.diario, diario);
   el('diario-nota').value = '';
-  renderHistorico();
+  calRef = { ano: agora.getFullYear(), mes: agora.getMonth() };
+  calSel = dateKey(agora);
+  renderCalendario();
   renderGoalCard();
-  renderDiarioForm(); // re-preenche com os valores recém salvos
+  renderDiarioForm();
   toast('Sessão salva ✓');
 }
 el('btn-salvar').addEventListener('click', salvarSessao);
 
-function fmtData(iso) {
-  const d = new Date(iso);
-  return d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }).replace(/\./g, '').toUpperCase();
+// =====================================================================
+// CALENDÁRIO
+// =====================================================================
+let calRef = (() => { const d = new Date(); return { ano: d.getFullYear(), mes: d.getMonth() }; })();
+let calSel = (() => { const d = new Date(); return dateKey(d); })();
+
+function dateKey(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+function keyFromISO(iso) { return dateKey(new Date(iso)); }
+
+function sessoesPorDia() {
+  const m = {};
+  diario.forEach(s => { const k = keyFromISO(s.data); (m[k] = m[k] || []).push(s); });
+  return m;
 }
 
-function renderHistorico() {
-  if (!diario.length) {
-    el('historico').innerHTML = '<div class="vazio">Nenhuma sessão registrada ainda.<br>Marca os pesos do treino de hoje aí em cima 💪</div>';
+function setsTexto(series) {
+  return (series || []).map(st => (st.peso != null ? st.peso + 'kg' : '—') + '×' + (st.reps != null ? st.reps : '—')).join(' · ');
+}
+
+function exDetalheHTML(x) {
+  if (Array.isArray(x.componentes)) {
+    return `<div style="padding:7px 0;border-bottom:1px dashed #1e1e1e">
+      <div class="se-nome" style="font-size:13px">${esc(x.nome)}</div>
+      ${x.componentes.map(c => `<div class="sess-comp">${esc(c.nome)}: <span style="color:var(--muted)">${esc(setsTexto(c.series))}</span></div>`).join('')}
+    </div>`;
+  }
+  return `<div class="sess-ex"><span class="se-nome">${esc(x.nome)}</span><span class="se-sets">${esc(setsTexto(x.series))}</span></div>`;
+}
+
+function renderDiaDetalhe() {
+  const mapa = sessoesPorDia();
+  const lista = mapa[calSel] || [];
+  const [a, m, d] = calSel.split('-').map(Number);
+  const dataObj = new Date(a, m - 1, d);
+  const rotulo = WD[dataObj.getDay()] + ', ' + d + ' de ' + MESES[m - 1].toLowerCase();
+  if (!lista.length) {
+    el('dia-detalhe').innerHTML = `<div class="det-data">${rotulo.toUpperCase()}</div><div class="vazio">Nenhuma sessão nesse dia.</div>`;
     return;
   }
-  el('historico').innerHTML = diario.map(s => `
-    <div class="hist-card">
-      <div class="hist-head" data-histtoggle="${s.id}">
-        <div><div class="hist-data">${fmtData(s.data)}</div><div class="hist-dia">${esc(s.tag || '')} — ${esc(s.diaNome || '')}</div></div>
-        <button class="hist-del" data-del="${s.id}" title="Excluir">✕</button>
+  el('dia-detalhe').innerHTML = `<div class="det-data">${rotulo.toUpperCase()}</div>` + lista.map(s => `
+    <div class="sess-card">
+      <div class="sess-head">
+        <span class="sess-dia">${esc(s.tag || '')} — ${esc(s.diaNome || '')}${s.semana ? ' · S' + s.semana : ''}</span>
+        <button class="sess-del" data-del="${s.id}" title="Excluir">✕</button>
       </div>
-      <div class="hist-body">
-        ${(s.exercicios || []).map(x => `<div class="hist-ex"><span>${esc(x.nome)}</span><span class="hist-sets">${(x.series || []).map(st => `${st.peso != null ? st.peso + 'kg' : '—'}×${st.reps != null ? st.reps : '—'}`).join(' · ')}</span></div>`).join('')}
-        ${s.nota ? `<div class="hist-nota">"${esc(s.nota)}"</div>` : ''}
-      </div>
+      ${(s.exercicios || []).map(exDetalheHTML).join('')}
+      ${s.nota ? `<div class="sess-nota">"${esc(s.nota)}"</div>` : ''}
     </div>`).join('');
 }
 
-el('historico').addEventListener('click', e => {
-  const del = e.target.closest('[data-del]');
-  if (del) {
-    if (confirm('Excluir esta sessão do histórico?')) {
-      diario = diario.filter(x => x.id !== del.dataset.del);
-      gravar(LSK.diario, diario);
-      renderHistorico();
-      renderGoalCard();
-    }
-    return;
+function renderCalendario() {
+  el('cal-mes').textContent = MESES[calRef.mes] + ' ' + calRef.ano;
+  const mapa = sessoesPorDia();
+  const primeiro = new Date(calRef.ano, calRef.mes, 1).getDay();
+  const diasNoMes = new Date(calRef.ano, calRef.mes + 1, 0).getDate();
+  const hojeK = dateKey(new Date());
+  let html = WD.map(w => `<div class="cal-wd">${w}</div>`).join('');
+  for (let i = 0; i < primeiro; i++) html += `<div class="cal-cell empty"></div>`;
+  for (let dia = 1; dia <= diasNoMes; dia++) {
+    const k = calRef.ano + '-' + pad2(calRef.mes + 1) + '-' + pad2(dia);
+    const tem = !!mapa[k];
+    const cls = ['cal-cell'];
+    if (tem) cls.push('tem');
+    if (k === hojeK) cls.push('hoje');
+    if (k === calSel) cls.push('sel');
+    html += `<div class="${cls.join(' ')}" data-dk="${k}"><span>${dia}</span>${tem ? '<span class="cal-dot"></span>' : ''}</div>`;
   }
-  const hd = e.target.closest('[data-histtoggle]');
-  if (hd) hd.closest('.hist-card').classList.toggle('open');
+  el('cal-grid').innerHTML = html;
+  renderDiaDetalhe();
+}
+
+el('cal-grid').addEventListener('click', e => {
+  const cell = e.target.closest('.cal-cell[data-dk]');
+  if (!cell) return;
+  calSel = cell.dataset.dk;
+  renderCalendario();
+});
+el('cal-prev').addEventListener('click', () => {
+  calRef.mes--; if (calRef.mes < 0) { calRef.mes = 11; calRef.ano--; }
+  renderCalendario();
+});
+el('cal-next').addEventListener('click', () => {
+  calRef.mes++; if (calRef.mes > 11) { calRef.mes = 0; calRef.ano++; }
+  renderCalendario();
+});
+
+el('dia-detalhe').addEventListener('click', e => {
+  const del = e.target.closest('[data-del]');
+  if (!del) return;
+  if (confirm('Excluir esta sessão?')) {
+    diario = diario.filter(x => x.id !== del.dataset.del);
+    gravar(LSK.diario, diario);
+    renderCalendario();
+    renderGoalCard();
+  }
 });
 
 function renderGoalCard() {
   const alvo = 600;
   let melhor = 0;
   diario.forEach(s => (s.exercicios || []).forEach(x => {
-    if (/leg ?press/i.test(x.nome)) (x.series || []).forEach(st => {
+    if (/leg ?press/i.test(x.nome) && Array.isArray(x.series)) x.series.forEach(st => {
       if (typeof st.peso === 'number' && st.peso > melhor) melhor = st.peso;
     });
   }));
@@ -841,7 +1079,7 @@ function mudarTab(t) {
 document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => mudarTab(b.dataset.tab)));
 
 // =====================================================================
-// ATUALIZAÇÃO REMOTA DO TREINO + IMPORT/EXPORT
+// ATUALIZAÇÃO REMOTA + IMPORT/EXPORT
 // =====================================================================
 function aplicarRotina(nova) {
   rotina = nova;
@@ -876,7 +1114,6 @@ async function buscarAtualizacao(manual) {
   }
 }
 
-// Modal de ajustes
 el('btn-config').addEventListener('click', () => { el('modal-config').hidden = false; });
 el('btn-fechar-modal').addEventListener('click', () => { el('modal-config').hidden = true; });
 el('modal-config').addEventListener('click', e => { if (e.target === el('modal-config')) el('modal-config').hidden = true; });
@@ -901,7 +1138,7 @@ el('btn-exportar').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify({ rotina, progresso, diario }, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'treino-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.download = 'treino-backup-' + dateKey(new Date()) + '.json';
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   toast('Backup exportado ⬇');
@@ -922,7 +1159,7 @@ el('file-backup').addEventListener('change', ev => {
       gravar(LSK.prog, progresso);
       gravar(LSK.rotina, rotina);
       indexar();
-      renderHeader(); renderRotina(); renderDiarioForm(); renderHistorico(); renderGoalCard();
+      renderHeader(); renderRotina(); renderDiarioForm(); renderCalendario(); renderGoalCard();
       el('modal-config').hidden = true;
       toast('Backup restaurado ✓');
     } catch (e) {
@@ -938,7 +1175,6 @@ el('file-backup').addEventListener('change', ev => {
 // =====================================================================
 let timerTotal = 60, timerLeft = 60, timerRunning = false, timerInterval = null, audioCtx = null;
 
-// AudioContext criado no primeiro toque (exigência do iOS/Android)
 document.addEventListener('pointerdown', () => {
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1000,25 +1236,61 @@ function resetTimer() {
 
 function updateTimerDisplay() {
   const m = Math.floor(timerLeft / 60), s = timerLeft % 60;
-  el('timer-display').textContent = m + ':' + String(s).padStart(2, '0');
+  const txt = m + ':' + String(s).padStart(2, '0');
+  el('timer-display').textContent = txt;
+  el('tt-time').textContent = txt;
 }
 
 function updateTimerState() {
-  const w = el('timer-widget'), btn = el('play-btn'), label = el('timer-label');
+  const w = el('timer-widget'), btn = el('play-btn');
   w.classList.remove('running', 'finished');
-  if (timerLeft === 0) {
-    w.classList.add('finished'); btn.textContent = '↺'; label.textContent = 'PRONTO!';
-  } else if (timerRunning) {
-    w.classList.add('running'); btn.textContent = '⏸'; label.textContent = 'DESCANSANDO';
-  } else {
-    btn.textContent = '▶'; label.textContent = 'DESCANSO';
-  }
+  if (timerLeft === 0) { w.classList.add('finished'); btn.textContent = '↺'; }
+  else if (timerRunning) { w.classList.add('running'); btn.textContent = '⏸'; }
+  else { btn.textContent = '▶'; }
 }
 
 document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => setPreset(+b.dataset.secs, b)));
 el('timer-display').addEventListener('click', toggleTimer);
 el('play-btn').addEventListener('click', toggleTimer);
 el('btn-timer-reset').addEventListener('click', resetTimer);
+
+// ---- esconder/puxar o timer ----
+const timerWidget = el('timer-widget'), timerTab = el('timer-tab'), grip = el('timer-grip');
+function esconderTimer(save) {
+  timerWidget.style.transition = 'transform .25s ease, opacity .25s ease';
+  timerWidget.style.transform = 'translateX(140%)';
+  timerWidget.classList.add('tucked');
+  timerTab.classList.add('show');
+  if (save !== false) gravar(LSK.timerHidden, true);
+}
+function mostrarTimer(save) {
+  timerWidget.style.transition = 'transform .25s ease, opacity .25s ease';
+  timerWidget.style.transform = 'translateX(-50%)';
+  timerWidget.classList.remove('tucked');
+  timerTab.classList.remove('show');
+  if (save !== false) gravar(LSK.timerHidden, false);
+}
+timerTab.addEventListener('click', () => mostrarTimer());
+
+let dragX0 = null, dragDx = 0;
+grip.addEventListener('pointerdown', e => {
+  dragX0 = e.clientX; dragDx = 0;
+  timerWidget.style.transition = 'none';
+  grip.setPointerCapture(e.pointerId);
+});
+grip.addEventListener('pointermove', e => {
+  if (dragX0 == null) return;
+  dragDx = e.clientX - dragX0;
+  if (dragDx < 0) dragDx = 0;
+  timerWidget.style.transform = `translateX(calc(-50% + ${dragDx}px))`;
+});
+grip.addEventListener('pointerup', e => {
+  if (dragX0 == null) return;
+  const moved = dragDx;
+  dragX0 = null;
+  if (moved > 70) esconderTimer();
+  else mostrarTimer(false);
+});
 
 // =====================================================================
 // INICIALIZAÇÃO
@@ -1027,16 +1299,15 @@ indexar();
 renderHeader();
 renderRotina();
 renderDiarioForm();
-renderHistorico();
+renderCalendario();
 renderGoalCard();
 mudarTab(ler(LSK.tab) || 'rotina');
+if (ler(LSK.timerHidden)) esconderTimer(false);
 
-// Service worker (offline) — só em https/localhost
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
 
-// Busca atualização do treino ao abrir (silencioso)
 buscarAtualizacao(false);
 </script>
 
