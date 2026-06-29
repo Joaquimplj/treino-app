@@ -1,7 +1,7 @@
 // Service worker — app de treino
 // Shell (index.html) e rotina.json: NETWORK-FIRST (sempre pega a versao nova online,
 // cai pro cache só offline). Demais assets: cache-first (rapido + offline).
-const CACHE = 'treino-v4';
+const CACHE = 'treino-v5';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

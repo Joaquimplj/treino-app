@@ -207,12 +207,41 @@
   .dex-meta { font-size: 11px; color: var(--muted); white-space: nowrap; }
   .comp-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent2); margin: 12px 0 8px; }
   .set-row { display: grid; grid-template-columns: 34px 1fr 1fr; gap: 8px; margin-bottom: 6px; align-items: center; }
-  .set-n { font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--muted); }
+  .set-block { display: flex; flex-direction: column; }
+  .set-n {
+    font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--muted);
+    background: transparent; border: 1px solid var(--border); border-radius: 6px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 1px;
+    height: 100%; min-height: 40px; transition: all .15s; padding: 0 2px;
+  }
+  .set-n:hover { border-color: var(--accent2); color: var(--accent2); }
+  .set-n .pluss { font-size: 11px; line-height: 1; color: #555; }
+  .set-n:hover .pluss { color: var(--accent2); }
+  .set-block.has-drop .set-n { border-color: var(--accent2); color: var(--accent2); }
+  .set-block.has-drop .set-n .pluss { color: var(--accent2); }
   .set-row input {
     background: #0d0d0d; border: 1px solid var(--border); border-radius: 4px;
     color: var(--text); padding: 11px 10px; font-size: 15px; width: 100%; font-family: 'DM Sans', sans-serif;
   }
   .set-row input:focus { outline: none; border-color: var(--accent); }
+
+  /* DROP SET — sub-campos por série */
+  .drops { margin: 6px 0 2px 42px; display: flex; flex-direction: column; gap: 6px; padding-left: 10px; border-left: 2px solid rgba(245,161,66,0.35); }
+  .drop-row { display: grid; grid-template-columns: 1fr 1fr 30px; gap: 8px; align-items: center; }
+  .drop-row input {
+    background: #0d0d0d; border: 1px solid var(--border); border-radius: 4px;
+    color: var(--text); padding: 9px 10px; font-size: 14px; width: 100%; font-family: 'DM Sans', sans-serif;
+  }
+  .drop-row input::placeholder { color: #555; }
+  .drop-row input:focus { outline: none; border-color: var(--accent2); }
+  .drop-del { background: none; border: none; color: #555; font-size: 18px; cursor: pointer; padding: 0; line-height: 1; }
+  .drop-del:hover { color: #f55; }
+  .add-drop {
+    align-self: flex-start; background: transparent; border: 1px dashed #333; border-radius: 4px;
+    color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 6px 12px; cursor: pointer; transition: all .15s; font-family: 'DM Sans', sans-serif;
+  }
+  .add-drop:hover { border-color: var(--accent2); color: var(--accent2); }
 
   #diario-nota {
     width: 100%; background: #0d0d0d; border: 1px solid var(--border); border-radius: 4px;
@@ -798,6 +827,15 @@ function atualizarStatusDia(diaId, fromUser) {
   if (fromUser && all && !antes) autoLogDia(diaId);
 }
 
+// Copia as séries preservando os drops (carry-over)
+function clonarSeries(arr) {
+  return (arr || []).map(x => {
+    const o = { peso: x.peso, reps: x.reps };
+    if (Array.isArray(x.drops) && x.drops.length) o.drops = x.drops.map(d => ({ peso: d.peso, reps: d.reps }));
+    return o;
+  });
+}
+
 // Ao completar todas as séries de um dia, registra a sessão no diário
 // repetindo as cargas da última anotação (sem precisar digitar).
 function autoLogDia(diaId) {
@@ -815,14 +853,14 @@ function autoLogDia(diaId) {
           let series = Array.from({ length: ex.series }, () => ({ peso: null, reps: null }));
           if (ult && Array.isArray(ult.componentes)) {
             const c = ult.componentes.find(cc => cc.nome === nomeC);
-            if (c) series = c.series.map(x => ({ peso: x.peso, reps: x.reps }));
+            if (c) series = clonarSeries(c.series);
           }
           return { nome: nomeC, series };
         });
         acc.push({ id: ex.id, nome: ex.nome, componentes: comps });
       } else {
         let series = Array.from({ length: ex.series }, () => ({ peso: null, reps: null }));
-        if (ult && Array.isArray(ult.series)) series = ult.series.map(x => ({ peso: x.peso, reps: x.reps }));
+        if (ult && Array.isArray(ult.series)) series = clonarSeries(ult.series);
         acc.push({ id: ex.id, nome: ex.nome, series });
       }
     });
@@ -914,13 +952,31 @@ function ultimaSessaoEx(exId, excluirId) {
   return cands[0].exercicios.find(x => x.id === exId);
 }
 
+function dropRowHTML(peso, reps) {
+  const p = peso != null ? peso : '';
+  const r = reps != null ? reps : '';
+  return `<div class="drop-row">
+    <input class="in-dpeso" type="text" inputmode="decimal" placeholder="drop kg" value="${p}">
+    <input class="in-dreps" type="text" inputmode="numeric" placeholder="reps" value="${r}">
+    <button type="button" class="drop-del" title="remover drop">×</button>
+  </div>`;
+}
+
 function setRowsHTML(qtd, prefSeries) {
   return Array.from({ length: qtd }, (_, i) => {
-    const p = prefSeries && prefSeries[i] && prefSeries[i].peso != null ? prefSeries[i].peso : '';
-    const r = prefSeries && prefSeries[i] && prefSeries[i].reps != null ? prefSeries[i].reps : '';
-    return `<div class="set-row"><span class="set-n">S${i + 1}</span>
-      <input class="in-peso" type="text" inputmode="decimal" placeholder="kg" value="${p}">
-      <input class="in-reps" type="text" inputmode="numeric" placeholder="reps" value="${r}">
+    const pf = prefSeries && prefSeries[i] ? prefSeries[i] : null;
+    const p = pf && pf.peso != null ? pf.peso : '';
+    const r = pf && pf.reps != null ? pf.reps : '';
+    const drops = pf && Array.isArray(pf.drops) ? pf.drops : [];
+    const temDrop = drops.length > 0;
+    const dropRows = drops.map(d => dropRowHTML(d.peso, d.reps)).join('');
+    return `<div class="set-block${temDrop ? ' has-drop' : ''}">
+      <div class="set-row">
+        <button type="button" class="set-n" data-drop-toggle>S${i + 1}<span class="pluss">＋</span></button>
+        <input class="in-peso" type="text" inputmode="decimal" placeholder="kg" value="${p}">
+        <input class="in-reps" type="text" inputmode="numeric" placeholder="reps" value="${r}">
+      </div>
+      <div class="drops"${temDrop ? '' : ' hidden'}>${dropRows}<button type="button" class="add-drop">＋ drop</button></div>
     </div>`;
   }).join('');
 }
@@ -962,16 +1018,63 @@ el('dia-chips').addEventListener('click', e => {
   if (c) { diaSelecionado = c.dataset.dia; renderDiarioForm(); }
 });
 
-function lerSetRows(rows) {
+// Drop set: tocar no S1/S2/... abre o sub-campo do drop daquela série
+el('form-exercicios').addEventListener('click', e => {
+  const toggle = e.target.closest('[data-drop-toggle]');
+  if (toggle) {
+    const block = toggle.closest('.set-block');
+    const drops = block.querySelector('.drops');
+    const mostrar = drops.hidden;
+    drops.hidden = !mostrar;
+    block.classList.toggle('has-drop', mostrar);
+    if (mostrar && !drops.querySelector('.drop-row')) {
+      drops.insertAdjacentHTML('afterbegin', dropRowHTML(null, null));
+      const inp = drops.querySelector('.in-dpeso');
+      if (inp) inp.focus();
+    }
+    return;
+  }
+  const add = e.target.closest('.add-drop');
+  if (add) {
+    add.insertAdjacentHTML('beforebegin', dropRowHTML(null, null));
+    add.closest('.set-block').classList.add('has-drop');
+    const novos = add.closest('.drops').querySelectorAll('.in-dpeso');
+    if (novos.length) novos[novos.length - 1].focus();
+    return;
+  }
+  const del = e.target.closest('.drop-del');
+  if (del) {
+    const block = del.closest('.set-block');
+    del.closest('.drop-row').remove();
+    if (!block.querySelector('.drop-row')) { block.classList.remove('has-drop'); block.querySelector('.drops').hidden = true; }
+    return;
+  }
+});
+
+function numOuNull(txt, inteiro) {
+  const t = String(txt).trim().replace(',', '.');
+  if (t === '') return null;
+  const n = inteiro ? parseInt(t, 10) : parseFloat(t);
+  return isNaN(n) ? null : n;
+}
+
+function lerSetRows(blocks) {
   const series = [];
-  rows.forEach(row => {
-    const pTxt = row.querySelector('.in-peso').value.trim().replace(',', '.');
-    const rTxt = row.querySelector('.in-reps').value.trim();
-    const peso = pTxt === '' ? null : parseFloat(pTxt);
-    const reps = rTxt === '' ? null : parseInt(rTxt, 10);
-    const pesoOk = peso != null && !isNaN(peso);
-    const repsOk = reps != null && !isNaN(reps);
-    if (pesoOk || repsOk) series.push({ peso: pesoOk ? peso : null, reps: repsOk ? reps : null });
+  blocks.forEach(block => {
+    const main = block.querySelector('.set-row');
+    const peso = numOuNull(main.querySelector('.in-peso').value, false);
+    const reps = numOuNull(main.querySelector('.in-reps').value, true);
+    const drops = [];
+    block.querySelectorAll('.drop-row').forEach(dr => {
+      const dp = numOuNull(dr.querySelector('.in-dpeso').value, false);
+      const drr = numOuNull(dr.querySelector('.in-dreps').value, true);
+      if (dp != null || drr != null) drops.push({ peso: dp, reps: drr });
+    });
+    if (peso != null || reps != null || drops.length) {
+      const s = { peso, reps };
+      if (drops.length) s.drops = drops;
+      series.push(s);
+    }
   });
   return series;
 }
@@ -985,16 +1088,16 @@ function salvarSessao() {
     if (!wrap) return;
     if (Array.isArray(ex.componentes) && ex.componentes.length) {
       // cada componente tem ex.series linhas, em ordem
-      const todasRows = [...wrap.querySelectorAll('.set-row')];
+      const todosBlocos = [...wrap.querySelectorAll('.set-block')];
       const comps = [];
       ex.componentes.forEach((nomeC, idx) => {
-        const rows = todasRows.slice(idx * ex.series, (idx + 1) * ex.series);
-        const series = lerSetRows(rows);
+        const blocks = todosBlocos.slice(idx * ex.series, (idx + 1) * ex.series);
+        const series = lerSetRows(blocks);
         if (series.length) comps.push({ nome: nomeC, series });
       });
       if (comps.length) exs.push({ id: ex.id, nome: ex.nome, componentes: comps });
     } else {
-      const series = lerSetRows([...wrap.querySelectorAll('.set-row')]);
+      const series = lerSetRows([...wrap.querySelectorAll('.set-block')]);
       if (series.length) exs.push({ id: ex.id, nome: ex.nome, series });
     }
   }));
@@ -1043,8 +1146,15 @@ function sessoesPorDia() {
   return m;
 }
 
+function umaSerieTexto(st) {
+  let t = (st.peso != null ? st.peso + 'kg' : '—') + '×' + (st.reps != null ? st.reps : '—');
+  if (Array.isArray(st.drops) && st.drops.length) {
+    t += ' → ' + st.drops.map(d => (d.peso != null ? d.peso + 'kg' : '—') + '×' + (d.reps != null ? d.reps : '—')).join(' → ');
+  }
+  return t;
+}
 function setsTexto(series) {
-  return (series || []).map(st => (st.peso != null ? st.peso + 'kg' : '—') + '×' + (st.reps != null ? st.reps : '—')).join(' · ');
+  return (series || []).map(umaSerieTexto).join(' · ');
 }
 
 function exDetalheHTML(x) {
