@@ -1,5 +1,5 @@
 {
-  "versao": "2026-06-20",
+  "versao": "2026-06-29",
   "nome": "ROTINA 5 DIAS",
   "subtitulo": "Push · Pull · Legs · Upper · Lower",
   "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
@@ -60,9 +60,9 @@
       "descanso": false,
       "secoes": [
         {
-          "titulo": "Principal — Máquina Articulada (Hammer High Row)",
+          "titulo": "Principal — Costas (largura + espessura)",
           "exercicios": [
-            { "id": "d2-1", "nome": "High Row Bilateral — Máquina Articulada", "nota": "Apoia o peito · as duas alças juntas · puxada completa", "series": 4, "reps": "8–10 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
+            { "id": "d2-6", "nome": "Puxada Alta (ou Barra Fixa)", "nota": "Puxada vertical · largura do dorsal · pode trocar por Barra Fixa", "series": 4, "reps": "8–12 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
             { "id": "d2-2", "nome": "High Row Unilateral — Máquina Articulada", "nota": "Uma alça de cada vez · mais amplitude · corrige assimetria", "series": 3, "reps": "10 reps cada lado", "destaque": true },
             { "id": "d2-3", "nome": "Remada Curvada com Barra", "nota": "Complemento livre · coluna neutra", "series": 3, "reps": "8 reps" }
           ]
@@ -75,7 +75,7 @@
           ]
         }
       ],
-      "dica": { "rotulo": "Máquina articulada", "texto": "No bilateral foca em retrair a escápula no final do movimento. No unilateral, deixa o ombro protrair no início para maximizar o alongamento do dorsal." }
+      "dica": { "rotulo": "Execução", "texto": "Na puxada alta, leva o cotovelo pra baixo e atrás como se guardasse a escápula no bolso. No high row unilateral, deixa o ombro protrair no início para alongar o dorsal e retrai forte no final." }
     },
     {
       "id": "day3",
@@ -94,10 +94,11 @@
           ]
         },
         {
-          "titulo": "Posterior",
+          "titulo": "Posterior + Panturrilha",
           "exercicios": [
             { "id": "d3-4", "nome": "Stiff com Barra", "nota": "Quadril atrás · não arredonda lombar", "series": 3, "reps": "10 reps" },
-            { "id": "d3-5", "nome": "Flexora Deitada", "series": 3, "reps": "12 reps" }
+            { "id": "d3-5", "nome": "Flexora Deitada", "series": 3, "reps": "12 reps" },
+            { "id": "d3-6", "nome": "Panturrilha Sentada", "nota": "Joelho dobrado = sóleo · pausa de 1s embaixo (alongado)", "series": 4, "reps": "15–20 reps" }
           ]
         }
       ],
@@ -175,7 +176,7 @@
       "Microciclo de 4 semanas: S1 base, S2 drop set, S3 sobe carga, S4 rest-pause — depois recomeça",
       "Leg press: aumenta 5–10 kg por semana. Se falhar nas reps, mantém o peso e adiciona 1 série",
       "Supino inclinado: meta de voltar aos 42kg/lado nas semanas 4–6, superar nas semanas 8–10",
-      "Técnicas avançadas só nos exercícios-chave (Leg Press, Supino Inclinado, High Row) — o resto é carga limpa",
+      "Técnicas avançadas só nos exercícios-chave (Leg Press, Supino Inclinado, Puxada Alta) — o resto é carga limpa",
       "Quando enjoar dos exercícios (~3 meses), troca os acessórios — não a estrutura da divisão",
       "Nos períodos de baixa motivação: reduz pra 3 dias full body mas mantém leg press e supino inclinado sempre"
     ]
