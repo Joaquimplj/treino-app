@@ -1,5 +1,5 @@
 {
-  "versao": "2026-06-29",
+  "versao": "2026-06-29.1",
   "nome": "ROTINA 5 DIAS",
   "subtitulo": "Push · Pull · Legs · Upper · Lower",
   "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
@@ -36,7 +36,7 @@
           "titulo": "Principal",
           "exercicios": [
             { "id": "d1-1", "nome": "Supino Inclinado com Halteres", "nota": "Exercício âncora · foco em amplitude", "series": 4, "reps": "8–10 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
-            { "id": "d1-2", "nome": "Supino Reto com Barra", "nota": "Carga progressiva semanal", "series": 3, "reps": "6–8 reps" },
+            { "id": "d1-2", "nome": "Supino Declinado com Barra", "nota": "Peito inferior · controla a descida na linha de baixo do peito", "series": 3, "reps": "6–8 reps" },
             { "id": "d1-3", "nome": "Desenvolvimento com Halteres", "nota": "Amplitude completa", "series": 3, "reps": "10–12 reps" }
           ]
         },
