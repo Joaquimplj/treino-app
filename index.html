@@ -560,6 +560,16 @@
     font-family: 'DM Sans', sans-serif;
   }
   .btn-sec:hover { border-color: var(--accent); color: var(--accent); }
+  #sync-cfg-txt {
+    width: 100%; min-height: 90px; background: #0d0d0d; border: 1px solid var(--border);
+    border-radius: 4px; color: var(--text); padding: 12px; font-size: 12px;
+    font-family: monospace; resize: vertical; margin-top: 4px;
+  }
+  #sync-cfg-txt:focus, #sync-sala:focus { outline: none; border-color: var(--accent); }
+  #sync-sala {
+    background: #0d0d0d; border: 1px solid var(--border); border-radius: 4px; color: var(--text);
+    padding: 12px; font-size: 15px; font-family: 'DM Sans', sans-serif; width: 100%; letter-spacing: 1px;
+  }
   #import-txt {
     width: 100%; min-height: 110px; background: #0d0d0d; border: 1px solid var(--border);
     border-radius: 4px; color: var(--text); padding: 12px; font-size: 12px;
@@ -712,6 +722,22 @@
         <textarea id="import-txt" placeholder='Cola aqui o JSON do treino novo (mesmo formato do rotina.json)...'></textarea>
         <button class="btn-acao" id="btn-aplicar-import" style="margin-top:8px">APLICAR TREINO</button>
       </div>
+    </div>
+
+    <div class="modal-sec">
+      <h4>Sincronizar com a dupla</h4>
+      <p class="cfg-hint" id="cfg-sync-status">—</p>
+      <button class="btn-sec" id="btn-sync-config">☁ &nbsp;Configurar sincronização</button>
+      <div id="sync-wrap" hidden>
+        <textarea id="sync-cfg-txt" placeholder='Cola aqui o firebaseConfig do console do Firebase (aquele bloco com apiKey e projectId)...'></textarea>
+        <label class="mp-campo" style="margin-top:10px"><span>Código da dupla</span>
+          <input id="sync-sala" type="text" placeholder="mesmo código nos dois celulares">
+        </label>
+        <button class="btn-sec" id="btn-sync-gerar" style="margin-top:8px">🎲 &nbsp;Gerar código novo</button>
+        <button class="btn-acao" id="btn-sync-salvar" style="margin-top:8px">ATIVAR SINCRONIZAÇÃO</button>
+        <button class="btn-sec" id="btn-sync-off" style="margin-top:8px">Desligar sincronização</button>
+      </div>
+      <button class="btn-sec" id="btn-sync-agora">⟳ &nbsp;Sincronizar agora</button>
     </div>
 
     <div class="modal-sec">
@@ -885,7 +911,8 @@ const LSK = {
   evEx: 'ta_ev_ex_v1', evModo: 'ta_ev_modo_v1',
   autoHoras: 'ta_auto_horas_v1', sessaoAuto: 'ta_sessao_auto_v1',
   perfis: 'ta_perfis_v1', perfilAtivo: 'ta_perfil_v1', pesos: 'ta_pesos_v1',
-  perfilTravado: 'ta_perfil_travado_v1'
+  perfilTravado: 'ta_perfil_travado_v1',
+  sync: 'ta_sync_cfg_v1', syncTok: 'ta_sync_tok_v1', syncSt: 'ta_sync_status_v1', remoto: 'ta_remoto_v1'
 };
 
 // Perfis: cada um com seus dados (marcações, diário, peso corporal).
@@ -927,7 +954,7 @@ if (!perfis.some(p => p.id === perfilAtivo)) perfilAtivo = perfis[0].id;
 
 function chaveP(base) { return base + '__' + perfilAtivo; }
 function perfil() { return perfis.find(p => p.id === perfilAtivo) || perfis[0]; }
-function salvarPerfis() { gravar(LSK.perfis, perfis); }
+function salvarPerfis() { gravar(LSK.perfis, perfis); agendarSync(); }
 
 let progresso = ler(chaveP(LSK.prog)) || {};
 let diario = ler(chaveP(LSK.diario)) || [];
@@ -935,17 +962,40 @@ let pesos = ler(chaveP(LSK.pesos)) || [];
 let diaSelecionado = null;
 let semana = ler(LSK.semana) || 1;
 
-function salvarProg() { gravar(chaveP(LSK.prog), progresso); }
-function salvarDiario() { gravar(chaveP(LSK.diario), diario); }
-function salvarPesos() { gravar(chaveP(LSK.pesos), pesos); }
+function salvarProg() { gravar(chaveP(LSK.prog), progresso); agendarSync(); }
+function salvarDiario() { gravar(chaveP(LSK.diario), diario); agendarSync(); }
+function salvarPesos() { gravar(chaveP(LSK.pesos), pesos); agendarSync(); }
 
-// Dados de um perfil qualquer (usado na aba DUPLA, sem trocar o perfil ativo)
+// Dados de um perfil qualquer (usado na aba DUPLA, sem trocar o perfil ativo).
+// Pro perfil do outro, usa o que veio da sincronização quando for mais recente
+// que o pouco (ou nada) que existe neste aparelho.
 function dadosDe(pid) {
-  return {
+  const local = {
     perfil: perfis.find(p => p.id === pid) || {},
     progresso: ler(LSK.prog + '__' + pid) || {},
     diario: ler(LSK.diario + '__' + pid) || [],
     pesos: ler(LSK.pesos + '__' + pid) || []
+  };
+  if (pid === perfilAtivo) return local;
+
+  const rem = (typeof remotoDe === 'function') ? remotoDe(pid) : null;
+  if (!rem || !rem.dados) return local;
+
+  const ultLocal = Math.max(
+    0,
+    ...(local.diario || []).map(s => +new Date(s.data)),
+    ...(local.pesos || []).map(s => +new Date(s.data))
+  );
+  const ultRemoto = rem.atualizado ? +new Date(rem.atualizado) : 0;
+  if (ultRemoto <= ultLocal) return local;
+
+  const d = rem.dados;
+  return {
+    perfil: Object.assign({}, local.perfil, d.perfil || {}),
+    progresso: d.progresso || {},
+    diario: d.diario || [],
+    pesos: d.pesos || [],
+    viaSync: rem.atualizado
   };
 }
 
@@ -2173,6 +2223,186 @@ el('peso-body').addEventListener('click', e => {
 });
 
 // =====================================================================
+// SINCRONIZAÇÃO (Firebase via REST — sem SDK)
+// Cada pessoa grava só o próprio perfil em duplas/<sala>/perfis/<perfil>,
+// e lê o do outro. Sem conflito: ninguém escreve no documento alheio.
+// =====================================================================
+function syncCfg() { return ler(LSK.sync) || null; }
+function syncAtivo() { const c = syncCfg(); return !!(c && c.ativo && c.apiKey && c.projectId && c.sala); }
+function syncStatus() { return ler(LSK.syncSt) || {}; }
+function gravarSyncStatus(o) { gravar(LSK.syncSt, Object.assign(syncStatus(), o)); }
+
+function remotoDe(pid) { return ler(LSK.remoto + '__' + pid); }
+
+// login anônimo (o Firebase exige usuário autenticado nas regras)
+async function syncToken() {
+  const c = syncCfg();
+  if (!c) throw new Error('sem config');
+  const t = ler(LSK.syncTok) || {};
+  if (t.idToken && t.exp && Date.now() < t.exp - 60000) return t.idToken;
+
+  let r, j;
+  if (t.refreshToken) {
+    r = await fetch('https://securetoken.googleapis.com/v1/token?key=' + encodeURIComponent(c.apiKey), {
+      method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'grant_type=refresh_token&refresh_token=' + encodeURIComponent(t.refreshToken)
+    });
+    j = await r.json();
+    if (r.ok && j.id_token) {
+      gravar(LSK.syncTok, { idToken: j.id_token, refreshToken: j.refresh_token, exp: Date.now() + (+j.expires_in || 3600) * 1000 });
+      return j.id_token;
+    }
+  }
+  r = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + encodeURIComponent(c.apiKey), {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ returnSecureToken: true })
+  });
+  j = await r.json();
+  if (!r.ok || !j.idToken) throw new Error((j.error && j.error.message) || 'auth');
+  gravar(LSK.syncTok, { idToken: j.idToken, refreshToken: j.refreshToken, exp: Date.now() + (+j.expiresIn || 3600) * 1000 });
+  return j.idToken;
+}
+
+function docURL(c, pid) {
+  return 'https://firestore.googleapis.com/v1/projects/' + encodeURIComponent(c.projectId) +
+    '/databases/(default)/documents/duplas/' + encodeURIComponent(c.sala) + '/perfis' + (pid ? '/' + encodeURIComponent(pid) : '');
+}
+
+// Envia o perfil ativo (dados desta pessoa neste aparelho)
+async function syncEnviar(silencioso) {
+  if (!syncAtivo()) return false;
+  const c = syncCfg();
+  try {
+    const tok = await syncToken();
+    const p = perfil();
+    const payload = JSON.stringify({
+      perfil: { peso: p.peso, altura: p.altura, meta: p.meta, metaPeso: p.metaPeso },
+      diario, pesos, progresso
+    });
+    const r = await fetch(docURL(c, perfilAtivo), {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok },
+      body: JSON.stringify({ fields: {
+        nome: { stringValue: p.nome },
+        atualizado: { stringValue: new Date().toISOString() },
+        payload: { stringValue: payload }
+      } })
+    });
+    if (!r.ok) throw new Error('http ' + r.status);
+    gravarSyncStatus({ envio: new Date().toISOString(), erro: null });
+    renderSyncStatus();
+    return true;
+  } catch (e) {
+    gravarSyncStatus({ erro: String(e.message || e) });
+    renderSyncStatus();
+    if (!silencioso) toast('Não consegui enviar: ' + (e.message || e));
+    return false;
+  }
+}
+
+// Baixa os perfis da dupla (guarda o do outro pra aba DUPLA)
+async function syncBaixar(silencioso) {
+  if (!syncAtivo()) return false;
+  const c = syncCfg();
+  try {
+    const tok = await syncToken();
+    const r = await fetch(docURL(c, null), { headers: { Authorization: 'Bearer ' + tok } });
+    if (!r.ok) throw new Error('http ' + r.status);
+    const j = await r.json();
+    (j.documents || []).forEach(d => {
+      const pid = String(d.name || '').split('/').pop();
+      const f = d.fields || {};
+      let dados = null;
+      try { dados = JSON.parse((f.payload && f.payload.stringValue) || 'null'); } catch (e) {}
+      if (!dados) return;
+      gravar(LSK.remoto + '__' + pid, {
+        nome: (f.nome && f.nome.stringValue) || pid,
+        atualizado: (f.atualizado && f.atualizado.stringValue) || null,
+        dados
+      });
+    });
+    gravarSyncStatus({ leitura: new Date().toISOString(), erro: null });
+    renderSyncStatus();
+    renderDupla();
+    return true;
+  } catch (e) {
+    gravarSyncStatus({ erro: String(e.message || e) });
+    renderSyncStatus();
+    if (!silencioso) toast('Não consegui baixar: ' + (e.message || e));
+    return false;
+  }
+}
+
+let syncTimer = null;
+function agendarSync() {
+  if (!syncAtivo()) return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => syncEnviar(true), 2500);
+}
+
+function renderSyncStatus() {
+  const t = el('cfg-sync-status');
+  if (!t) return;
+  const st = syncStatus();
+  if (!syncAtivo()) { t.textContent = 'Desligada — cada celular guarda só os próprios treinos.'; return; }
+  const c = syncCfg();
+  const fmtQuando = iso => {
+    if (!iso) return 'nunca';
+    const d = new Date(iso);
+    return pad2(d.getDate()) + '/' + pad2(d.getMonth() + 1) + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  };
+  t.textContent = 'Ligada · código ' + c.sala + ' · enviado ' + fmtQuando(st.envio) + ' · recebido ' + fmtQuando(st.leitura) + (st.erro ? ' · erro: ' + st.erro : '');
+}
+
+el('btn-sync-config').addEventListener('click', () => {
+  const w = el('sync-wrap');
+  w.hidden = !w.hidden;
+  if (!w.hidden) {
+    const c = syncCfg() || {};
+    el('sync-sala').value = c.sala || '';
+    if (c.apiKey) el('sync-cfg-txt').value = JSON.stringify({ apiKey: c.apiKey, projectId: c.projectId }, null, 2);
+  }
+});
+
+el('btn-sync-gerar').addEventListener('click', () => {
+  const abc = 'abcdefghijkmnpqrstuvwxyz23456789';
+  let s = '';
+  for (let i = 0; i < 14; i++) s += abc[Math.floor(Math.random() * abc.length)];
+  el('sync-sala').value = s;
+  toast('Código gerado — usa o mesmo no outro celular');
+});
+
+el('btn-sync-salvar').addEventListener('click', async () => {
+  const txt = el('sync-cfg-txt').value;
+  const apiKey = (txt.match(/apiKey["'\s:]+([A-Za-z0-9_\-]{20,})/) || [])[1];
+  const projectId = (txt.match(/projectId["'\s:]+["']?([a-z0-9\-]{4,})/) || [])[1];
+  const sala = el('sync-sala').value.trim();
+  if (!apiKey || !projectId) { toast('Não achei apiKey/projectId no texto colado'); return; }
+  if (!sala) { toast('Falta o código da dupla'); return; }
+  gravar(LSK.sync, { apiKey, projectId, sala, ativo: true });
+  try { localStorage.removeItem(LSK.syncTok); } catch (e) {}
+  renderSyncStatus();
+  toast('Sincronizando...');
+  const ok = await syncEnviar();
+  if (ok) await syncBaixar();
+  if (ok) { el('sync-wrap').hidden = true; toast('Sincronização ligada ✓'); }
+});
+
+el('btn-sync-off').addEventListener('click', () => {
+  const c = syncCfg();
+  if (c) { c.ativo = false; gravar(LSK.sync, c); }
+  renderSyncStatus();
+  toast('Sincronização desligada');
+});
+
+el('btn-sync-agora').addEventListener('click', async () => {
+  if (!syncAtivo()) { toast('Configura a sincronização primeiro'); return; }
+  toast('Sincronizando...');
+  await syncEnviar();
+  await syncBaixar();
+  toast('Sincronizado ✓');
+});
+
+// =====================================================================
 // ABA DUPLA — comparativo entre os perfis
 // =====================================================================
 function semanaKey(d) {
@@ -2204,7 +2434,7 @@ function resumoPerfil(pid) {
   const pesoAtual = d.pesos.length ? d.pesos[0].peso : p.peso;
   const difPeso = (pesoIni != null && pesoAtual != null) ? Math.round((pesoAtual - pesoIni) * 10) / 10 : null;
 
-  return { p, sess, mesAtual, ultima, semanas, pesoAtual, difPeso, dados: d };
+  return { p, sess, mesAtual, ultima, semanas, pesoAtual, difPeso, dados: d, viaSync: d.viaSync || null };
 }
 
 // melhor carga (ou tempo de cardio) de um exercício dentro do diário de um perfil
@@ -2258,7 +2488,7 @@ function renderDupla() {
       <div class="dp-nome">${esc(p.nome)}</div>
       ${vazio || linhas}
       <div class="dp-freq">${barras}</div>
-      <div class="dp-legenda">últimas 6 semanas</div>
+      <div class="dp-legenda">últimas 6 semanas${r.viaSync ? ' · sincronizado ' + pad2(new Date(r.viaSync).getDate()) + '/' + pad2(new Date(r.viaSync).getMonth() + 1) + ' ' + pad2(new Date(r.viaSync).getHours()) + ':' + pad2(new Date(r.viaSync).getMinutes()) : ''}</div>
     </div>`;
   }).join('');
 
@@ -2397,7 +2627,12 @@ function mudarTab(t, animar) {
   el('view-rotina').hidden = t !== 'rotina';
   el('view-diario').hidden = t !== 'diario';
   el('view-dupla').hidden = t !== 'dupla';
-  if (t === 'dupla') renderDupla();
+  if (t === 'dupla') {
+    renderDupla();
+    // ao abrir a aba, busca o que o outro registrou (no máximo 1x por minuto)
+    const st = syncStatus();
+    if (syncAtivo() && (!st.leitura || Date.now() - new Date(st.leitura) > 60000)) syncBaixar(true);
+  }
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
   gravar(LSK.tab, t);
   if (animar) {
@@ -2686,6 +2921,8 @@ renderPesoCard();
 renderDupla();
 renderCfgAuto();
 renderCfgPerfil();
+renderSyncStatus();
+if (syncAtivo()) { syncBaixar(true); syncEnviar(true); }
 verificarSessaoAuto();
 mudarTab(ler(LSK.tab) || 'rotina');
 if (ler(LSK.timerHidden)) esconderTimer(false);

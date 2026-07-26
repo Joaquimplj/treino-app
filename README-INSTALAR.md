@@ -147,6 +147,51 @@ No card EVOLUÇÃO, modo **PESO**: registra o peso do dia, vê o gráfico, a dif
 o primeiro registro e a barra de progresso até a meta (definida em ⚙/barra de perfil →
 *Meta de peso*). Perder peso conta como evolução positiva (verde).
 
+## Sincronizar os dois celulares (Firebase)
+
+Com a sincronização ligada, cada aparelho **envia o próprio perfil e baixa o do outro** —
+aí a aba DUPLA mostra os dois de verdade, em qualquer um dos celulares. O app fala com o
+Firestore pela **API REST** (não carrega SDK nenhum), então continua funcionando offline:
+sem internet, salva local e envia na próxima vez que abrir.
+
+### Passo a passo (uma vez só)
+
+1. **console.firebase.google.com** → *Adicionar projeto* → nome (ex: `treino-dupla`) → pode desmarcar o Analytics
+2. **Build → Firestore Database → Criar banco de dados** → modo produção → região `southamerica-east1`
+3. Aba **Regras** → cola isto e publica:
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /duplas/{sala}/perfis/{perfilId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+```
+
+4. **Build → Authentication → Começar** → método **Anônimo** → ativar
+5. **⚙ Configurações do projeto → Seus aplicativos → `</>` (Web)** → registra um app (apelido `treino`)
+   → copia o bloco `const firebaseConfig = { ... }`
+6. No app, no **seu** celular: ⚙ → **Configurar sincronização** → cola o bloco →
+   **Gerar código novo** → **ATIVAR SINCRONIZAÇÃO**
+7. No celular do **Igor**: mesma coisa, colando **o mesmo bloco** e **o mesmo código da dupla**
+
+Pronto. A partir daí o envio é automático (2,5 s depois de cada alteração) e a leitura
+acontece ao abrir o app e ao entrar na aba DUPLA. **⟳ Sincronizar agora** força na hora.
+
+### O que fica salvo na nuvem
+
+Só o que a dupla precisa ver: diário, peso corporal, marcações e os campos do perfil
+(peso/altura/meta) — um documento por pessoa em `duplas/<código>/perfis/<perfil>`.
+Ninguém escreve no documento do outro, então não existe conflito.
+
+> 🔐 A chave do Firebase (`apiKey`) é pública por natureza — quem protege é a regra acima,
+> que exige usuário autenticado. Combinada com o código aleatório da dupla, dá o nível de
+> privacidade adequado pra um diário de treino. Não guarde nada sensível além disso.
+> Custo: o plano gratuito (Spark) cobre folgado dois usuários.
+
 ## Aba DUPLA
 
 Comparativo lado a lado dos dois perfis **do mesmo aparelho**: treinos no mês, último treino,
