@@ -1,5 +1,5 @@
 {
-  "versao": "2026-07-25",
+  "versao": "2026-07-25.2",
   "nome": "ROTINA 5 DIAS",
   "subtitulo": "Push · Pull · Legs · Upper · Lower",
   "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
@@ -168,6 +168,25 @@
       "tag": "Rest",
       "descanso": true,
       "texto": "Caminhada leve, alongamento ou mobilidade de quadril. Nada de treino pesado. A recuperação é onde o músculo cresce — especialmente importante pra quem trabalha sentado o dia todo."
+    }
+  ],
+  "extras": [
+    {
+      "perfil": "joaquim",
+      "dias": ["day1", "day4"],
+      "titulo": "Finalização — Abdominal",
+      "exercicios": [
+        { "id": "ab-1", "nome": "Abdominal na Polia (corda)", "nota": "Ajoelhado · desce com o abdômen, não com o braço · dá pra progredir carga", "series": 3, "reps": "12–15 reps" },
+        { "id": "ab-2", "nome": "Elevação de Pernas", "nota": "Suspenso na barra ou no banco · sem balanço · lombar colada", "series": 3, "reps": "12–15 reps" }
+      ]
+    },
+    {
+      "perfil": "igor",
+      "dias": ["day1", "day4"],
+      "titulo": "Finalização — Cardio",
+      "exercicios": [
+        { "id": "cd-1", "nome": "Esteira", "cardio": true, "nota": "Zona 2 — ritmo que dá pra conversar puxado · progressão: sobe inclinação antes de sobe velocidade", "series": 1, "reps": "20 min", "metaMin": 30 }
+      ]
     }
   ],
   "progressao": {

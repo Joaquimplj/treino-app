@@ -99,18 +99,60 @@ Sem esse campo, o app assume 600 kg pro leg press por padrão.
 
 ---
 
+## Perfis (JOAQUIM / IGOR)
+
+Duas pessoas usam a mesma rotina com dados totalmente separados: **marcações de série,
+diário, peso corporal e o fechamento automático são por perfil**.
+
+- Na primeira vez o app pergunta quem vai usar o aparelho. Escolheu, o perfil **trava** (🔒)
+- O nome é fixo — não dá pra renomear
+- Pra trocar: **⚙ → Perfil deste aparelho → Trocar de perfil** (nada é apagado)
+- Tocar na barra de **peso/altura/meta** abre a edição daquele perfil (peso, altura, meta em texto e meta de peso)
+
+> ⚠ Os perfis vivem **no aparelho**, não na nuvem. Dois celulares = dois conjuntos de dados
+> independentes; pra juntar, usa **⚙ → Exportar backup** num e **Restaurar backup** no outro
+> (o backup já leva os dois perfis).
+
+## Finalização por perfil
+
+Nos dias de **peito (day1)** e **upper (day4)** o app acrescenta um bloco final diferente
+pra cada pessoa, configurado em `rotina.json` → `"extras"`:
+
+- **Joaquim:** Abdominal na Polia (corda) + Elevação de Pernas
+- **Igor:** Esteira — exercício de **cardio**, com campos próprios no diário
+  (tempo, distância, velocidade e inclinação) em vez de kg × reps
+
+Um exercício vira cardio com `"cardio": true`, e `"metaMin"` define a meta de tempo
+(a barra de meta aparece no gráfico de TEMPO).
+
 ## Gráficos de evolução (aba DIÁRIO)
 
-O card **EVOLUÇÃO** (no topo do diário) mostra a progressão de cada exercício:
+O card **EVOLUÇÃO** mostra a progressão de cada exercício:
 
-- Chips pra escolher o exercício · alterna entre **CARGA** (maior peso da sessão) e **VOLUME** (peso × reps somado, drops incluídos)
+- Chips pra escolher o exercício · modos **CARGA** / **VOLUME** (musculação),
+  **TEMPO** / **DISTÂNCIA** (cardio) e **PESO** (peso corporal, no mesmo card)
+- **Toque em qualquer ponto do gráfico** pra abrir aquele dia: séries com peso × reps,
+  valor no modo atual, diferença pra sessão anterior, e um atalho **ver no calendário**
 - Estatísticas: atual, recorde, evolução desde a 1ª sessão (kg e %), nº de sessões
-- Barra de **meta** embaixo do gráfico quando o exercício tem `metaCarga` (ex: os 600 kg do leg press)
-- Cada exercício do formulário mostra um **mini gráfico + o ganho de carga** ao lado —
+- Barra de **meta** quando existe (`metaCarga` do leg press, `metaMin` da esteira, meta de peso do perfil)
+- Cada exercício do formulário mostra um **mini gráfico + o ganho** ao lado —
   tocar nele abre aquele exercício no gráfico grande
 
 Exercícios com o mesmo **nome** em dias diferentes (Leg Press da quarta e da sexta,
 Supino Inclinado da segunda e da quinta) entram numa linha só.
+
+## Peso corporal e meta de peso
+
+No card EVOLUÇÃO, modo **PESO**: registra o peso do dia, vê o gráfico, a diferença desde
+o primeiro registro e a barra de progresso até a meta (definida em ⚙/barra de perfil →
+*Meta de peso*). Perder peso conta como evolução positiva (verde).
+
+## Aba DUPLA
+
+Comparativo lado a lado dos dois perfis **do mesmo aparelho**: treinos no mês, último treino,
+total de sessões, recorde de leg press, recorde de esteira, peso atual, diferença de peso
+desde o 1º registro e um mini gráfico de frequência das últimas 6 semanas — mais o placar
+de quem treinou mais no mês.
 
 ## Fechamento automático da sessão
 
