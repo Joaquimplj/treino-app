@@ -530,6 +530,26 @@
   .timer-btn:hover { border-color: var(--accent); color: var(--accent); }
   .timer-btn.play-btn { background: var(--accent); border-color: var(--accent); color: #000; font-size: 13px; }
 
+  /* ===== TIMER EM PÉ (lateral direita / esquerda) ===== */
+  #timer-widget.pos-direita, #timer-widget.pos-esquerda {
+    flex-direction: column; gap: 8px; border-radius: 40px; padding: 12px 9px;
+    bottom: auto; top: 50%; max-width: none; max-height: calc(100vh - 40px);
+  }
+  #timer-widget.pos-direita { left: auto; right: 8px; }
+  #timer-widget.pos-esquerda { left: 8px; right: auto; }
+  #timer-widget.pos-direita .timer-drag, #timer-widget.pos-esquerda .timer-drag { flex-direction: column; gap: 6px; padding: 2px; }
+  #timer-widget.pos-direita .timer-grip, #timer-widget.pos-esquerda .timer-grip { flex-direction: row; gap: 3px; }
+  #timer-widget.pos-direita #timer-display, #timer-widget.pos-esquerda #timer-display { font-size: 26px; min-width: 0; letter-spacing: 2px; }
+  #timer-widget.pos-direita .timer-presets, #timer-widget.pos-esquerda .timer-presets { flex-direction: column; gap: 4px; }
+  #timer-widget.pos-direita .preset-btn, #timer-widget.pos-esquerda .preset-btn { font-size: 12px; padding: 5px 8px; }
+  #timer-widget.pos-direita .timer-controls, #timer-widget.pos-esquerda .timer-controls { flex-direction: column; gap: 6px; }
+  #timer-widget.pos-direita .timer-btn, #timer-widget.pos-esquerda .timer-btn { width: 34px; height: 34px; }
+
+  #timer-tab.tab-esquerda {
+    right: auto; left: 0; border-radius: 0 30px 30px 0;
+    border: 1px solid #2a2a2a; border-left: none; padding: 14px 12px 14px 9px;
+  }
+
   /* aba lateral para puxar o timer de volta */
   #timer-tab {
     position: fixed; right: 0; bottom: calc(90px + env(safe-area-inset-bottom));
@@ -751,6 +771,15 @@
     </div>
 
     <div class="modal-sec">
+      <h4>Posição do cronômetro</h4>
+      <div class="cfg-opts" id="cfg-timer-pos">
+        <button class="cfg-opt" data-pos="esquerda">⬅ EM PÉ</button>
+        <button class="cfg-opt" data-pos="baixo">⬇ EMBAIXO</button>
+        <button class="cfg-opt" data-pos="direita">EM PÉ ➡</button>
+      </div>
+    </div>
+
+    <div class="modal-sec">
       <h4>Fechamento automático do treino</h4>
       <p class="cfg-hint">Ao marcar a primeira série do dia começa uma contagem. Quando o tempo acaba, o app marca os exercícios que faltaram, conclui o dia e registra a sessão no diário repetindo as cargas da última vez.</p>
       <div class="cfg-opts" id="cfg-auto-horas">
@@ -911,7 +940,7 @@ const DEFAULT_ROTINA = {
 // ---- Persistência ----
 const LSK = {
   rotina: 'ta_rotina_v1', prog: 'ta_prog_v1', diario: 'ta_diario_v1', tab: 'ta_tab_v1',
-  semana: 'ta_semana_v1', timerHidden: 'ta_timer_hidden_v1',
+  semana: 'ta_semana_v1', timerHidden: 'ta_timer_hidden_v1', timerPos: 'ta_timer_pos_v1',
   evEx: 'ta_ev_ex_v1', evModo: 'ta_ev_modo_v1',
   autoHoras: 'ta_auto_horas_v1', sessaoAuto: 'ta_sessao_auto_v1',
   perfis: 'ta_perfis_v1', perfilAtivo: 'ta_perfil_v1', pesos: 'ta_pesos_v1',
@@ -2909,18 +2938,45 @@ document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click'
 el('play-btn').addEventListener('click', toggleTimer);
 el('btn-timer-reset').addEventListener('click', resetTimer);
 
-// ---- esconder/puxar o timer ----
+// ---- posição (embaixo / em pé na direita / em pé na esquerda) ----
 const timerWidget = el('timer-widget'), timerTab = el('timer-tab'), timerDrag = el('timer-drag');
+let timerPos = ler(LSK.timerPos) || 'baixo';
+
+// transform "de repouso" muda conforme a posição: embaixo centraliza em X, em pé centraliza em Y
+function baseTransform() { return timerPos === 'baixo' ? 'translateX(-50%)' : 'translateY(-50%)'; }
+// pra que lado o arrasto esconde o timer
+function ladoDeEsconder() { return timerPos === 'esquerda' ? -1 : 1; }
+
+function aplicarPosTimer(save) {
+  timerWidget.classList.remove('pos-direita', 'pos-esquerda');
+  if (timerPos !== 'baixo') timerWidget.classList.add('pos-' + timerPos);
+  timerTab.classList.toggle('tab-esquerda', timerPos === 'esquerda');
+  timerWidget.style.transform = baseTransform();
+  if (save !== false) gravar(LSK.timerPos, timerPos);
+  document.querySelectorAll('#cfg-timer-pos .cfg-opt').forEach(b =>
+    b.classList.toggle('cfg-on', b.dataset.pos === timerPos));
+}
+
+el('cfg-timer-pos').addEventListener('click', e => {
+  const b = e.target.closest('[data-pos]');
+  if (!b) return;
+  timerPos = b.dataset.pos;
+  aplicarPosTimer();
+  mostrarTimer();
+  toast(timerPos === 'baixo' ? 'Cronômetro embaixo' : 'Cronômetro em pé na ' + timerPos);
+});
+
+// ---- esconder/puxar o timer ----
 function esconderTimer(save) {
   timerWidget.style.transition = 'transform .25s ease, opacity .25s ease';
-  timerWidget.style.transform = 'translateX(-50%)'; // continua centralizado: some por opacity (sem criar scroll horizontal)
+  timerWidget.style.transform = baseTransform(); // some por opacity (sem criar scroll horizontal)
   timerWidget.classList.add('tucked');
   timerTab.classList.add('show');
   if (save !== false) gravar(LSK.timerHidden, true);
 }
 function mostrarTimer(save) {
   timerWidget.style.transition = 'transform .25s ease, opacity .25s ease';
-  timerWidget.style.transform = 'translateX(-50%)';
+  timerWidget.style.transform = baseTransform();
   timerWidget.classList.remove('tucked');
   timerTab.classList.remove('show');
   if (save !== false) gravar(LSK.timerHidden, false);
@@ -2939,10 +2995,13 @@ timerDrag.addEventListener('pointerdown', e => {
 });
 timerDrag.addEventListener('pointermove', e => {
   if (dragX0 == null) return;
-  const dx = e.clientX - dragX0;
+  const dx = (e.clientX - dragX0) * ladoDeEsconder(); // na esquerda, arrastar pra esquerda esconde
   dragDx = dx > 0 ? dx : 0;
   if (Math.abs(dx) > 6 || Math.abs(e.clientY - dragY0) > 6) dragMoved = true;
-  timerWidget.style.transform = `translateX(calc(-50% + ${dragDx}px))`;
+  const desl = dragDx * ladoDeEsconder();
+  timerWidget.style.transform = timerPos === 'baixo'
+    ? `translateX(calc(-50% + ${desl}px))`
+    : `translateY(-50%) translateX(${desl}px)`;
 });
 timerDrag.addEventListener('pointerup', () => {
   if (dragX0 == null) return;
@@ -2973,6 +3032,7 @@ renderSyncStatus();
 if (syncAtivo()) { syncBaixar(true); syncEnviar(true); }
 verificarSessaoAuto();
 mudarTab(ler(LSK.tab) || 'rotina');
+aplicarPosTimer(false);
 if (ler(LSK.timerHidden)) esconderTimer(false);
 
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
