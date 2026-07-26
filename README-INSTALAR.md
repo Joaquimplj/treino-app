@@ -93,6 +93,42 @@ salvo no aparelho. Quando muda, ele troca o treino sozinho (mostra um aviso
 > 💡 **Mantém os mesmos `id`** (`d1-1`, `d3-1`...) nos exercícios que continuam —
 > é por eles que o diário pré-preenche os últimos pesos usados.
 
+**Campo opcional `"metaCarga"`** (número, em kg): coloca num exercício e o gráfico
+de evolução dele ganha a barra de meta. Ex: `"metaCarga": 600` no Leg Press.
+Sem esse campo, o app assume 600 kg pro leg press por padrão.
+
+---
+
+## Gráficos de evolução (aba DIÁRIO)
+
+O card **EVOLUÇÃO** (no topo do diário) mostra a progressão de cada exercício:
+
+- Chips pra escolher o exercício · alterna entre **CARGA** (maior peso da sessão) e **VOLUME** (peso × reps somado, drops incluídos)
+- Estatísticas: atual, recorde, evolução desde a 1ª sessão (kg e %), nº de sessões
+- Barra de **meta** embaixo do gráfico quando o exercício tem `metaCarga` (ex: os 600 kg do leg press)
+- Cada exercício do formulário mostra um **mini gráfico + o ganho de carga** ao lado —
+  tocar nele abre aquele exercício no gráfico grande
+
+Exercícios com o mesmo **nome** em dias diferentes (Leg Press da quarta e da sexta,
+Supino Inclinado da segunda e da quinta) entram numa linha só.
+
+## Fechamento automático da sessão
+
+Pra quando você começa marcando certinho e esquece o resto:
+
+1. Ao marcar a **primeira série do dia**, começa uma contagem (padrão **4h**)
+2. Aparece um aviso no topo da aba ROTINA: *"sessão em andamento — fecha sozinha em Xh"*,
+   com **Concluir agora** e **Cancelar**
+3. Passado o tempo, o app marca todos os exercícios do dia, conclui o dia e registra
+   a sessão no diário repetindo as cargas da última vez (data = a do treino, não a da virada)
+
+Ajuste em **⚙ → Fechamento automático do treino**: OFF · 3h · 4h · 5h.
+
+> A contagem roda com o app aberto e também é conferida **ao reabrir o app** —
+> como é um PWA sem servidor, se o celular ficar com o app fechado o fechamento
+> é aplicado na próxima vez que você abrir.
+> Concluir o dia à mão, resetar o dia ou salvar a sessão cancelam a contagem.
+
 ---
 
 ## Diário e backup

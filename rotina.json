@@ -1,5 +1,5 @@
 {
-  "versao": "2026-06-29.2",
+  "versao": "2026-07-25",
   "nome": "ROTINA 5 DIAS",
   "subtitulo": "Push · Pull · Legs · Upper · Lower",
   "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
@@ -88,7 +88,7 @@
         {
           "titulo": "Principal — Meta 600 kg",
           "exercicios": [
-            { "id": "d3-1", "nome": "Leg Press 45°", "nota": "Exercício âncora · progressão semanal obrigatória", "series": 5, "reps": "8–12 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
+            { "id": "d3-1", "nome": "Leg Press 45°", "nota": "Exercício âncora · progressão semanal obrigatória", "series": 5, "reps": "8–12 reps", "destaque": true, "metaCarga": 600, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
             { "id": "d3-2", "nome": "Agachamento Livre", "nota": "Readaptação primeiro · foco técnico nas 4 primeiras semanas", "series": 4, "reps": "6–8 reps" },
             { "id": "d3-3", "nome": "Cadeira Extensora", "series": 3, "reps": "12–15 reps" }
           ]

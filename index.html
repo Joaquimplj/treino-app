@@ -192,6 +192,84 @@
   .goal-track { height: 10px; background: #0d0d0d; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-top: 10px; }
   .goal-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width .4s; }
 
+  /* ===== EVOLUÇÃO (gráficos) ===== */
+  .ev-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+  .ev-head h3 { margin-bottom: 0; }
+  .ev-modes { display: flex; gap: 5px; }
+  .ev-mode {
+    font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px;
+    padding: 5px 11px; border-radius: 20px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); cursor: pointer; transition: all .15s;
+  }
+  .ev-mode.ev-on { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  .ev-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 4px; scrollbar-width: none; }
+  .ev-chips::-webkit-scrollbar { display: none; }
+  .ev-chip {
+    white-space: nowrap; padding: 7px 13px; border-radius: 20px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); font-size: 12px; cursor: pointer;
+    transition: all .15s; font-family: 'DM Sans', sans-serif;
+  }
+  .ev-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .ev-chip.ev-on { border-color: var(--accent); background: rgba(200,245,66,0.1); color: var(--accent); }
+
+  .ev-chart { width: 100%; height: auto; display: block; margin: 6px 0 2px; }
+  .ev-grid { stroke: #1e1e1e; stroke-width: 1; }
+  .ev-lab { fill: #555; font-size: 9px; font-family: 'DM Sans', sans-serif; }
+  .ev-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .ev-area { fill: url(#evgrad); }
+  .ev-dot { fill: #0a0a0a; stroke: var(--accent); stroke-width: 1.6; }
+  .ev-dot-last { fill: var(--accent); stroke: none; }
+  .ev-val { fill: var(--accent); font-size: 11px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; }
+
+  .ev-stats { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .ev-stat { flex: 1 1 88px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 9px 11px; }
+  .ev-stat .es-r { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .ev-stat .es-v { font-family: 'Bebas Neue', sans-serif; font-size: 21px; letter-spacing: 1px; color: var(--text); line-height: 1.2; }
+  .ev-stat .es-v.up { color: var(--accent); }
+  .ev-stat .es-v.down { color: #f5704a; }
+  .ev-meta { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .ev-meta h4 { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--accent2); margin-bottom: 8px; }
+
+  /* mini gráfico em cima de cada exercício do formulário */
+  .dex-spark { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; color: var(--muted); }
+  .dex-spark.up { color: var(--accent); }
+  .dex-spark.down { color: #f5704a; }
+  .dex-spark b { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 1px; }
+  .dex-spark svg { display: block; }
+  .comp-label { display: flex; align-items: center; gap: 8px; }
+
+  /* ===== SESSÃO AUTOMÁTICA ===== */
+  .auto-sessao {
+    max-width: 800px; margin: 0 auto 18px; background: var(--card);
+    border: 1px solid rgba(245,161,66,0.35); border-left: 3px solid var(--accent2);
+    border-radius: 6px; padding: 14px 16px; display: flex; align-items: center;
+    justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  .as-info { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .as-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent2); flex: none; animation: as-pulse 1.6s ease infinite; }
+  @keyframes as-pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  .as-t { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 2px; color: var(--accent2); }
+  .as-s { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .as-acoes { display: flex; gap: 7px; }
+  .as-btn {
+    background: transparent; border: 1px solid var(--border); border-radius: 4px; color: #999;
+    font-size: 11px; letter-spacing: 1px; padding: 8px 12px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all .15s;
+  }
+  .as-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .as-btn.as-x:hover { border-color: #f55; color: #f55; }
+
+  .cfg-hint { font-size: 11px; color: #555; line-height: 1.5; margin: -4px 0 10px; }
+  .cfg-opts { display: flex; gap: 6px; }
+  .cfg-opt {
+    flex: 1; padding: 10px 6px; border-radius: 6px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); cursor: pointer; transition: all .15s;
+    font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 1px;
+  }
+  .cfg-opt:hover { border-color: var(--accent2); color: var(--accent2); }
+  .cfg-opt.cfg-on { border-color: var(--accent2); background: rgba(245,161,66,0.12); color: var(--accent2); }
+
   .dia-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
   .chip {
     padding: 9px 18px; border-radius: 20px; border: 1px solid var(--border);
@@ -429,6 +507,7 @@
       <div class="week-chips" id="week-chips"></div>
       <div class="semana-desc" id="semana-desc"></div>
     </div>
+    <div class="auto-sessao" id="auto-sessao" hidden></div>
     <div class="week" id="week"></div>
     <button class="reset-week-btn" id="btn-reset-semana">↺ Resetar marcações da semana</button>
     <div class="progress-note" id="progress-note"></div>
@@ -437,7 +516,17 @@
 
   <!-- ============ ABA DIÁRIO ============ -->
   <section id="view-diario" hidden>
-    <div class="card" id="goal-card"></div>
+    <div class="card" id="card-evolucao">
+      <div class="ev-head">
+        <h3>EVOLUÇÃO</h3>
+        <div class="ev-modes" id="ev-modes">
+          <button class="ev-mode ev-on" data-modo="carga">CARGA</button>
+          <button class="ev-mode" data-modo="volume">VOLUME</button>
+        </div>
+      </div>
+      <div class="ev-chips" id="ev-chips"></div>
+      <div id="ev-body"></div>
+    </div>
     <div class="card">
       <h3>NOVA SESSÃO</h3>
       <div class="dia-chips" id="dia-chips"></div>
@@ -500,6 +589,17 @@
       <div id="import-wrap" hidden>
         <textarea id="import-txt" placeholder='Cola aqui o JSON do treino novo (mesmo formato do rotina.json)...'></textarea>
         <button class="btn-acao" id="btn-aplicar-import" style="margin-top:8px">APLICAR TREINO</button>
+      </div>
+    </div>
+
+    <div class="modal-sec">
+      <h4>Fechamento automático do treino</h4>
+      <p class="cfg-hint">Ao marcar a primeira série do dia começa uma contagem. Quando o tempo acaba, o app marca os exercícios que faltaram, conclui o dia e registra a sessão no diário repetindo as cargas da última vez.</p>
+      <div class="cfg-opts" id="cfg-auto-horas">
+        <button class="cfg-opt" data-h="0">OFF</button>
+        <button class="cfg-opt" data-h="3">3H</button>
+        <button class="cfg-opt" data-h="4">4H</button>
+        <button class="cfg-opt" data-h="5">5H</button>
       </div>
     </div>
 
@@ -642,7 +742,12 @@ const DEFAULT_ROTINA = {
 };
 
 // ---- Persistência ----
-const LSK = { rotina: 'ta_rotina_v1', prog: 'ta_prog_v1', diario: 'ta_diario_v1', tab: 'ta_tab_v1', semana: 'ta_semana_v1', timerHidden: 'ta_timer_hidden_v1' };
+const LSK = {
+  rotina: 'ta_rotina_v1', prog: 'ta_prog_v1', diario: 'ta_diario_v1', tab: 'ta_tab_v1',
+  semana: 'ta_semana_v1', timerHidden: 'ta_timer_hidden_v1',
+  evEx: 'ta_ev_ex_v1', evModo: 'ta_ev_modo_v1',
+  autoHoras: 'ta_auto_horas_v1', sessaoAuto: 'ta_sessao_auto_v1'
+};
 
 function ler(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
 function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -824,7 +929,20 @@ function atualizarStatusDia(diaId, fromUser) {
   if (!dEl) return;
   const antes = dEl.classList.contains('day-complete');
   dEl.classList.toggle('day-complete', all);
-  if (fromUser && all && !antes) autoLogDia(diaId);
+  if (fromUser && all && !antes) {
+    autoLogDia(diaId);
+    const sa = sessaoAuto();
+    if (sa && sa.diaId === diaId) limparSessaoAuto();
+  }
+}
+
+function diaCompleto(diaId) {
+  const dia = (rotina.dias || []).find(d => d.id === diaId);
+  if (!dia || dia.descanso) return false;
+  return (dia.secoes || []).every(s => (s.exercicios || []).every(x => {
+    const a = progresso[x.id] || [];
+    return a.length === x.series && a.every(Boolean);
+  }));
 }
 
 // Copia as séries preservando os drops (carry-over)
@@ -838,10 +956,11 @@ function clonarSeries(arr) {
 
 // Ao completar todas as séries de um dia, registra a sessão no diário
 // repetindo as cargas da última anotação (sem precisar digitar).
-function autoLogDia(diaId) {
+function autoLogDia(diaId, quandoISO) {
   const dia = (rotina.dias || []).find(d => d.id === diaId);
   if (!dia || dia.descanso) return;
-  const hojeK = dateKey(new Date());
+  const quando = quandoISO ? new Date(quandoISO) : new Date();
+  const hojeK = dateKey(quando);
   const existente = diario.find(s => s.diaId === diaId && keyFromISO(s.data) === hojeK);
   if (existente && existente.editado) return; // já contabilizado e editado à mão
 
@@ -873,14 +992,14 @@ function autoLogDia(diaId) {
   } else {
     diario.unshift({
       id: 's' + Math.random().toString(36).slice(2, 10),
-      data: new Date().toISOString(),
+      data: quando.toISOString(),
       diaId: dia.id, diaNome: dia.nome, tag: dia.tag, semana: semana,
       exercicios: exs, nota: '', auto: true
     });
   }
   gravar(LSK.diario, diario);
   renderCalendario();
-  renderGoalCard();
+  renderEvolucao();
   toast('Treino registrado no diário ✓ (cargas da última vez)');
 }
 
@@ -899,6 +1018,8 @@ function resetarDia(diaId) {
   gravar(LSK.prog, progresso);
   const dEl = el(diaId);
   if (dEl) dEl.classList.remove('day-complete');
+  const sa = sessaoAuto();
+  if (sa && sa.diaId === diaId) limparSessaoAuto();
 }
 
 el('week').addEventListener('click', e => {
@@ -912,6 +1033,7 @@ el('week').addEventListener('click', e => {
     gravar(LSK.prog, progresso);
     dot.classList.toggle('done', a[i]);
     atualizarStatusEx(id);
+    if (a[i]) iniciarSessaoAuto(mapExDia[id]);
     return;
   }
   const tudo = e.target.closest('[data-tudo]');
@@ -926,6 +1048,7 @@ el('week').addEventListener('click', e => {
     const exEl = el('ex-' + id);
     if (exEl) exEl.querySelectorAll('.serie-dot').forEach((d, i) => d.classList.toggle('done', a[i]));
     atualizarStatusEx(id);
+    if (!all) iniciarSessaoAuto(mapExDia[id]);
     return;
   }
   const rst = e.target.closest('[data-reset]');
@@ -938,6 +1061,7 @@ el('btn-reset-semana').addEventListener('click', () => {
   if (confirm('Zerar todas as marcações de série da semana?')) {
     progresso = {};
     gravar(LSK.prog, progresso);
+    limparSessaoAuto();
     renderRotina();
   }
 });
@@ -1001,13 +1125,14 @@ function renderDiarioForm() {
           const c = ult.componentes.find(cc => cc.nome === nomeC);
           if (c) pref = c.series;
         }
-        return `<div class="comp-label">${esc(nomeC)}</div>${setRowsHTML(ex.series, pref)}`;
+        return `<div class="comp-label">${esc(nomeC)} ${sparkHTML(nomeC)}</div>${setRowsHTML(ex.series, pref)}`;
       }).join('');
     } else {
       corpo = setRowsHTML(ex.series, ult ? ult.series : null);
     }
+    const spark = (Array.isArray(ex.componentes) && ex.componentes.length) ? '' : sparkHTML(ex.nome);
     return `<div class="dex" data-dex="${ex.id}">
-      <div class="dex-head"><span class="dex-nome">${esc(ex.nome)}</span><span class="dex-meta">${ex.series}× ${esc(ex.reps)}</span></div>
+      <div class="dex-head"><span class="dex-nome">${esc(ex.nome)}</span><span class="dex-meta">${spark}${spark ? ' · ' : ''}${ex.series}× ${esc(ex.reps)}</span></div>
       ${corpo}
     </div>`;
   }).join('')).join('');
@@ -1020,6 +1145,14 @@ el('dia-chips').addEventListener('click', e => {
 
 // Drop set: tocar no S1/S2/... abre o sub-campo do drop daquela série
 el('form-exercicios').addEventListener('click', e => {
+  const sp = e.target.closest('[data-spark]');
+  if (sp) {
+    evSel = normNome(sp.dataset.spark);
+    gravar(LSK.evEx, evSel);
+    renderEvolucao();
+    el('card-evolucao').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
   const toggle = e.target.closest('[data-drop-toggle]');
   if (toggle) {
     const block = toggle.closest('.set-block');
@@ -1124,8 +1257,10 @@ function salvarSessao() {
   el('diario-nota').value = '';
   calRef = { ano: agora.getFullYear(), mes: agora.getMonth() };
   calSel = hojeK;
+  const sa = sessaoAuto();
+  if (sa && sa.diaId === dia.id) limparSessaoAuto();
   renderCalendario();
-  renderGoalCard();
+  renderEvolucao();
   renderDiarioForm();
   toast(existente ? 'Sessão de hoje atualizada ✓' : 'Sessão salva ✓');
 }
@@ -1231,23 +1366,322 @@ el('dia-detalhe').addEventListener('click', e => {
     diario = diario.filter(x => x.id !== del.dataset.del);
     gravar(LSK.diario, diario);
     renderCalendario();
-    renderGoalCard();
+    renderEvolucao();
+    renderDiarioForm();
   }
 });
 
-function renderGoalCard() {
-  const alvo = 600;
-  let melhor = 0;
-  diario.forEach(s => (s.exercicios || []).forEach(x => {
-    if (/leg ?press/i.test(x.nome) && Array.isArray(x.series)) x.series.forEach(st => {
-      if (typeof st.peso === 'number' && st.peso > melhor) melhor = st.peso;
-    });
-  }));
-  const pct = Math.max(0, Math.min(100, Math.round(melhor / alvo * 100)));
-  el('goal-card').innerHTML = `<h3>RUMO AOS 600 KG</h3>
-    <div class="goal-row"><span>Melhor Leg Press: <b>${melhor ? melhor + ' kg' : '—'}</b></span><span>${pct}%</span></div>
-    <div class="goal-track"><div class="goal-fill" style="width:${pct}%"></div></div>`;
+// =====================================================================
+// EVOLUÇÃO — gráficos por exercício
+// =====================================================================
+let evSel = ler(LSK.evEx) || null;
+let evModo = ler(LSK.evModo) || 'carga';
+
+function normNome(n) {
+  return String(n == null ? '' : n).toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/\s+/g, ' ').trim();
 }
+
+// Maior carga e volume total (peso × reps, drops incluídos) de um conjunto de séries
+function statsSeries(series) {
+  let max = 0, vol = 0, temPeso = false;
+  (series || []).forEach(st => {
+    if (typeof st.peso === 'number') {
+      temPeso = true;
+      if (st.peso > max) max = st.peso;
+      if (typeof st.reps === 'number') vol += st.peso * st.reps;
+    }
+    (st.drops || []).forEach(d => {
+      if (typeof d.peso === 'number' && typeof d.reps === 'number') vol += d.peso * d.reps;
+    });
+  });
+  return { max, vol, temPeso };
+}
+
+// Histórico de um exercício agregado pelo NOME — junta as duas frequências
+// da semana (ex: Leg Press da quarta + da sexta) numa linha só.
+function historicoDe(nome) {
+  const alvo = normNome(nome);
+  const pts = [];
+  (diario || []).forEach(s => {
+    let max = 0, vol = 0, achou = false;
+    (s.exercicios || []).forEach(x => {
+      const blocos = Array.isArray(x.componentes) && x.componentes.length
+        ? x.componentes.map(c => ({ nome: c.nome, series: c.series }))
+        : [{ nome: x.nome, series: x.series }];
+      blocos.forEach(b => {
+        if (normNome(b.nome) !== alvo) return;
+        const st = statsSeries(b.series);
+        if (!st.temPeso) return;
+        achou = true;
+        if (st.max > max) max = st.max;
+        vol += st.vol;
+      });
+    });
+    if (achou) pts.push({ t: new Date(s.data), carga: max, volume: Math.round(vol) });
+  });
+  pts.sort((a, b) => a.t - b.t);
+  return pts;
+}
+
+function exerciciosComHistorico() {
+  const vistos = new Map();
+  const push = n => { const k = normNome(n); if (k && !vistos.has(k)) vistos.set(k, n); };
+  (rotina.dias || []).forEach(d => (d.secoes || []).forEach(s => (s.exercicios || []).forEach(x => {
+    if (Array.isArray(x.componentes) && x.componentes.length) x.componentes.forEach(push);
+    else push(x.nome);
+  })));
+  (diario || []).forEach(s => (s.exercicios || []).forEach(x => {
+    if (Array.isArray(x.componentes) && x.componentes.length) x.componentes.forEach(c => push(c.nome));
+    else push(x.nome);
+  }));
+  const out = [];
+  vistos.forEach((nome, k) => {
+    const pts = historicoDe(nome);
+    if (pts.length) out.push({ nome, key: k, pts });
+  });
+  return out;
+}
+
+// Meta de carga: vem do rotina.json ("metaCarga") ou cai no padrão dos 600 kg do leg press
+function metaDe(key) {
+  let meta = null;
+  Object.keys(mapEx).forEach(id => {
+    const x = mapEx[id];
+    const nomes = Array.isArray(x.componentes) && x.componentes.length ? x.componentes : [x.nome];
+    if (nomes.some(n => normNome(n) === key) && typeof x.metaCarga === 'number') meta = x.metaCarga;
+  });
+  if (meta == null && /leg ?press/.test(key)) meta = 600;
+  return meta;
+}
+
+function fmtVal(v, modo) {
+  if (modo === 'volume') return v >= 1000 ? (v / 1000).toFixed(1).replace('.', ',') + 't' : v + 'kg';
+  return (Math.round(v * 10) / 10).toString().replace('.', ',') + 'kg';
+}
+function fmtData(d) { return pad2(d.getDate()) + '/' + pad2(d.getMonth() + 1); }
+
+function chartSVG(pts, modo) {
+  const W = 340, H = 152, L = 42, R = 14, T = 18, B = 26;
+  const iw = W - L - R, ih = H - T - B;
+  const vals = pts.map(p => (modo === 'volume' ? p.volume : p.carga));
+  let min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+  if (min === max) { const f = Math.max(1, Math.abs(max) * 0.05); min -= f; max += f; }
+  const X = i => (pts.length === 1 ? L + iw / 2 : L + (i / (pts.length - 1)) * iw);
+  const Y = v => T + ih - ((v - min) / (max - min)) * ih;
+
+  const coords = vals.map((v, i) => X(i).toFixed(1) + ',' + Y(v).toFixed(1));
+  const base = (T + ih).toFixed(1);
+  const area = pts.length > 1
+    ? `<path class="ev-area" d="M ${X(0).toFixed(1)},${base} L ${coords.join(' L ')} L ${X(vals.length - 1).toFixed(1)},${base} Z"/>`
+    : '';
+  const linha = pts.length > 1 ? `<polyline class="ev-line" points="${coords.join(' ')}"/>` : '';
+  const dots = vals.map((v, i) =>
+    `<circle class="${i === vals.length - 1 ? 'ev-dot-last' : 'ev-dot'}" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="${i === vals.length - 1 ? 4 : 2.6}"/>`).join('');
+
+  const grade = [0, 0.5, 1].map(f => {
+    const y = T + ih * f;
+    const v = max - (max - min) * f;
+    return `<line class="ev-grid" x1="${L}" y1="${y.toFixed(1)}" x2="${W - R}" y2="${y.toFixed(1)}"/>
+      <text class="ev-lab" x="${L - 6}" y="${(y + 3).toFixed(1)}" text-anchor="end">${esc(fmtVal(Math.round(v), modo))}</text>`;
+  }).join('');
+
+  const ultV = vals[vals.length - 1];
+  const ultY = Y(ultV);
+  const rotuloUlt = `<text class="ev-val" x="${(W - R).toFixed(1)}" y="${(ultY - 9 < T ? ultY + 16 : ultY - 9).toFixed(1)}" text-anchor="end">${esc(fmtVal(ultV, modo))}</text>`;
+
+  const xLabs = `<text class="ev-lab" x="${X(0).toFixed(1)}" y="${H - 8}" text-anchor="${pts.length === 1 ? 'middle' : 'start'}">${fmtData(pts[0].t)}</text>` +
+    (pts.length > 1 ? `<text class="ev-lab" x="${X(pts.length - 1).toFixed(1)}" y="${H - 8}" text-anchor="end">${fmtData(pts[pts.length - 1].t)}</text>` : '');
+
+  return `<svg class="ev-chart" viewBox="0 0 ${W} ${H}" role="img">
+    <defs><linearGradient id="evgrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c8f542" stop-opacity=".28"/>
+      <stop offset="100%" stop-color="#c8f542" stop-opacity="0"/>
+    </linearGradient></defs>
+    ${grade}${area}${linha}${dots}${rotuloUlt}${xLabs}
+  </svg>`;
+}
+
+function sparkHTML(nome) {
+  const pts = historicoDe(nome).slice(-8);
+  if (pts.length < 2) return '';
+  const vals = pts.map(p => p.carga);
+  const min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+  const amp = (max - min) || 1;
+  const W = 54, H = 16;
+  const d = vals.map((v, i) =>
+    (i / (vals.length - 1) * W).toFixed(1) + ',' + (H - 2 - ((v - min) / amp) * (H - 4)).toFixed(1)).join(' ');
+  const delta = Math.round((vals[vals.length - 1] - vals[0]) * 10) / 10;
+  const cls = delta > 0 ? 'up' : (delta < 0 ? 'down' : '');
+  return `<span class="dex-spark ${cls}" data-spark="${esc(nome)}" title="toque para ver o gráfico completo">
+    <svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><polyline points="${d}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>
+    <b>${delta > 0 ? '+' : ''}${String(delta).replace('.', ',')}kg</b></span>`;
+}
+
+function renderEvolucao() {
+  const lista = exerciciosComHistorico();
+  const chips = el('ev-chips'), body = el('ev-body');
+  if (!lista.length) {
+    chips.innerHTML = '';
+    body.innerHTML = `<div class="vazio">Sem dados ainda. Salva uma sessão com peso que os gráficos aparecem aqui.</div>`;
+    return;
+  }
+  if (!evSel || !lista.some(x => x.key === evSel)) {
+    const lp = lista.find(x => /leg ?press/.test(x.key));
+    evSel = (lp || lista[0]).key;
+  }
+  chips.innerHTML = lista.map(x =>
+    `<button class="ev-chip${x.key === evSel ? ' ev-on' : ''}" data-ev="${esc(x.key)}">${esc(x.nome)}</button>`).join('');
+
+  const cur = lista.find(x => x.key === evSel);
+  const pts = cur.pts;
+  const vals = pts.map(p => (evModo === 'volume' ? p.volume : p.carga));
+  const atual = vals[vals.length - 1];
+  const recorde = Math.max.apply(null, vals);
+  const delta = Math.round((atual - vals[0]) * 10) / 10;
+  const pctD = vals[0] ? Math.round(delta / vals[0] * 100) : 0;
+  const clsD = delta > 0 ? 'up' : (delta < 0 ? 'down' : '');
+
+  const meta = evModo === 'carga' ? metaDe(evSel) : null;
+  const melhorCarga = Math.max.apply(null, pts.map(p => p.carga));
+  const pct = meta ? Math.max(0, Math.min(100, Math.round(melhorCarga / meta * 100))) : 0;
+  const metaHTML = meta ? `<div class="ev-meta">
+      <h4>META — ${meta} KG</h4>
+      <div class="goal-row"><span>Recorde: <b>${melhorCarga} kg</b></span><span>${pct}%</span></div>
+      <div class="goal-track"><div class="goal-fill" style="width:${pct}%"></div></div>
+    </div>` : '';
+
+  body.innerHTML = chartSVG(pts, evModo) + `
+    <div class="ev-stats">
+      <div class="ev-stat"><div class="es-r">Atual</div><div class="es-v">${esc(fmtVal(atual, evModo))}</div></div>
+      <div class="ev-stat"><div class="es-r">Recorde</div><div class="es-v">${esc(fmtVal(recorde, evModo))}</div></div>
+      <div class="ev-stat"><div class="es-r">Evolução</div><div class="es-v ${clsD}">${delta > 0 ? '+' : ''}${esc(fmtVal(delta, evModo))}${vals[0] ? ` <span style="font-size:12px">(${pctD > 0 ? '+' : ''}${pctD}%)</span>` : ''}</div></div>
+      <div class="ev-stat"><div class="es-r">Sessões</div><div class="es-v">${pts.length}</div></div>
+    </div>` + metaHTML;
+}
+
+el('ev-chips').addEventListener('click', e => {
+  const c = e.target.closest('[data-ev]');
+  if (!c) return;
+  evSel = c.dataset.ev;
+  gravar(LSK.evEx, evSel);
+  renderEvolucao();
+});
+el('ev-modes').addEventListener('click', e => {
+  const b = e.target.closest('[data-modo]');
+  if (!b) return;
+  evModo = b.dataset.modo;
+  gravar(LSK.evModo, evModo);
+  document.querySelectorAll('.ev-mode').forEach(x => x.classList.toggle('ev-on', x.dataset.modo === evModo));
+  renderEvolucao();
+});
+
+// =====================================================================
+// SESSÃO AUTOMÁTICA — fecha o treino sozinho depois de X horas
+// =====================================================================
+const AUTO_HORAS_PADRAO = 4;
+
+function autoHoras() { const v = ler(LSK.autoHoras); return v == null ? AUTO_HORAS_PADRAO : v; }
+function sessaoAuto() { return ler(LSK.sessaoAuto); }
+function fimDaSessao(s) { return s.inicio + s.horas * 3600000; }
+
+function limparSessaoAuto() {
+  try { localStorage.removeItem(LSK.sessaoAuto); } catch (e) {}
+  renderAutoBanner();
+}
+
+function iniciarSessaoAuto(diaId) {
+  const h = autoHoras();
+  if (!h || !diaId) return;
+  const dia = (rotina.dias || []).find(d => d.id === diaId);
+  if (!dia || dia.descanso || diaCompleto(diaId)) return;
+  const s = sessaoAuto();
+  if (s && s.diaId === diaId && Date.now() < fimDaSessao(s)) return;
+  gravar(LSK.sessaoAuto, { diaId, inicio: Date.now(), horas: h });
+  renderAutoBanner();
+  toast('Sessão iniciada · fecha sozinha em ' + h + 'h');
+}
+
+function concluirDiaAuto(diaId, inicioISO, avisar) {
+  const dia = (rotina.dias || []).find(d => d.id === diaId);
+  if (!dia || dia.descanso) return;
+  (dia.secoes || []).forEach(sec => (sec.exercicios || []).forEach(x => {
+    progresso[x.id] = Array(x.series).fill(true);
+  }));
+  gravar(LSK.prog, progresso);
+  renderRotina();
+  autoLogDia(diaId, inicioISO);
+  if (avisar !== false) toast('Treino ' + (dia.tag || '') + ' fechado automaticamente ✓');
+}
+
+function verificarSessaoAuto() {
+  const s = sessaoAuto();
+  if (!s) { renderAutoBanner(); return; }
+  if (!autoHoras()) { limparSessaoAuto(); return; }
+  if (Date.now() >= fimDaSessao(s)) {
+    try { localStorage.removeItem(LSK.sessaoAuto); } catch (e) {}
+    concluirDiaAuto(s.diaId, new Date(s.inicio).toISOString());
+  }
+  renderAutoBanner();
+}
+
+function renderAutoBanner() {
+  const box = el('auto-sessao');
+  if (!box) return;
+  const s = sessaoAuto();
+  if (!s || !autoHoras()) { box.hidden = true; box.innerHTML = ''; return; }
+  const dia = (rotina.dias || []).find(d => d.id === s.diaId);
+  const fim = new Date(fimDaSessao(s));
+  const rest = Math.max(0, fimDaSessao(s) - Date.now());
+  const hh = Math.floor(rest / 3600000), mm = Math.floor((rest % 3600000) / 60000);
+  box.hidden = false;
+  box.innerHTML = `<div class="as-info">
+      <span class="as-dot"></span>
+      <div>
+        <div class="as-t">SESSÃO EM ANDAMENTO${dia ? ' — ' + esc(dia.tag) : ''}</div>
+        <div class="as-s">fecha sozinha em ${hh}h${pad2(mm)} · às ${pad2(fim.getHours())}:${pad2(fim.getMinutes())}</div>
+      </div>
+    </div>
+    <div class="as-acoes">
+      <button class="as-btn" data-as="fechar">Concluir agora</button>
+      <button class="as-btn as-x" data-as="cancelar">Cancelar</button>
+    </div>`;
+}
+
+el('auto-sessao').addEventListener('click', e => {
+  const b = e.target.closest('[data-as]');
+  if (!b) return;
+  const s = sessaoAuto();
+  if (!s) { renderAutoBanner(); return; }
+  try { localStorage.removeItem(LSK.sessaoAuto); } catch (er) {}
+  if (b.dataset.as === 'fechar') concluirDiaAuto(s.diaId, new Date(s.inicio).toISOString());
+  else toast('Contagem cancelada — as marcações continuam');
+  renderAutoBanner();
+});
+
+function renderCfgAuto() {
+  const h = autoHoras();
+  document.querySelectorAll('#cfg-auto-horas .cfg-opt').forEach(b =>
+    b.classList.toggle('cfg-on', +b.dataset.h === h));
+}
+el('cfg-auto-horas').addEventListener('click', e => {
+  const b = e.target.closest('[data-h]');
+  if (!b) return;
+  const h = +b.dataset.h;
+  gravar(LSK.autoHoras, h);
+  const s = sessaoAuto();
+  if (s) {
+    if (!h) { limparSessaoAuto(); }
+    else { s.horas = h; gravar(LSK.sessaoAuto, s); }
+  }
+  renderCfgAuto();
+  verificarSessaoAuto();
+  toast(h ? 'Fecha sozinho ' + h + 'h depois do início' : 'Fechamento automático desligado');
+});
+
+setInterval(verificarSessaoAuto, 30000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) verificarSessaoAuto(); });
 
 // =====================================================================
 // ABAS
@@ -1298,6 +1732,8 @@ function aplicarRotina(nova) {
   renderHeader();
   renderRotina();
   renderDiarioForm();
+  renderEvolucao();
+  renderAutoBanner();
 }
 
 async function buscarAtualizacao(manual) {
@@ -1366,7 +1802,7 @@ el('file-backup').addEventListener('change', ev => {
       gravar(LSK.prog, progresso);
       gravar(LSK.rotina, rotina);
       indexar();
-      renderHeader(); renderRotina(); renderDiarioForm(); renderCalendario(); renderGoalCard();
+      renderHeader(); renderRotina(); renderDiarioForm(); renderCalendario(); renderEvolucao();
       el('modal-config').hidden = true;
       toast('Backup restaurado ✓');
     } catch (e) {
@@ -1513,7 +1949,9 @@ renderHeader();
 renderRotina();
 renderDiarioForm();
 renderCalendario();
-renderGoalCard();
+renderEvolucao();
+renderCfgAuto();
+verificarSessaoAuto();
 mudarTab(ler(LSK.tab) || 'rotina');
 if (ler(LSK.timerHidden)) esconderTimer(false);
 
