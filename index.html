@@ -2607,9 +2607,13 @@ function renderDupla() {
     const temAlgo = r.sess.length || (r.dados.pesos || []).length || r.viaSync;
     let vazio = '';
     if (!temAlgo) {
-      vazio = syncAtivo()
-        ? `<div class="dp-vazio">Nada de ${esc(p.nome)} chegou ainda. Confere se no celular dele a sincronização está ligada com o mesmo código.</div>`
-        : `<div class="dp-vazio">Sem dados neste aparelho. Liga a sincronização em ⚙ Ajustes pros dois verem o progresso um do outro.</div>`;
+      if (p.id === perfilAtivo) {
+        vazio = `<div class="dp-vazio">Você ainda não registrou nenhum treino neste aparelho.</div>`;
+      } else {
+        vazio = syncAtivo()
+          ? `<div class="dp-vazio">Nada de ${esc(p.nome)} chegou ainda. Confere se no celular dele a sincronização está ligada com o mesmo código.</div>`
+          : `<div class="dp-vazio">Sem dados neste aparelho. Liga a sincronização em ⚙ Ajustes pros dois verem o progresso um do outro.</div>`;
+      }
     }
     const semTreinos = temAlgo && !r.sess.length
       ? `<div class="dp-vazio">Nenhum treino registrado ainda.</div>` : '';
