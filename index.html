@@ -361,6 +361,7 @@
   .dp-bar.b-on { background: linear-gradient(180deg, var(--accent), rgba(200,245,66,.35)); }
   .dp-legenda { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #444; margin-top: 6px; text-align: center; }
   .dp-sec { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--accent2); margin: 24px 0 12px; }
+  .dp-vazio { font-size: 11px; color: #555; line-height: 1.6; padding: 8px 0; }
 
   .dia-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
   .chip {
@@ -2248,11 +2249,14 @@ function renderDupla() {
       r.pesoAtual != null ? `<div class="dp-l">Peso atual <b>${fmtNum(r.pesoAtual)} kg</b></div>` : '',
       r.difPeso != null && r.difPeso !== 0 ? `<div class="dp-l">Desde o 1º registro <b class="${r.difPeso < 0 ? 'up' : 'down'}">${r.difPeso > 0 ? '+' : ''}${fmtNum(r.difPeso)} kg</b></div>` : ''
     ].join('');
+    const vazio = !r.sess.length
+      ? `<div class="dp-vazio">Sem dados neste aparelho. Cada celular guarda os treinos de quem usa ele — pra ver os treinos de ${esc(p.nome)} aqui, restaura o backup dele em ⚙ Ajustes.</div>`
+      : '';
     const barras = r.semanas.map(s =>
       `<div class="dp-bar${s.n ? ' b-on' : ''}" style="height:${Math.max(3, Math.round(s.n / maxFreq * 100))}%" title="${s.n} treino(s)"></div>`).join('');
     return `<div class="dp-card${p.id === perfilAtivo ? ' dp-on' : ''}">
       <div class="dp-nome">${esc(p.nome)}</div>
-      ${linhas}
+      ${vazio || linhas}
       <div class="dp-freq">${barras}</div>
       <div class="dp-legenda">últimas 6 semanas</div>
     </div>`;
@@ -2260,7 +2264,7 @@ function renderDupla() {
 
   // quem treinou mais neste mês
   let placar = '';
-  if (resumos.length === 2) {
+  if (resumos.length === 2 && resumos.every(r => r.sess.length)) {
     const [a, b] = resumos;
     if (a.mesAtual !== b.mesAtual) {
       const lider = a.mesAtual > b.mesAtual ? a : b;
