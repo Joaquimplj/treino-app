@@ -125,7 +125,24 @@ pra cada pessoa, configurado em `rotina.json` → `"extras"`:
 Um exercício vira cardio com `"cardio": true`, e `"metaMin"` define a meta de tempo
 (a barra de meta aparece no gráfico de TEMPO).
 
+## Como usar no treino (aba ROTINA)
+
+A ROTINA é a tela de execução: **marca e anota na mesma linha**, sem formulário separado.
+
+- Cada série é uma linha: **[nº] [kg] [reps] [＋]** — toca no número pra marcar a série feita
+- O que aparece **apagado no campo é o que você fez da última vez**; digita por cima só quando muda
+- **Série marcada e deixada em branco = repetiu a carga anterior** (é o que entra no diário)
+- O **＋** abre o campo de drop set daquela série
+- No fim de cada exercício tem o **mini gráfico com o ganho** — toca nele pra ver a análise completa
+- No fim do dia tem o campo de **nota da sessão**
+- Tudo salva sozinho no diário enquanto você digita — não existe botão "salvar"
+- **↺ Resetar dia** zera as marcações **e apaga o que foi anotado hoje** naquele dia (pede confirmação)
+
+O exercício de cardio (esteira) traz os campos próprios dele e o botão **Marcar ✓** no lugar das séries.
+
 ## Gráficos de evolução (aba DIÁRIO)
+
+A aba DIÁRIO virou **acompanhamento e análise** — não se anota treino nela.
 
 O card **EVOLUÇÃO** mostra a progressão de cada exercício:
 
