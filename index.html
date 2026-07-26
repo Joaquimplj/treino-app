@@ -391,6 +391,8 @@
   .dp-legenda { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #444; margin-top: 6px; text-align: center; }
   .dp-sec { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 3px; color: var(--accent2); margin: 24px 0 12px; }
   .dp-vazio { font-size: 11px; color: #555; line-height: 1.6; padding: 8px 0; }
+  .dp-topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 24px 0 12px; }
+  .dp-status { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #444; margin-top: 3px; }
 
   .dia-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
   .chip {
@@ -2601,14 +2603,21 @@ function renderDupla() {
       r.pesoAtual != null ? `<div class="dp-l">Peso atual <b>${fmtNum(r.pesoAtual)} kg</b></div>` : '',
       r.difPeso != null && r.difPeso !== 0 ? `<div class="dp-l">Desde o 1º registro <b class="${r.difPeso < 0 ? 'up' : 'down'}">${r.difPeso > 0 ? '+' : ''}${fmtNum(r.difPeso)} kg</b></div>` : ''
     ].join('');
-    const vazio = !r.sess.length
-      ? `<div class="dp-vazio">Sem dados neste aparelho. Cada celular guarda os treinos de quem usa ele — pra ver os treinos de ${esc(p.nome)} aqui, restaura o backup dele em ⚙ Ajustes.</div>`
-      : '';
+    // só é "sem dados" quando não veio NADA — nem treino, nem peso, nem sincronização
+    const temAlgo = r.sess.length || (r.dados.pesos || []).length || r.viaSync;
+    let vazio = '';
+    if (!temAlgo) {
+      vazio = syncAtivo()
+        ? `<div class="dp-vazio">Nada de ${esc(p.nome)} chegou ainda. Confere se no celular dele a sincronização está ligada com o mesmo código.</div>`
+        : `<div class="dp-vazio">Sem dados neste aparelho. Liga a sincronização em ⚙ Ajustes pros dois verem o progresso um do outro.</div>`;
+    }
+    const semTreinos = temAlgo && !r.sess.length
+      ? `<div class="dp-vazio">Nenhum treino registrado ainda.</div>` : '';
     const barras = r.semanas.map(s =>
       `<div class="dp-bar${s.n ? ' b-on' : ''}" style="height:${Math.max(3, Math.round(s.n / maxFreq * 100))}%" title="${s.n} treino(s)"></div>`).join('');
     return `<div class="dp-card${p.id === perfilAtivo ? ' dp-on' : ''}">
       <div class="dp-nome">${esc(p.nome)}</div>
-      ${vazio || linhas}
+      ${vazio || (linhas + semTreinos)}
       <div class="dp-freq">${barras}</div>
       <div class="dp-legenda">últimas 6 semanas${r.viaSync ? ' · sincronizado ' + pad2(new Date(r.viaSync).getDate()) + '/' + pad2(new Date(r.viaSync).getMonth() + 1) + ' ' + pad2(new Date(r.viaSync).getHours()) + ':' + pad2(new Date(r.viaSync).getMinutes()) : ''}</div>
     </div>`;
@@ -2627,8 +2636,34 @@ function renderDupla() {
     }
   }
 
-  body.innerHTML = `<div class="dp-sec">COMPARATIVO</div><div class="dupla-grid">${cards}</div>${placar}`;
+  const st = syncStatus();
+  const quando = iso => {
+    if (!iso) return 'nunca';
+    const d = new Date(iso);
+    return pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  };
+  const topo = `<div class="dp-topo">
+    <div>
+      <div class="dp-sec" style="margin:0">COMPARATIVO</div>
+      <div class="dp-status">${syncAtivo()
+        ? 'sincronizado · recebido ' + quando(st.leitura)
+        : 'sincronização desligada — ⚙ Ajustes'}</div>
+    </div>
+    <button class="as-btn" data-sync-dupla>⟳ Atualizar</button>
+  </div>`;
+
+  body.innerHTML = topo + `<div class="dupla-grid">${cards}</div>${placar}`;
 }
+
+el('dupla-body').addEventListener('click', async e => {
+  if (!e.target.closest('[data-sync-dupla]')) return;
+  if (!syncAtivo()) { toast('Liga a sincronização em ⚙ Ajustes'); return; }
+  toast('Buscando...');
+  await syncEnviar(true);
+  const ok = await syncBaixar();
+  renderDupla();
+  if (ok) toast('Atualizado ✓');
+});
 
 // =====================================================================
 // SESSÃO AUTOMÁTICA — fecha o treino sozinho depois de X horas
@@ -2738,7 +2773,13 @@ el('cfg-auto-horas').addEventListener('click', e => {
 });
 
 setInterval(verificarSessaoAuto, 30000);
-document.addEventListener('visibilitychange', () => { if (!document.hidden) verificarSessaoAuto(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) return;
+  verificarSessaoAuto();
+  // voltou pro app: busca o que o outro registrou (no máximo 1x a cada 2 min)
+  const st = syncStatus();
+  if (syncAtivo() && (!st.leitura || Date.now() - new Date(st.leitura) > 120000)) syncBaixar(true);
+});
 
 // =====================================================================
 // ABAS
