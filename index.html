@@ -729,13 +729,17 @@
       <p class="cfg-hint" id="cfg-sync-status">—</p>
       <button class="btn-sec" id="btn-sync-config">☁ &nbsp;Configurar sincronização</button>
       <div id="sync-wrap" hidden>
-        <textarea id="sync-cfg-txt" placeholder='Cola aqui o firebaseConfig do console do Firebase (aquele bloco com apiKey e projectId)...'></textarea>
-        <label class="mp-campo" style="margin-top:10px"><span>Código da dupla</span>
+        <label class="mp-campo"><span>Código da dupla</span>
           <input id="sync-sala" type="text" placeholder="mesmo código nos dois celulares">
         </label>
-        <button class="btn-sec" id="btn-sync-gerar" style="margin-top:8px">🎲 &nbsp;Gerar código novo</button>
+        <button class="btn-sec" id="btn-sync-gerar" style="margin-top:8px">🎲 &nbsp;Gerar código novo (só quem começa)</button>
         <button class="btn-acao" id="btn-sync-salvar" style="margin-top:8px">ATIVAR SINCRONIZAÇÃO</button>
+        <button class="btn-sec" id="btn-sync-link" style="margin-top:8px">🔗 &nbsp;Copiar link de convite</button>
         <button class="btn-sec" id="btn-sync-off" style="margin-top:8px">Desligar sincronização</button>
+        <details style="margin-top:10px">
+          <summary class="cfg-hint" style="cursor:pointer">Avançado: usar outro projeto Firebase</summary>
+          <textarea id="sync-cfg-txt" placeholder='Cola aqui o firebaseConfig de outro projeto (apiKey e projectId)...' style="margin-top:8px"></textarea>
+        </details>
       </div>
       <button class="btn-sec" id="btn-sync-agora">⟳ &nbsp;Sincronizar agora</button>
     </div>
@@ -921,6 +925,13 @@ const PERFIS_PADRAO = [
   { id: 'joaquim', nome: 'JOAQUIM', peso: 80, altura: 1.70, meta: '600 kg Leg Press', metaPeso: null },
   { id: 'igor', nome: 'IGOR', peso: null, altura: null, meta: 'Emagrecer', metaPeso: null }
 ];
+
+// Chaves do projeto Firebase da dupla — não é segredo: quem protege os dados
+// é a regra do banco (exige login) + o código da dupla, que cada um digita.
+const FIREBASE_CFG_PADRAO = {
+  apiKey: 'AIzaSyCcocFnFrSIiAOvNVugB7mt8L0lfA_irEY',
+  projectId: 'treino-dupla'
+};
 
 function ler(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
 function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -2359,7 +2370,10 @@ el('btn-sync-config').addEventListener('click', () => {
   if (!w.hidden) {
     const c = syncCfg() || {};
     el('sync-sala').value = c.sala || '';
-    if (c.apiKey) el('sync-cfg-txt').value = JSON.stringify({ apiKey: c.apiKey, projectId: c.projectId }, null, 2);
+    // só mostra o textarea avançado se já estiver usando um projeto diferente do padrão
+    if (c.apiKey && c.apiKey !== FIREBASE_CFG_PADRAO.apiKey) {
+      el('sync-cfg-txt').value = JSON.stringify({ apiKey: c.apiKey, projectId: c.projectId }, null, 2);
+    }
   }
 });
 
@@ -2372,11 +2386,15 @@ el('btn-sync-gerar').addEventListener('click', () => {
 });
 
 el('btn-sync-salvar').addEventListener('click', async () => {
-  const txt = el('sync-cfg-txt').value;
-  const apiKey = (txt.match(/apiKey["'\s:]+([A-Za-z0-9_\-]{20,})/) || [])[1];
-  const projectId = (txt.match(/projectId["'\s:]+["']?([a-z0-9\-]{4,})/) || [])[1];
+  const txt = el('sync-cfg-txt').value.trim();
+  let apiKey = FIREBASE_CFG_PADRAO.apiKey, projectId = FIREBASE_CFG_PADRAO.projectId;
+  if (txt) {
+    // só usa o que foi colado no campo avançado se ele tiver conteúdo
+    apiKey = (txt.match(/apiKey["'\s:]+([A-Za-z0-9_\-]{20,})/) || [])[1];
+    projectId = (txt.match(/projectId["'\s:]+["']?([a-z0-9\-]{4,})/) || [])[1];
+    if (!apiKey || !projectId) { toast('Não achei apiKey/projectId no texto colado'); return; }
+  }
   const sala = el('sync-sala').value.trim();
-  if (!apiKey || !projectId) { toast('Não achei apiKey/projectId no texto colado'); return; }
   if (!sala) { toast('Falta o código da dupla'); return; }
   gravar(LSK.sync, { apiKey, projectId, sala, ativo: true });
   try { localStorage.removeItem(LSK.syncTok); } catch (e) {}
@@ -2386,6 +2404,36 @@ el('btn-sync-salvar').addEventListener('click', async () => {
   if (ok) await syncBaixar();
   if (ok) { el('sync-wrap').hidden = true; toast('Sincronização ligada ✓'); }
 });
+
+el('btn-sync-link').addEventListener('click', () => {
+  const sala = el('sync-sala').value.trim();
+  if (!sala) { toast('Gera ou digita um código antes de copiar o link'); return; }
+  const url = location.origin + location.pathname + '?dupla=' + encodeURIComponent(sala) + '#dupla=' + encodeURIComponent(sala);
+  if (navigator.share) {
+    navigator.share({ title: 'Treino em dupla', text: 'Abre esse link no seu celular pra sincronizarmos o treino:', url }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => toast('Link copiado — manda pro seu parceiro de treino')).catch(() => toast(url));
+  } else {
+    prompt('Copia este link:', url);
+  }
+});
+
+// Abrir o app com ?dupla=CODIGO preenche o código sozinho — só falta ativar
+function autoPreencherConvite() {
+  const sala = new URLSearchParams(location.search).get('dupla')
+    || new URLSearchParams(location.hash.replace(/^#/, '')).get('dupla');
+  if (!sala) return;
+  const jaConfigurado = syncAtivo() && syncCfg().sala === sala;
+  if (jaConfigurado) return;
+  setTimeout(() => {
+    el('modal-config').hidden = false;
+    el('sync-wrap').hidden = false;
+    el('sync-sala').value = sala;
+    toast('Código preenchido — confere e toca em ATIVAR SINCRONIZAÇÃO');
+  }, 300);
+}
+autoPreencherConvite();
+window.addEventListener('hashchange', autoPreencherConvite);
 
 el('btn-sync-off').addEventListener('click', () => {
   const c = syncCfg();

@@ -154,7 +154,22 @@ aí a aba DUPLA mostra os dois de verdade, em qualquer um dos celulares. O app f
 Firestore pela **API REST** (não carrega SDK nenhum), então continua funcionando offline:
 sem internet, salva local e envia na próxima vez que abrir.
 
-### Passo a passo (uma vez só)
+### Como ligar (dia a dia)
+
+As chaves do projeto `treino-dupla` já vêm embutidas no app — o que separa uma dupla da
+outra é o **código da dupla**:
+
+1. Num celular: ⚙ → **Configurar sincronização** → **Gerar código novo** → **ATIVAR**
+2. **🔗 Copiar link de convite** → manda pro parceiro no WhatsApp
+3. Ele abre o link: o código já vem preenchido, é só tocar em **ATIVAR SINCRONIZAÇÃO**
+
+Ativar **não apaga nada**: o que já estava no aparelho é enviado como cópia pra nuvem e o
+perfil do outro é baixado.
+
+> Trocar de projeto Firebase (se um dia quiser outro): ⚙ → Configurar sincronização →
+> *Avançado: usar outro projeto Firebase* → cola o `firebaseConfig` novo.
+
+### Criando o projeto do zero (já feito uma vez)
 
 1. **console.firebase.google.com** → *Adicionar projeto* → nome (ex: `treino-dupla`) → pode desmarcar o Analytics
 2. **Build → Firestore Database → Criar banco de dados** → modo produção → região `southamerica-east1`
