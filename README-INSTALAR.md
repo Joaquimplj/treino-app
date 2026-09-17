@@ -224,6 +224,58 @@ Ninguém escreve no documento do outro, então não existe conflito.
 > privacidade adequado pra um diário de treino. Não guarde nada sensível além disso.
 > Custo: o plano gratuito (Spark) cobre folgado dois usuários.
 
+## Figuras dos exercícios
+
+Cada exercício da ROTINA mostra uma foto (início do movimento); toca nela pra abrir
+início + fim em tamanho maior, com a nota do exercício. As fotos vêm do
+[free-exercise-db](https://github.com/yuhonas/free-exercise-db) (domínio público),
+carregadas da internet na primeira vez e guardadas no cache pra funcionar offline.
+
+- No `rotina.json`, o campo `"img"` de cada exercício é o id da foto (nome da pasta no free-exercise-db,
+  ex: `"img": "Leg_Press"`). Superset usa `"imgs": { "Rosca Direta": "Barbell_Curl", ... }`.
+- Sem `img`, o app tenta achar pelo nome do exercício.
+
+## Anilhas por lado
+
+Nos exercícios com barra, leg press e hack, ao tocar no campo de **kg** aparece embaixo
+da série quais anilhas colocar **de cada lado** (ex: `250 kg → 25 + 25 + 25 + 25 + 25`).
+Barra olímpica conta 20 kg; leg press e hack contam só as anilhas. Se o peso não fecha com
+as anilhas da academia, ele avisa quanto sobra.
+
+- **⚙ → Anilhas da academia**: marca as anilhas que existem lá (25 · 20 · 15 · 10 · 5 · 3 · 2,5 · 2 · 1,25 · 1)
+- No `rotina.json`: `"anilhas": true/false` força o cálculo, `"base": 0` muda o peso da barra (0 = só anilhas)
+
+## Rank de cargas (faixas)
+
+Exercícios-chave têm faixas de carga — ex: Supino Inclinado com Halteres `20 · 30 · 42` kg.
+A melhor carga já feita define o nível: **Iniciante** (abaixo da 1ª) → 🥉 **Bronze** → 🥈 **Prata**
+→ 🥇 **Ouro** → 💎 **Diamante** → 👑 **Elite**. Esteira usa minutos.
+
+- No card EVOLUÇÃO aparece a faixa atual e quanto falta pra próxima
+- Na aba DUPLA, a tabela **RANK DE CARGAS** põe os dois lado a lado
+- Faixas no `rotina.json`: `"faixas": [200, 300, 400, 500, 600]` no exercício (senão vale o padrão do app)
+
+## Nível geral (XP)
+
+Cada perfil acumula XP a partir do diário — os dois celulares calculam a mesma coisa
+com o que está sincronizado:
+
+| Ação | XP |
+|---|---|
+| Sessão registrada (pelo menos 1 exercício anotado) | +10 |
+| Sessão com 4+ exercícios anotados | +5 extra |
+| Recorde pessoal num exercício (carga; tempo ou distância no cardio) | +25 |
+| Semana com 4 ou mais treinos | +30 |
+
+Níveis: 1 Iniciante → 2 Novato (100 XP) → 3 Regular (300) → 4 Dedicado (600) → 5 Forte (1000)
+→ 6 Veterano → 7 Monstro → 8 Máquina → 9 Lenda… (cada nível pede 100 XP a mais que o anterior).
+O nível aparece no botão do perfil e na aba DUPLA, com uma barra até o próximo.
+
+**Forma (últimas 4 semanas)** = 60 % constância (treinos feitos ÷ 20 previstos) + 40 % progressão
+(variação média da melhor carga por exercício nas últimas 8 semanas; +10 % ou mais = 100).
+
+Quando você bate um recorde, o app avisa na hora: *🏆 Recorde! Leg Press 45° 260 kg (antes 250) · +25 XP*.
+
 ## Aba DUPLA
 
 Comparativo lado a lado dos dois perfis **do mesmo aparelho**: treinos no mês, último treino,

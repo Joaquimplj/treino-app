@@ -628,6 +628,52 @@
   }
   #import-txt:focus { outline: none; border-color: var(--accent); }
 
+  /* ===== FIGURAS DOS EXERCÍCIOS ===== */
+  .ex-top.com-img { grid-template-columns: 54px 1fr auto auto; }
+  .ex-thumb {
+    width: 54px; height: 54px; object-fit: cover; border-radius: 8px; background: #fff;
+    border: 1px solid var(--border); cursor: pointer; display: block;
+  }
+  .ex-thumb:hover { border-color: var(--accent); }
+  .lb-box { max-width: 520px; }
+  .lb-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .lb-imgs img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; background: #fff; border: 1px solid var(--border); }
+  .lb-nota { font-size: 13px; color: var(--muted); line-height: 1.55; margin-top: 12px; }
+  .lb-credito { font-size: 10px; color: #444; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; }
+
+  /* ===== ANILHAS POR LADO ===== */
+  .sr-anilhas { font-size: 11px; color: var(--accent2); padding: 4px 0 2px 41px; letter-spacing: .3px; }
+  .cfg-opts.cfg-wrap { flex-wrap: wrap; }
+  .cfg-opt.chip-anilha { flex: 0 0 auto; padding: 8px 13px; }
+
+  /* ===== RANK / NÍVEL ===== */
+  .nv-big { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--text); line-height: 1; }
+  .nv-xp { font-size: 11px; color: var(--muted); margin: 5px 0 8px; }
+  .rk-badge {
+    display: inline-flex; align-items: center; gap: 6px; font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px; letter-spacing: 2px; padding: 6px 12px; border-radius: 20px;
+    border: 1px solid var(--border); color: var(--muted); white-space: nowrap;
+  }
+  .rk-badge.t1, .rk-cel.t1 { color: #d19a66; border-color: rgba(209,154,102,.5); }
+  .rk-badge.t2, .rk-cel.t2 { color: #cfd3d8; border-color: rgba(207,211,216,.5); }
+  .rk-badge.t3, .rk-cel.t3 { color: #f2c94c; border-color: rgba(242,201,76,.55); }
+  .rk-badge.t4, .rk-cel.t4 { color: #7fd3ff; border-color: rgba(127,211,255,.55); }
+  .rk-badge.t5, .rk-cel.t5 { color: var(--accent); border-color: rgba(200,245,66,.6); }
+  .ev-rank { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .ev-rank-txt { font-size: 12px; color: var(--muted); }
+  .rk-tabela { background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .rk-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 8px; align-items: center; padding: 10px 12px; border-bottom: 1px dashed #1e1e1e; }
+  .rk-row:last-child { border-bottom: none; }
+  .rk-head { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); background: var(--surface); border-bottom: 1px solid var(--border); }
+  .rk-ex { font-size: 12px; color: var(--text); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .rk-ex small, .rk-cel small { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #555; }
+  .rk-cel { display: flex; flex-direction: column; gap: 2px; font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 1px; color: var(--text); }
+  .rk-cel.rk-vazio { color: #333; }
+  @media (max-width: 340px) {
+    .dupla-grid { grid-template-columns: 1fr; }
+    .rk-row { grid-template-columns: 1.2fr 1fr 1fr; padding: 10px 8px; gap: 6px; }
+  }
+
   /* ===== TOAST ===== */
   #toast {
     position: fixed; top: 18px; left: 50%;
@@ -795,6 +841,12 @@
     </div>
 
     <div class="modal-sec">
+      <h4>Anilhas da academia</h4>
+      <p class="cfg-hint">Ao tocar no campo de kg de um exercício com barra, o app mostra quais anilhas colocar de cada lado. Marca aqui as que existem na sua academia. Barra olímpica = 20 kg; leg press e hack contam só as anilhas.</p>
+      <div class="cfg-opts cfg-wrap" id="cfg-anilhas"></div>
+    </div>
+
+    <div class="modal-sec">
       <h4>Posição do cronômetro</h4>
       <div class="cfg-opts" id="cfg-timer-pos">
         <button class="cfg-opt" data-pos="esquerda">⬅ EM PÉ</button>
@@ -822,6 +874,18 @@
     </div>
 
     <button class="btn-sec" id="btn-fechar-modal" style="margin-top:22px;text-align:center">Fechar</button>
+  </div>
+</div>
+
+<!-- FIGURA DO EXERCÍCIO (início / fim do movimento) -->
+<div id="lightbox" class="modal" hidden>
+  <div class="modal-box lb-box">
+    <h2 id="lb-titulo">—</h2>
+    <div class="modal-sub">início · fim do movimento</div>
+    <div class="lb-imgs"><img id="lb-img0" alt="início" crossorigin="anonymous"><img id="lb-img1" alt="fim" crossorigin="anonymous"></div>
+    <p class="lb-nota" id="lb-nota"></p>
+    <div class="lb-credito">fotos: free-exercise-db (domínio público)</div>
+    <button class="btn-sec" id="lb-fechar" style="margin-top:14px;text-align:center">Fechar</button>
   </div>
 </div>
 
@@ -969,7 +1033,8 @@ const LSK = {
   autoHoras: 'ta_auto_horas_v1', sessaoAuto: 'ta_sessao_auto_v1',
   perfis: 'ta_perfis_v1', perfilAtivo: 'ta_perfil_v1', pesos: 'ta_pesos_v1',
   perfilTravado: 'ta_perfil_travado_v1',
-  sync: 'ta_sync_cfg_v1', syncTok: 'ta_sync_tok_v1', syncSt: 'ta_sync_status_v1', remoto: 'ta_remoto_v1'
+  sync: 'ta_sync_cfg_v1', syncTok: 'ta_sync_tok_v1', syncSt: 'ta_sync_status_v1', remoto: 'ta_remoto_v1',
+  anilhas: 'ta_anilhas_v1'
 };
 
 // Perfis: cada um com seus dados (marcações, diário, peso corporal).
@@ -985,6 +1050,256 @@ const FIREBASE_CFG_PADRAO = {
   apiKey: 'AIzaSyCcocFnFrSIiAOvNVugB7mt8L0lfA_irEY',
   projectId: 'treino-dupla'
 };
+
+// =====================================================================
+// FIGURAS, FAIXAS DE RANK, ANILHAS E NÍVEL
+// =====================================================================
+// Fotos dos exercícios: free-exercise-db (domínio público / Unlicense).
+// O rotina.json pode trazer "img" por exercício; isto aqui é o fallback por nome.
+const IMG_BASE = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/';
+const IMG_PADRAO = {
+  'supino inclinado com halteres': 'Incline_Dumbbell_Press',
+  'supino reto com barra': 'Barbell_Bench_Press_-_Medium_Grip',
+  'desenvolvimento com halteres': 'Dumbbell_Shoulder_Press',
+  'elevacao lateral': 'Side_Lateral_Raise',
+  'crossover': 'Cable_Crossover',
+  'pec deck': 'Cable_Crossover',
+  'triceps corda': 'Triceps_Pushdown_-_Rope_Attachment',
+  'puxada alta': 'Wide-Grip_Lat_Pulldown',
+  'high row': 'Leverage_High_Row',
+  'remada curvada': 'Bent_Over_Barbell_Row',
+  'rosca direta': 'Barbell_Curl',
+  'rosca martelo': 'Hammer_Curls',
+  'leg press': 'Leg_Press',
+  'agachamento livre': 'Barbell_Squat',
+  'cadeira extensora': 'Leg_Extensions',
+  'stiff com barra': 'Stiff-Legged_Barbell_Deadlift',
+  'stiff com halteres': 'Stiff-Legged_Dumbbell_Deadlift',
+  'flexora deitada': 'Lying_Leg_Curls',
+  'cadeira flexora': 'Seated_Leg_Curl',
+  'panturrilha sentada': 'Seated_Calf_Raise',
+  'panturrilha em pe': 'Standing_Calf_Raises',
+  'remada baixa': 'Seated_Cable_Rows',
+  'triceps testa': 'EZ-Bar_Skullcrusher',
+  'agachamento hack': 'Hack_Squat',
+  'abdominal na polia': 'Cable_Crunch',
+  'elevacao de pernas': 'Hanging_Leg_Raise',
+  'esteira': 'Walking_Treadmill'
+};
+
+// Faixas do rank de cargas (kg; minutos pro cardio). Também podem vir do rotina.json ("faixas").
+const FAIXAS_PADRAO = {
+  'supino inclinado com halteres': [20, 30, 42],
+  'leg press': [200, 300, 400, 500, 600],
+  'supino reto com barra': [40, 60, 80, 100],
+  'agachamento livre': [40, 60, 80, 100, 120],
+  'puxada alta': [40, 55, 70, 85],
+  'remada curvada': [40, 60, 80, 100],
+  'stiff com barra': [40, 60, 80, 100],
+  'desenvolvimento com halteres': [12, 18, 24, 30],
+  'rosca direta': [20, 30, 40, 50],
+  'agachamento hack': [60, 100, 140, 180],
+  'cadeira extensora': [40, 60, 80, 100],
+  'esteira': [20, 30, 45, 60]
+};
+const FAIXA_NOMES = ['Iniciante', 'Bronze', 'Prata', 'Ouro', 'Diamante', 'Elite'];
+const FAIXA_ICONES = ['·', '🥉', '🥈', '🥇', '💎', '👑'];
+
+// Nível geral: XP acumulado com sessões, recordes e semanas cheias.
+const NIVEIS = ['Iniciante', 'Novato', 'Regular', 'Dedicado', 'Forte', 'Veterano', 'Monstro', 'Máquina', 'Lenda'];
+const XP = { sessao: 10, sessaoCheia: 5, recorde: 25, semanaCheia: 30 };
+function xpDoNivel(n) { return 100 * n * (n - 1) / 2; } // nv1 = 0, nv2 = 100, nv3 = 300, nv4 = 600...
+function nomeNivel(n) { return n <= NIVEIS.length ? NIVEIS[n - 1] : 'Lenda ' + (n - NIVEIS.length + 1); }
+
+// Anilhas que a academia tem (por lado). Ajustável em ⚙.
+const ANILHAS_OPCOES = [25, 20, 15, 10, 5, 3, 2.5, 2, 1.25, 1];
+const ANILHAS_PADRAO = [25, 20, 15, 10, 5, 2.5, 1.25];
+
+// procura por nome normalizado: chave exata, depois chave contida no nome
+function acharPorNome(tabela, nome) {
+  const k = normNome(nome);
+  if (tabela[k]) return tabela[k];
+  const chaves = Object.keys(tabela).filter(c => k.includes(c)).sort((a, b) => b.length - a.length);
+  return chaves.length ? tabela[chaves[0]] : null;
+}
+function exercicioPorNome(nome) {
+  const k = normNome(nome);
+  const ids = Object.keys(mapEx || {});
+  for (const id of ids) if (normNome(mapEx[id].nome) === k) return mapEx[id];
+  return null;
+}
+function imgDe(ex) {
+  if (!ex) return null;
+  if (ex.img) return ex.img;
+  return acharPorNome(IMG_PADRAO, ex.nome);
+}
+function imgDeNome(nome) {
+  const ex = exercicioPorNome(nome);
+  if (ex) { if (ex.imgs && ex.imgs[nome]) return ex.imgs[nome]; if (ex.img) return ex.img; }
+  return acharPorNome(IMG_PADRAO, nome);
+}
+function faixasDe(nome) {
+  const ex = exercicioPorNome(nome);
+  if (ex && Array.isArray(ex.faixas) && ex.faixas.length) return ex.faixas.slice().sort((a, b) => a - b);
+  const f = acharPorNome(FAIXAS_PADRAO, nome);
+  return f ? f.slice().sort((a, b) => a - b) : null;
+}
+function nivelCarga(valor, faixas) {
+  let idx = 0;
+  faixas.forEach(f => { if (valor != null && valor >= f) idx++; });
+  const nomeIdx = Math.min(idx, FAIXA_NOMES.length - 1);
+  const prox = idx < faixas.length ? faixas[idx] : null;
+  const ant = idx > 0 ? faixas[idx - 1] : 0;
+  const pct = prox != null ? Math.max(0, Math.min(100, Math.round(((valor || 0) - ant) / (prox - ant) * 100))) : 100;
+  return { idx, nome: FAIXA_NOMES[nomeIdx], icone: FAIXA_ICONES[nomeIdx], prox, proxNome: prox != null ? FAIXA_NOMES[Math.min(idx + 1, FAIXA_NOMES.length - 1)] : null, pct };
+}
+
+// ---- anilhas por lado ----
+function anilhasDisponiveis() {
+  const a = ler(LSK.anilhas);
+  return Array.isArray(a) && a.length ? a.slice().sort((x, y) => y - x) : ANILHAS_PADRAO.slice();
+}
+function usaAnilhas(ex) {
+  if (!ex || ex.cardio) return false;
+  if (typeof ex.anilhas === 'boolean') return ex.anilhas;
+  const k = normNome(ex.nome);
+  if (/halter|barra fixa|cabo|polia|maquina|cadeira|corda/.test(k)) return false;
+  return /barra|leg press|hack/.test(k);
+}
+function baseDe(ex) {
+  if (ex && typeof ex.base === 'number') return ex.base;
+  const k = normNome(ex ? ex.nome : '');
+  return /leg press|hack/.test(k) ? 0 : 20; // sled: só as anilhas; barra olímpica: 20 kg
+}
+function anilhasPorLado(total, base) {
+  const disp = anilhasDisponiveis();
+  let resto = (total - base) / 2;
+  if (total == null || isNaN(total)) return null;
+  if (resto < -1e-9) return { ok: false, usadas: [], falta: 0, abaixo: true };
+  const usadas = [];
+  disp.forEach(a => { while (resto >= a - 1e-9) { usadas.push(a); resto -= a; } });
+  return { ok: resto < 1e-9, usadas, falta: Math.round(resto * 100) / 100, abaixo: false };
+}
+function textoAnilhas(total, ex) {
+  const base = baseDe(ex);
+  const r = anilhasPorLado(total, base);
+  if (!r) return '';
+  if (r.abaixo) return 'abaixo do peso da barra (' + fmtNum(base) + ' kg)';
+  const lista = r.usadas.length ? r.usadas.map(fmtNum).join(' + ') : (base ? 'só a barra' : 'sem anilha');
+  const pref = base ? 'por lado: ' : 'por lado: ';
+  return pref + lista + (r.ok ? '' : ' · sobram ' + fmtNum(r.falta) + ' kg que não fecham com as anilhas de ⚙');
+}
+
+// ---- nível / XP / forma ----
+function blocosDoEx(x) {
+  return Array.isArray(x.componentes) && x.componentes.length
+    ? x.componentes.map(c => ({ nome: c.nome, series: c.series }))
+    : [{ nome: x.nome, series: x.series }];
+}
+function calcularRank(diarioP) {
+  const sess = (diarioP || []).slice().sort((a, b) => new Date(a.data) - new Date(b.data));
+  let xp = 0, prs = 0;
+  const melhor = {}, porSemana = {};
+  sess.forEach(s => {
+    let anotados = 0;
+    (s.exercicios || []).forEach(x => {
+      if (x.cardio) {
+        const c = x.sessao || {};
+        if (c.min == null && c.km == null) return;
+        anotados++;
+        const k = normNome(x.nome), m = melhor[k] || (melhor[k] = {});
+        let pr = false;
+        if (c.min != null) { if (m.min != null && c.min > m.min) pr = true; if (m.min == null || c.min > m.min) m.min = c.min; }
+        if (c.km != null) { if (m.km != null && c.km > m.km) pr = true; if (m.km == null || c.km > m.km) m.km = c.km; }
+        if (pr) { xp += XP.recorde; prs++; }
+        return;
+      }
+      blocosDoEx(x).forEach(b => {
+        const st = statsSeries(b.series);
+        if (!st.temPeso) return;
+        anotados++;
+        const k = normNome(b.nome), m = melhor[k] || (melhor[k] = {});
+        if (m.carga == null) m.carga = st.max;
+        else if (st.max > m.carga) { m.carga = st.max; xp += XP.recorde; prs++; }
+      });
+    });
+    if (!anotados) return;
+    xp += XP.sessao;
+    if (anotados >= 4) xp += XP.sessaoCheia;
+    const wk = semanaKey(new Date(s.data));
+    porSemana[wk] = (porSemana[wk] || 0) + 1;
+  });
+  let semanasCheias = 0;
+  Object.keys(porSemana).forEach(k => { if (porSemana[k] >= 4) { xp += XP.semanaCheia; semanasCheias++; } });
+
+  let nivel = 1;
+  while (xpDoNivel(nivel + 1) <= xp) nivel++;
+  const xpBase = xpDoNivel(nivel), xpProx = xpDoNivel(nivel + 1);
+  const pctNivel = Math.round((xp - xpBase) / (xpProx - xpBase) * 100);
+
+  // forma = constância (4 semanas) + progressão de carga (8 semanas)
+  const agora = Date.now();
+  const diasPlanejados = (rotina.dias || []).filter(d => !d.descanso).length || 5;
+  const em4 = sess.filter(s => agora - new Date(s.data) <= 28 * 86400000 && (s.exercicios || []).length);
+  const constancia = Math.min(100, Math.round(em4.length / (4 * diasPlanejados) * 100));
+  const prim = {}, ult = {}, cont = {};
+  sess.filter(s => agora - new Date(s.data) <= 56 * 86400000).forEach(s => (s.exercicios || []).forEach(x => {
+    if (x.cardio) {
+      const c = x.sessao || {}; if (c.min == null) return;
+      const k = normNome(x.nome); if (prim[k] == null) prim[k] = c.min; ult[k] = c.min; cont[k] = (cont[k] || 0) + 1;
+      return;
+    }
+    blocosDoEx(x).forEach(b => {
+      const st = statsSeries(b.series); if (!st.temPeso) return;
+      const k = normNome(b.nome); if (prim[k] == null) prim[k] = st.max; ult[k] = st.max; cont[k] = (cont[k] || 0) + 1;
+    });
+  }));
+  const vars = Object.keys(prim).filter(k => cont[k] >= 2 && prim[k] > 0).map(k => (ult[k] - prim[k]) / prim[k] * 100);
+  const progressao = vars.length ? Math.max(0, Math.min(100, Math.round(50 + (vars.reduce((a, b) => a + b, 0) / vars.length) * 5))) : null;
+  const forma = progressao == null ? constancia : Math.round(constancia * 0.6 + progressao * 0.4);
+
+  return { xp, nivel, nome: nomeNivel(nivel), xpBase, xpProx, pctNivel, prs, semanasCheias, constancia, progressao, forma, sessoes: sess.length };
+}
+
+// recordes desta sessão comparados a tudo que veio antes dela
+function recordesDaSessao(s) {
+  if (!s) return [];
+  const antes = (diario || []).filter(x => x.id !== s.id && new Date(x.data) < new Date(s.data));
+  const out = [];
+  (s.exercicios || []).forEach(x => {
+    if (x.cardio) {
+      const c = x.sessao || {};
+      const mMin = melhorDe(antes, x.nome, 'min'), mKm = melhorDe(antes, x.nome, 'km');
+      if ((c.min != null && mMin != null && c.min > mMin) || (c.km != null && mKm != null && c.km > mKm)) out.push({ nome: x.nome, txt: cardioTexto(c) });
+      return;
+    }
+    blocosDoEx(x).forEach(b => {
+      const st = statsSeries(b.series); if (!st.temPeso) return;
+      const m = melhorDe(antes, b.nome);
+      if (m != null && st.max > m) out.push({ nome: b.nome, txt: fmtNum(st.max) + ' kg (antes ' + fmtNum(m) + ')' });
+    });
+  });
+  return out;
+}
+function avisarRecordes(s) {
+  if (!s) return;
+  const novos = recordesDaSessao(s);
+  const ja = s.recordesAvisados || [];
+  const ineditos = novos.filter(r => ja.indexOf(r.nome) < 0);
+  if (ineditos.length) {
+    toast('🏆 Recorde! ' + ineditos.map(r => r.nome + ' ' + r.txt).join(' · ') + ' · +' + (XP.recorde * ineditos.length) + ' XP');
+    s.recordesAvisados = ja.concat(ineditos.map(r => r.nome));
+    salvarDiario();
+  }
+}
+
+function renderCfgAnilhas() {
+  const box = el('cfg-anilhas');
+  if (!box) return;
+  const atual = anilhasDisponiveis();
+  box.innerHTML = ANILHAS_OPCOES.map(a =>
+    `<button class="cfg-opt chip-anilha${atual.indexOf(a) >= 0 ? ' cfg-on' : ''}" data-anilha="${a}">${fmtNum(a)}</button>`).join('');
+}
 
 function ler(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
 function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -1272,8 +1587,10 @@ function exHTML(ex) {
     corpo = serieRowsHTML(ex.id, ex.series, a, d.hoje ? d.hoje.series : null, d.ult ? d.ult.series : null);
   }
 
+  const img = imgDe(ex);
   return `<div class="exercise${ex.destaque ? ' highlight' : ''}${done ? ' ex-done' : ''}" id="ex-${ex.id}" data-exid="${ex.id}">
-    <div class="ex-top">
+    <div class="ex-top${img ? ' com-img' : ''}">
+      ${img ? `<img class="ex-thumb" src="${IMG_BASE}${esc(img)}/0.jpg" loading="lazy" crossorigin="anonymous" alt="" data-img="${esc(img)}" data-nome="${esc(ex.nome)}" data-nota="${esc(ex.nota || '')}">` : ''}
       <div><div class="ex-name">${esc(ex.nome)}</div>${ex.nota ? `<div class="ex-note">${esc(ex.nota)}</div>` : ''}</div>
       <div class="ex-sets-display">${ex.series}×</div>
       <div class="ex-reps">${esc(ex.reps)}</div>
@@ -1330,11 +1647,12 @@ function renderPerfilChips() {
   const travado = perfilTravado();
   const lista = travado ? perfis.filter(p => p.id === perfilAtivo) : perfis;
   el('perfil-bar').innerHTML = lista.map(p => {
-    const d = p.id === perfilAtivo ? { pesos } : dadosDe(p.id);
+    const d = p.id === perfilAtivo ? { pesos, diario } : dadosDe(p.id);
     const ult = (d.pesos || [])[0];
     const pesoAtual = ult ? ult.peso : p.peso;
+    const rk = calcularRank(d.diario);
     return `<button class="perfil-btn${p.id === perfilAtivo ? ' pf-on' : ''}" data-perfil="${esc(p.id)}">
-      ${travado ? '🔒 ' : ''}${esc(p.nome)}<span class="pb-sub">${pesoAtual != null ? fmtNum(pesoAtual) + ' kg' : 'sem peso'}</span>
+      ${travado ? '🔒 ' : ''}${esc(p.nome)}<span class="pb-sub">${pesoAtual != null ? fmtNum(pesoAtual) + ' kg' : 'sem peso'} · nv ${rk.nivel} ${esc(rk.nome)}</span>
     </button>`;
   }).join('') + (travado ? '' : '<div class="pf-aviso">quem vai usar este aparelho?</div>');
 }
@@ -1539,6 +1857,7 @@ function salvarSessaoDoDia(diaId, avisar) {
     calSel = dateKey(agora);
   }
   salvarDiario();
+  avisarRecordes(sessaoDeHoje(diaId));
   renderCalendario();
   renderEvolucao();
   if (avisar) toast('Anotado ✓');
@@ -2188,13 +2507,30 @@ function renderEvolucao() {
     </div>`;
   }
 
+  // faixa do rank (bronze / prata / ouro...) do exercício selecionado
+  let rankHTML = '';
+  if (evModo === 'carga' || evModo === 'min') {
+    const fx = faixasDe(cur.nome);
+    if (fx) {
+      const melhor = Math.max.apply(null, pts.map(p => p[evModo]));
+      const nv = nivelCarga(melhor, fx);
+      const un = evModo === 'carga' ? 'kg' : 'min';
+      rankHTML = `<div class="ev-rank">
+        <span class="rk-badge t${nv.idx}">${nv.icone} ${esc(nv.nome.toUpperCase())}</span>
+        <span class="ev-rank-txt">${nv.prox != null
+          ? 'próximo: ' + esc(nv.proxNome) + ' a ' + fmtNum(nv.prox) + ' ' + un + ' · faltam ' + fmtNum(nv.prox - melhor) + ' ' + un
+          : 'topo da faixa — ' + fx.map(fmtNum).join(' · ') + ' ' + un}</span>
+      </div>`;
+    }
+  }
+
   body.innerHTML = chartSVG(pts, evModo, evPonto) + `
     <div class="ev-stats">
       <div class="ev-stat"><div class="es-r">Atual</div><div class="es-v">${esc(fmtVal(atual, evModo))}</div></div>
       <div class="ev-stat"><div class="es-r">Recorde</div><div class="es-v">${esc(fmtVal(recorde, evModo))}</div></div>
       <div class="ev-stat"><div class="es-r">Evolução</div><div class="es-v ${clsD}">${delta > 0 ? '+' : ''}${esc(fmtVal(delta, evModo))}${vals[0] ? ` <span style="font-size:12px">(${pctD > 0 ? '+' : ''}${pctD}%)</span>` : ''}</div></div>
       <div class="ev-stat"><div class="es-r">Sessões</div><div class="es-v">${pts.length}</div></div>
-    </div>` + metaHTML;
+    </div>` + metaHTML + rankHTML;
   renderEvPonto(pts);
 }
 
@@ -2646,9 +2982,56 @@ function renderDupla() {
     const d = new Date(iso);
     return pad2(d.getHours()) + ':' + pad2(d.getMinutes());
   };
+  // ---- NÍVEL: XP, forma, constância e progressão de cada um ----
+  const ranks = resumos.map(r => ({ r, rk: calcularRank(r.dados.diario) }));
+  const nivelCards = ranks.map(({ r, rk }) => `<div class="dp-card${r.p.id === perfilAtivo ? ' dp-on' : ''}">
+      <div class="dp-nome">${esc(r.p.nome)}</div>
+      <div class="nv-big">NV ${rk.nivel} · ${esc(rk.nome.toUpperCase())}</div>
+      <div class="nv-xp">${rk.xp} XP · faltam ${rk.xpProx - rk.xp} pro nível ${rk.nivel + 1}</div>
+      <div class="goal-track"><div class="goal-fill" style="width:${rk.pctNivel}%"></div></div>
+      <div class="dp-l" style="margin-top:8px">Forma (4 sem) <b class="${rk.forma >= 70 ? 'up' : (rk.forma < 40 ? 'down' : '')}">${rk.forma}%</b></div>
+      <div class="dp-l">Constância <b>${rk.constancia}%</b></div>
+      <div class="dp-l">Progressão <b>${rk.progressao == null ? '—' : rk.progressao + '%'}</b></div>
+      <div class="dp-l">Recordes <b>${rk.prs}</b></div>
+      <div class="dp-l">Semanas cheias (4+) <b>${rk.semanasCheias}</b></div>
+    </div>`).join('');
+  let lideres = '';
+  if (ranks.length === 2 && ranks.every(x => x.rk.sessoes)) {
+    const [a, b] = ranks;
+    const porXp = a.rk.xp === b.rk.xp ? null : (a.rk.xp > b.rk.xp ? a : b);
+    const porForma = a.rk.forma === b.rk.forma ? null : (a.rk.forma > b.rk.forma ? a : b);
+    lideres = `<div class="tip"><strong>Nível:</strong> ${porXp ? esc(porXp.r.p.nome) + ' lidera com ' + Math.abs(a.rk.xp - b.rk.xp) + ' XP a mais' : 'empate'}.
+      <strong>Forma:</strong> ${porForma ? esc(porForma.r.p.nome) + ' está melhor nas últimas 4 semanas' : 'empate'}.</div>`;
+  }
+
+  // ---- RANK DE CARGAS: faixa de cada um nos exercícios-chave ----
+  const vistos = new Set();
+  const alvos = [];
+  const addAlvo = (nome, cardio) => { const k = normNome(nome); if (vistos.has(k)) return; vistos.add(k); if (faixasDe(nome)) alvos.push({ nome, k, cardio: !!cardio }); };
+  (rotina.dias || []).forEach(d => (d.secoes || []).forEach(s => (s.exercicios || []).forEach(x => addAlvo(x.nome, x.cardio))));
+  (rotina.extras || []).forEach(e => (e.exercicios || []).forEach(x => addAlvo(x.nome, x.cardio)));
+  const linhasRank = alvos.map(a => {
+    const cels = resumos.map(r => {
+      const v = melhorDe(r.dados.diario, a.nome, a.cardio ? 'min' : undefined);
+      if (v == null) return `<span class="rk-cel rk-vazio">—</span>`;
+      const nv = nivelCarga(v, faixasDe(a.nome));
+      return `<span class="rk-cel t${nv.idx}">${nv.icone} ${fmtNum(v)} ${a.cardio ? 'min' : 'kg'}<small>${esc(nv.nome)}</small></span>`;
+    });
+    if (cels.every(c => c.indexOf('rk-vazio') >= 0)) return '';
+    return `<div class="rk-row"><span class="rk-ex">${esc(a.nome)}<small>${faixasDe(a.nome).map(fmtNum).join(' · ')}</small></span>${cels.join('')}</div>`;
+  }).filter(Boolean).join('');
+  const rankHTML = linhasRank
+    ? `<div class="dp-sec">RANK DE CARGAS</div>
+       <div class="rk-tabela">
+         <div class="rk-row rk-head"><span>Exercício</span>${resumos.map(r => `<span>${esc(r.p.nome)}</span>`).join('')}</div>
+         ${linhasRank}
+       </div>
+       <div class="dp-legenda" style="margin-top:8px">🥉 bronze · 🥈 prata · 🥇 ouro · 💎 diamante · 👑 elite — faixas em kg (esteira em min)</div>`
+    : '';
+
   const topo = `<div class="dp-topo">
     <div>
-      <div class="dp-sec" style="margin:0">COMPARATIVO</div>
+      <div class="dp-sec" style="margin:0">NÍVEL</div>
       <div class="dp-status">${syncAtivo()
         ? 'sincronizado · recebido ' + quando(st.leitura)
         : 'sincronização desligada — ⚙ Ajustes'}</div>
@@ -2656,8 +3039,63 @@ function renderDupla() {
     <button class="as-btn" data-sync-dupla>⟳ Atualizar</button>
   </div>`;
 
-  body.innerHTML = topo + `<div class="dupla-grid">${cards}</div>${placar}`;
+  body.innerHTML = topo + `<div class="dupla-grid">${nivelCards}</div>${lideres}` + rankHTML +
+    `<div class="dp-sec">COMPARATIVO</div><div class="dupla-grid">${cards}</div>${placar}`;
 }
+
+// =====================================================================
+// FIGURAS (lightbox) + DICA DE ANILHAS + AJUSTE DAS ANILHAS
+// =====================================================================
+el('week').addEventListener('click', e => {
+  const t = e.target.closest('.ex-thumb');
+  if (!t) return;
+  abrirFigura(t.dataset.img, t.dataset.nome, t.dataset.nota);
+});
+function abrirFigura(img, nome, nota) {
+  if (!img) return;
+  el('lb-titulo').textContent = nome || '';
+  el('lb-nota').textContent = nota || '';
+  el('lb-img0').src = IMG_BASE + img + '/0.jpg';
+  el('lb-img1').src = IMG_BASE + img + '/1.jpg';
+  el('lightbox').hidden = false;
+}
+el('lb-fechar').addEventListener('click', () => { el('lightbox').hidden = true; });
+el('lightbox').addEventListener('click', e => { if (e.target === el('lightbox')) el('lightbox').hidden = true; });
+
+// tocou no campo de kg de um exercício com barra → mostra as anilhas por lado
+function atualizarDicaAnilhas(input) {
+  const exEl = input.closest('[data-exid]');
+  const block = input.closest('.set-block');
+  if (!exEl || !block) return;
+  const ex = mapEx[exEl.dataset.exid];
+  if (!usaAnilhas(ex)) return;
+  exEl.querySelectorAll('.sr-anilhas').forEach(n => { if (!block.contains(n)) n.remove(); });
+  let dica = block.querySelector('.sr-anilhas');
+  if (!dica) {
+    dica = document.createElement('div');
+    dica.className = 'sr-anilhas';
+    block.querySelector('.sr-row').insertAdjacentElement('afterend', dica);
+  }
+  const v = numOuNull(input.value, false) != null ? numOuNull(input.value, false) : numOuNull(input.placeholder, false);
+  dica.textContent = v == null ? 'digita o peso total pra ver as anilhas por lado' : '🏋 ' + textoAnilhas(v, ex);
+}
+el('week').addEventListener('focusin', e => {
+  if (e.target.classList && e.target.classList.contains('in-peso')) atualizarDicaAnilhas(e.target);
+});
+el('week').addEventListener('input', e => {
+  if (e.target.classList && e.target.classList.contains('in-peso')) atualizarDicaAnilhas(e.target);
+});
+
+el('cfg-anilhas').addEventListener('click', e => {
+  const b = e.target.closest('[data-anilha]');
+  if (!b) return;
+  const a = +b.dataset.anilha;
+  let atual = anilhasDisponiveis();
+  atual = atual.indexOf(a) >= 0 ? atual.filter(x => x !== a) : atual.concat([a]);
+  if (!atual.length) { toast('Deixa pelo menos uma anilha'); return; }
+  gravar(LSK.anilhas, atual.sort((x, y) => y - x));
+  renderCfgAnilhas();
+});
 
 el('dupla-body').addEventListener('click', async e => {
   if (!e.target.closest('[data-sync-dupla]')) return;
@@ -3119,6 +3557,7 @@ renderPesoCard();
 renderDupla();
 renderCfgAuto();
 renderCfgPerfil();
+renderCfgAnilhas();
 renderSyncStatus();
 if (syncAtivo()) { syncBaixar(true); syncEnviar(true); }
 verificarSessaoAuto();
