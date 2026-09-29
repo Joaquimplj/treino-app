@@ -662,7 +662,7 @@
   .ev-rank { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
   .ev-rank-txt { font-size: 12px; color: var(--muted); }
   .rk-tabela { background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-  .rk-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 8px; align-items: center; padding: 10px 12px; border-bottom: 1px dashed #1e1e1e; }
+  .rk-row { display: grid; grid-template-columns: 1.4fr repeat(var(--n, 2), 1fr); gap: 8px; align-items: center; padding: 10px 12px; border-bottom: 1px dashed #1e1e1e; }
   .rk-row:last-child { border-bottom: none; }
   .rk-head { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); background: var(--surface); border-bottom: 1px solid var(--border); }
   .rk-ex { font-size: 12px; color: var(--text); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
@@ -671,7 +671,7 @@
   .rk-cel.rk-vazio { color: #333; }
   @media (max-width: 340px) {
     .dupla-grid { grid-template-columns: 1fr; }
-    .rk-row { grid-template-columns: 1.2fr 1fr 1fr; padding: 10px 8px; gap: 6px; }
+    .rk-row { grid-template-columns: 1.2fr repeat(var(--n, 2), 1fr); padding: 10px 8px; gap: 6px; }
   }
 
   /* ===== TOAST ===== */
@@ -1041,7 +1041,9 @@ const LSK = {
 // prog/diario/pesos/sessaoAuto ficam em chaves com sufixo "__<perfil>".
 const PERFIS_PADRAO = [
   { id: 'joaquim', nome: 'JOAQUIM', peso: 80, altura: 1.70, meta: '600 kg Leg Press', metaPeso: null },
-  { id: 'igor', nome: 'IGOR', peso: null, altura: null, meta: 'Emagrecer', metaPeso: null }
+  { id: 'igor', nome: 'IGOR', peso: null, altura: null, meta: 'Emagrecer', metaPeso: null },
+  { id: 'vanderley', nome: 'VANDERLEY', peso: null, altura: null, meta: '', metaPeso: null },
+  { id: 'samuel', nome: 'SAMUEL', peso: null, altura: null, meta: '', metaPeso: null }
 ];
 
 // Chaves do projeto Firebase da dupla — não é segredo: quem protege os dados
@@ -2965,15 +2967,13 @@ function renderDupla() {
 
   // quem treinou mais neste mês
   let placar = '';
-  if (resumos.length === 2 && resumos.every(r => r.sess.length)) {
-    const [a, b] = resumos;
-    if (a.mesAtual !== b.mesAtual) {
-      const lider = a.mesAtual > b.mesAtual ? a : b;
-      const outro = a.mesAtual > b.mesAtual ? b : a;
-      placar = `<div class="tip"><strong>${esc(lider.p.nome)}</strong> está com ${lider.mesAtual - outro.mesAtual} treino(s) a mais neste mês.</div>`;
-    } else if (a.mesAtual) {
-      placar = `<div class="tip"><strong>Empate:</strong> ${a.mesAtual} treinos cada um neste mês.</div>`;
-    }
+  const ativosMes = resumos.filter(r => r.sess.length);
+  if (ativosMes.length >= 2) {
+    const ord = ativosMes.slice().sort((a, b) => b.mesAtual - a.mesAtual);
+    if (ord[0].mesAtual && ord[0].mesAtual > ord[1].mesAtual)
+      placar = `<div class="tip"><strong>${esc(ord[0].p.nome)}</strong> lidera o mês com ${ord[0].mesAtual} treinos (${ord[0].mesAtual - ord[1].mesAtual} a mais que ${esc(ord[1].p.nome)}).</div>`;
+    else if (ord[0].mesAtual)
+      placar = `<div class="tip"><strong>Empate no topo:</strong> ${ord[0].mesAtual} treinos neste mês.</div>`;
   }
 
   const st = syncStatus();
@@ -2996,12 +2996,12 @@ function renderDupla() {
       <div class="dp-l">Semanas cheias (4+) <b>${rk.semanasCheias}</b></div>
     </div>`).join('');
   let lideres = '';
-  if (ranks.length === 2 && ranks.every(x => x.rk.sessoes)) {
-    const [a, b] = ranks;
-    const porXp = a.rk.xp === b.rk.xp ? null : (a.rk.xp > b.rk.xp ? a : b);
-    const porForma = a.rk.forma === b.rk.forma ? null : (a.rk.forma > b.rk.forma ? a : b);
-    lideres = `<div class="tip"><strong>Nível:</strong> ${porXp ? esc(porXp.r.p.nome) + ' lidera com ' + Math.abs(a.rk.xp - b.rk.xp) + ' XP a mais' : 'empate'}.
-      <strong>Forma:</strong> ${porForma ? esc(porForma.r.p.nome) + ' está melhor nas últimas 4 semanas' : 'empate'}.</div>`;
+  const ativos = ranks.filter(x => x.rk.sessoes);
+  if (ativos.length >= 2) {
+    const porXp = ativos.slice().sort((a, b) => b.rk.xp - a.rk.xp);
+    const porForma = ativos.slice().sort((a, b) => b.rk.forma - a.rk.forma);
+    lideres = `<div class="tip"><strong>Ranking de nível:</strong> ${porXp.map((x, i) => (i + 1) + 'º ' + esc(x.r.p.nome) + ' (' + x.rk.xp + ' XP)').join(' · ')}.
+      <strong>Melhor forma:</strong> ${esc(porForma[0].r.p.nome)} (${porForma[0].rk.forma}%).</div>`;
   }
 
   // ---- RANK DE CARGAS: faixa de cada um nos exercícios-chave ----
@@ -3022,7 +3022,7 @@ function renderDupla() {
   }).filter(Boolean).join('');
   const rankHTML = linhasRank
     ? `<div class="dp-sec">RANK DE CARGAS</div>
-       <div class="rk-tabela">
+       <div class="rk-tabela" style="--n:${resumos.length}">
          <div class="rk-row rk-head"><span>Exercício</span>${resumos.map(r => `<span>${esc(r.p.nome)}</span>`).join('')}</div>
          ${linhasRank}
        </div>
