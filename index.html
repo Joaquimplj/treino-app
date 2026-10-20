@@ -1764,6 +1764,8 @@ el('perfil-bar').addEventListener('click', e => {
   gravar(LSK.perfilTravado, true);
   if (id === perfilAtivo) { renderPerfilChips(); renderCfgPerfil(); toast('Perfil travado: ' + alvo.nome); }
   else trocarPerfil(id);
+  // escolheu o nome: já entra no grupo (baixa os outros e traz o próprio histórico)
+  if (syncAtivo()) syncBaixar(true).then(() => syncEnviar(true));
 });
 
 function renderCfgPerfil() {
@@ -2836,8 +2838,14 @@ el('peso-body').addEventListener('click', e => {
 // Cada pessoa grava só o próprio perfil em duplas/<sala>/perfis/<perfil>,
 // e lê o do outro. Sem conflito: ninguém escreve no documento alheio.
 // =====================================================================
-function syncCfg() { return ler(LSK.sync) || null; }
-function syncAtivo() { const c = syncCfg(); return !!(c && c.ativo && c.apiKey && c.projectId && c.sala); }
+// Sem configuração salva, o app já entra no grupo padrão (ninguém precisa digitar código).
+// Quem desligar em ⚙ fica salvo com ativo:false e é respeitado.
+const SALA_PADRAO = 'f3h5w7tijiz44e';
+function syncCfg() {
+  return ler(LSK.sync) || { apiKey: FIREBASE_CFG_PADRAO.apiKey, projectId: FIREBASE_CFG_PADRAO.projectId, sala: SALA_PADRAO, ativo: true };
+}
+// só sincroniza depois que a pessoa escolheu o próprio nome neste aparelho
+function syncAtivo() { const c = syncCfg(); return !!(c && c.ativo && c.apiKey && c.projectId && c.sala && perfilTravado()); }
 function syncStatus() { return ler(LSK.syncSt) || {}; }
 function gravarSyncStatus(o) { gravar(LSK.syncSt, Object.assign(syncStatus(), o)); }
 
@@ -2975,7 +2983,12 @@ function renderSyncStatus() {
   const t = el('cfg-sync-status');
   if (!t) return;
   const st = syncStatus();
-  if (!syncAtivo()) { t.textContent = 'Desligada — cada celular guarda só os próprios treinos.'; return; }
+  if (!syncAtivo()) {
+    t.textContent = (syncCfg().ativo && !perfilTravado())
+      ? 'Liga sozinha quando você escolher seu nome no topo da tela.'
+      : 'Desligada — cada celular guarda só os próprios treinos.';
+    return;
+  }
   const c = syncCfg();
   const fmtQuando = iso => {
     if (!iso) return 'nunca';
