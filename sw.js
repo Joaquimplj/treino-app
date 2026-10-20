@@ -1,7 +1,7 @@
 // Service worker — app de treino
 // Shell (index.html) e rotina.json: NETWORK-FIRST (sempre pega a versao nova online,
 // cai pro cache só offline). Demais assets: cache-first (rapido + offline).
-const CACHE = 'treino-v25';
+const CACHE = 'treino-v26';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -52,7 +52,8 @@ self.addEventListener('fetch', e => {
   // resto: cache primeiro, rede como fallback (e abastece o cache)
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then(hit =>
-      hit ||
+      // resposta opaca (no-cors) não serve pra pedido cors: o navegador recusa e a imagem quebra
+      (hit && !(hit.type === 'opaque' && e.request.mode === 'cors') ? hit : null) ||
       fetch(e.request).then(r => {
         if ((mesmaOrigem || url.hostname === 'raw.githubusercontent.com') && (r.ok || r.type === 'opaque')) {
           const cp = r.clone();

@@ -921,7 +921,7 @@
   <div class="modal-box lb-box">
     <h2 id="lb-titulo">—</h2>
     <div class="modal-sub">início · fim do movimento</div>
-    <div class="lb-imgs"><img id="lb-img0" alt="início" crossorigin="anonymous"><img id="lb-img1" alt="fim" crossorigin="anonymous"></div>
+    <div class="lb-imgs"><img id="lb-img0" alt="início"><img id="lb-img1" alt="fim"></div>
     <p class="lb-nota" id="lb-nota"></p>
     <div class="lb-credito">fotos: free-exercise-db (domínio público)</div>
     <button class="btn-sec" id="lb-fechar" style="margin-top:14px;text-align:center">Fechar</button>
@@ -1702,7 +1702,7 @@ function exHTML(ex) {
   const img = imgDe(ex);
   return `<div class="exercise${ex.destaque ? ' highlight' : ''}${done ? ' ex-done' : ''}" id="ex-${ex.id}" data-exid="${ex.id}">
     <div class="ex-top${img ? ' com-img' : ''}">
-      ${img ? `<img class="ex-thumb" src="${IMG_BASE}${esc(img)}/0.jpg" loading="lazy" crossorigin="anonymous" alt="" data-img="${esc(img)}" data-nome="${esc(ex.nome)}" data-nota="${esc(ex.nota || '')}">` : ''}
+      ${img ? `<img class="ex-thumb" src="${IMG_BASE}${esc(img)}/0.jpg" loading="lazy" alt="" data-img="${esc(img)}" data-nome="${esc(ex.nome)}" data-nota="${esc(ex.nota || '')}">` : ''}
       <div><div class="ex-name">${esc(ex.nome)}</div>${ex.nota ? `<div class="ex-note">${esc(ex.nota)}</div>` : ''}</div>
       <div class="ex-dir">
         ${opcoesDe(ex._orig ? ex._orig.id : ex.id).length ? `<button type="button" class="ex-trocar${ex._orig ? ' trocado' : ''}" data-trocar="${esc(ex._orig ? ex._orig.id : ex.id)}" title="Trocar por uma variação">⇄ TROCAR</button>` : ''}
@@ -3312,11 +3312,23 @@ function abrirFigura(img, nome, nota) {
   if (!img) return;
   el('lb-titulo').textContent = nome || '';
   el('lb-nota').textContent = nota || '';
-  el('lb-img0').src = IMG_BASE + img + '/0.jpg';
-  el('lb-img1').src = IMG_BASE + img + '/1.jpg';
+  ['lb-img0', 'lb-img1'].forEach((id, n) => {
+    const im = el(id);
+    delete im.dataset.tentou; im.style.visibility = ''; // a mesma <img> é reaproveitada a cada abertura
+    im.src = IMG_BASE + img + '/' + n + '.jpg';
+  });
   el('lightbox').hidden = false;
 }
 el('lb-fechar').addEventListener('click', () => { el('lightbox').hidden = true; });
+
+// foto de exercício que não carregou: tenta a outra pose; se não der, esconde em vez de mostrar imagem quebrada
+document.addEventListener('error', e => {
+  const im = e.target;
+  if (!im || im.tagName !== 'IMG' || !String(im.src).startsWith(IMG_BASE)) return;
+  if (/\/0\.jpg$/.test(im.src) && !im.dataset.tentou) { im.dataset.tentou = '1'; im.src = im.src.replace(/0\.jpg$/, '1.jpg'); return; }
+  if (/\/1\.jpg$/.test(im.src) && !im.dataset.tentou) { im.dataset.tentou = '1'; im.src = im.src.replace(/1\.jpg$/, '0.jpg'); return; }
+  im.style.visibility = 'hidden';
+}, true);
 
 // ---- galeria de variações ----
 let glExId = null;
