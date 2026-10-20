@@ -235,15 +235,13 @@ carregadas da internet na primeira vez e guardadas no cache pra funcionar offlin
   ex: `"img": "Leg_Press"`). Superset usa `"imgs": { "Rosca Direta": "Barbell_Curl", ... }`.
 - Sem `img`, o app tenta achar pelo nome do exercício.
 
-## Anilhas por lado
+## Peso de cada lado
 
 Nos exercícios com barra, leg press e hack, ao tocar no campo de **kg** aparece embaixo
-da série quais anilhas colocar **de cada lado** (ex: `250 kg → 25 + 25 + 25 + 25 + 25`).
-O peso anotado é **só o das anilhas, sem a barra** (80 kg = 40 de cada lado). Se o peso não fecha com
-as anilhas da academia, ele avisa quanto sobra.
+da série o peso que vai **de cada lado** (ex: `80 kg → 40 kg de cada lado`).
+O peso anotado é **só o das anilhas, sem a barra**.
 
-- **⚙ → Anilhas da academia**: marca as anilhas que existem lá (25 · 20 · 15 · 10 · 5 · 3 · 2,5 · 2 · 1,25 · 1)
-- No `rotina.json`: `"anilhas": true/false` força o cálculo, `"base": 0` muda o peso da barra (0 = só anilhas)
+- No `rotina.json`: `"anilhas": true/false` liga/desliga a dica no exercício; `"base"` desconta um peso fixo (padrão 0)
 
 ## Rank de cargas (faixas)
 

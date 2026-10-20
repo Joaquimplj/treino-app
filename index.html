@@ -656,7 +656,6 @@
   /* ===== ANILHAS POR LADO ===== */
   .sr-anilhas { font-size: 11px; color: var(--accent2); padding: 4px 0 2px 41px; letter-spacing: .3px; }
   .cfg-opts.cfg-wrap { flex-wrap: wrap; }
-  .cfg-opt.chip-anilha { flex: 0 0 auto; padding: 8px 13px; }
 
   /* ===== RANK / NÍVEL ===== */
   .nv-big { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--text); line-height: 1; }
@@ -850,12 +849,6 @@
       <h4>Perfil deste aparelho</h4>
       <p class="cfg-hint" id="cfg-perfil-txt">—</p>
       <button class="btn-sec" id="btn-trocar-perfil">🔓 &nbsp;Trocar de perfil</button>
-    </div>
-
-    <div class="modal-sec">
-      <h4>Anilhas da academia</h4>
-      <p class="cfg-hint">Ao tocar no campo de kg de um exercício com barra, o app mostra quais anilhas colocar de cada lado. Marca aqui as que existem na sua academia. O peso anotado é só o das anilhas (sem a barra): 80 kg = 40 de cada lado.</p>
-      <div class="cfg-opts cfg-wrap" id="cfg-anilhas"></div>
     </div>
 
     <div class="modal-sec">
@@ -1125,9 +1118,6 @@ const XP = { sessao: 10, sessaoCheia: 5, recorde: 25, semanaCheia: 30 };
 function xpDoNivel(n) { return 100 * n * (n - 1) / 2; } // nv1 = 0, nv2 = 100, nv3 = 300, nv4 = 600...
 function nomeNivel(n) { return n <= NIVEIS.length ? NIVEIS[n - 1] : 'Lenda ' + (n - NIVEIS.length + 1); }
 
-// Anilhas que a academia tem (por lado). Ajustável em ⚙.
-const ANILHAS_OPCOES = [25, 20, 15, 10, 5, 3, 2.5, 2, 1.25, 1];
-const ANILHAS_PADRAO = [25, 20, 15, 10, 5, 2.5, 1.25];
 
 // procura por nome normalizado: chave exata, depois chave contida no nome
 function acharPorNome(tabela, nome) {
@@ -1169,10 +1159,6 @@ function nivelCarga(valor, faixas) {
 }
 
 // ---- anilhas por lado ----
-function anilhasDisponiveis() {
-  const a = ler(LSK.anilhas);
-  return Array.isArray(a) && a.length ? a.slice().sort((x, y) => y - x) : ANILHAS_PADRAO.slice();
-}
 function usaAnilhas(ex) {
   if (!ex || ex.cardio) return false;
   if (typeof ex.anilhas === 'boolean') return ex.anilhas;
@@ -1186,23 +1172,12 @@ function baseDe(ex) {
   if (ex && typeof ex.base === 'number') return ex.base;
   return 0;
 }
-function anilhasPorLado(total, base) {
-  const disp = anilhasDisponiveis();
-  let resto = (total - base) / 2;
-  if (total == null || isNaN(total)) return null;
-  if (resto < -1e-9) return { ok: false, usadas: [], falta: 0, abaixo: true };
-  const usadas = [];
-  disp.forEach(a => { while (resto >= a - 1e-9) { usadas.push(a); resto -= a; } });
-  return { ok: resto < 1e-9, usadas, falta: Math.round(resto * 100) / 100, abaixo: false };
-}
+// Mostra só o peso de cada lado (número cheio), sem quebrar em anilhas.
 function textoAnilhas(total, ex) {
-  const base = baseDe(ex);
-  const r = anilhasPorLado(total, base);
-  if (!r) return '';
-  if (r.abaixo) return 'abaixo do peso da barra (' + fmtNum(base) + ' kg)';
-  const lista = r.usadas.length ? r.usadas.map(fmtNum).join(' + ') : (base ? 'só a barra' : 'sem anilha');
-  const pref = base ? 'por lado: ' : 'por lado: ';
-  return pref + lista + (r.ok ? '' : ' · sobram ' + fmtNum(r.falta) + ' kg que não fecham com as anilhas de ⚙');
+  if (total == null || isNaN(total)) return '';
+  const lado = (total - baseDe(ex)) / 2;
+  if (lado < 0) return '';
+  return fmtNum(lado) + ' kg de cada lado';
 }
 
 // ---- nível / XP / forma ----
@@ -1308,13 +1283,6 @@ function avisarRecordes(s) {
   }
 }
 
-function renderCfgAnilhas() {
-  const box = el('cfg-anilhas');
-  if (!box) return;
-  const atual = anilhasDisponiveis();
-  box.innerHTML = ANILHAS_OPCOES.map(a =>
-    `<button class="cfg-opt chip-anilha${atual.indexOf(a) >= 0 ? ' cfg-on' : ''}" data-anilha="${a}">${fmtNum(a)}</button>`).join('');
-}
 
 function ler(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
 function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -3307,16 +3275,6 @@ el('week').addEventListener('input', e => {
   if (e.target.classList && e.target.classList.contains('in-peso')) atualizarDicaAnilhas(e.target);
 });
 
-el('cfg-anilhas').addEventListener('click', e => {
-  const b = e.target.closest('[data-anilha]');
-  if (!b) return;
-  const a = +b.dataset.anilha;
-  let atual = anilhasDisponiveis();
-  atual = atual.indexOf(a) >= 0 ? atual.filter(x => x !== a) : atual.concat([a]);
-  if (!atual.length) { toast('Deixa pelo menos uma anilha'); return; }
-  gravar(LSK.anilhas, atual.sort((x, y) => y - x));
-  renderCfgAnilhas();
-});
 
 el('dupla-body').addEventListener('click', async e => {
   if (!e.target.closest('[data-sync-dupla]')) return;
@@ -3779,7 +3737,6 @@ renderPesoCard();
 renderDupla();
 renderCfgAuto();
 renderCfgPerfil();
-renderCfgAnilhas();
 renderSyncStatus();
 if (syncAtivo()) { syncBaixar(true).then(() => syncEnviar(true)); }
 verificarSessaoAuto();
