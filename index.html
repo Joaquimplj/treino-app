@@ -1400,6 +1400,7 @@ function trocarPerfil(id) {
   renderAutoBanner();
   renderCfgPerfil();
   toast('Perfil: ' + perfil().nome);
+  adotarRemotoSeVazio();
 }
 
 const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -2698,6 +2699,8 @@ async function syncEnviar(silencioso) {
   if (!syncAtivo()) return false;
   const c = syncCfg();
   try {
+    // aparelho novo/vazio nunca sobrescreve a cópia da nuvem com nada
+    if (!diario.length && !pesos.length) return false;
     const tok = await syncToken();
     const p = perfil();
     const payload = JSON.stringify({
@@ -2747,6 +2750,7 @@ async function syncBaixar(silencioso) {
     });
     gravarSyncStatus({ leitura: new Date().toISOString(), erro: null });
     renderSyncStatus();
+    adotarRemotoSeVazio();
     renderDupla();
     return true;
   } catch (e) {
@@ -2755,6 +2759,25 @@ async function syncBaixar(silencioso) {
     if (!silencioso) toast('Não consegui baixar: ' + (e.message || e));
     return false;
   }
+}
+
+// Abriu o app num aparelho novo (ex: PC) com o perfil vazio: traz o seu
+// histórico da nuvem pra este aparelho em vez de começar do zero.
+function adotarRemotoSeVazio() {
+  if (diario.length || pesos.length) return false;
+  const rem = remotoDe(perfilAtivo);
+  const d = rem && rem.dados;
+  if (!d || (!(d.diario || []).length && !(d.pesos || []).length)) return false;
+  diario = d.diario || [];
+  pesos = d.pesos || [];
+  progresso = d.progresso || {};
+  gravar(chaveP(LSK.diario), diario);
+  gravar(chaveP(LSK.pesos), pesos);
+  gravar(chaveP(LSK.prog), progresso);
+  if (d.perfil) { Object.assign(perfil(), d.perfil); gravar(LSK.perfis, perfis); }
+  renderPerfilChips(); renderRotina(); renderCalendario(); renderEvolucao(); renderPesoCard();
+  toast('Seu histórico foi trazido da nuvem pra este aparelho ✓');
+  return true;
 }
 
 let syncTimer = null;
@@ -3559,7 +3582,7 @@ renderCfgAuto();
 renderCfgPerfil();
 renderCfgAnilhas();
 renderSyncStatus();
-if (syncAtivo()) { syncBaixar(true); syncEnviar(true); }
+if (syncAtivo()) { syncBaixar(true).then(() => syncEnviar(true)); }
 verificarSessaoAuto();
 mudarTab(ler(LSK.tab) || 'rotina');
 aplicarPosTimer(false);
