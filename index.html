@@ -121,7 +121,9 @@
   .exercise.highlight { border-color: rgba(200,245,66,0.2); background: rgba(200,245,66,0.04); }
   .exercise.ex-done { background: var(--done) !important; border-color: var(--done-border) !important; opacity: 0.7; }
 
-  .ex-top { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; }
+  .ex-top { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+  .ex-dir { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .ex-sr { display: flex; align-items: baseline; gap: 8px; }
   .ex-name { font-size: 14px; font-weight: 500; }
   .ex-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .ex-sets-display { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); text-align: right; white-space: nowrap; }
@@ -642,11 +644,12 @@
 
   /* ===== GALERIA (trocar exercício) ===== */
   .ex-trocar {
-    background: transparent; border: 1px solid var(--border); border-radius: 12px; color: var(--muted);
-    font-size: 11px; padding: 1px 7px; margin-left: 4px; cursor: pointer; vertical-align: middle; line-height: 1.4;
+    background: rgba(245,161,66,0.08); border: 1px solid rgba(245,161,66,0.45); border-radius: 8px; color: var(--accent2);
+    font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 2px;
+    padding: 8px 14px; min-height: 38px; cursor: pointer; white-space: nowrap;
   }
-  .ex-trocar:hover { border-color: var(--accent2); color: var(--accent2); }
-  .ex-trocar.trocado { border-color: var(--accent2); color: var(--accent2); }
+  .ex-trocar:hover, .ex-trocar:active { background: rgba(245,161,66,0.18); border-color: var(--accent2); }
+  .ex-trocar.trocado { background: var(--accent2); color: #000; border-color: var(--accent2); }
   .gl-lista { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
   .gl-item {
     display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; text-align: left;
@@ -662,7 +665,7 @@
   .gl-check { color: var(--accent); font-size: 18px; padding-right: 6px; }
 
   /* ===== FIGURAS DOS EXERCÍCIOS ===== */
-  .ex-top.com-img { grid-template-columns: 54px 1fr auto auto; }
+  .ex-top.com-img { grid-template-columns: 54px 1fr auto; }
   .ex-thumb {
     width: 54px; height: 54px; object-fit: cover; border-radius: 8px; background: #fff;
     border: 1px solid var(--border); cursor: pointer; display: block;
@@ -1700,9 +1703,11 @@ function exHTML(ex) {
   return `<div class="exercise${ex.destaque ? ' highlight' : ''}${done ? ' ex-done' : ''}" id="ex-${ex.id}" data-exid="${ex.id}">
     <div class="ex-top${img ? ' com-img' : ''}">
       ${img ? `<img class="ex-thumb" src="${IMG_BASE}${esc(img)}/0.jpg" loading="lazy" crossorigin="anonymous" alt="" data-img="${esc(img)}" data-nome="${esc(ex.nome)}" data-nota="${esc(ex.nota || '')}">` : ''}
-      <div><div class="ex-name">${esc(ex.nome)}${opcoesDe(ex._orig ? ex._orig.id : ex.id).length ? ` <button type="button" class="ex-trocar${ex._orig ? ' trocado' : ''}" data-trocar="${esc(ex._orig ? ex._orig.id : ex.id)}" title="Trocar por uma variação">⇄</button>` : ''}</div>${ex.nota ? `<div class="ex-note">${esc(ex.nota)}</div>` : ''}</div>
-      <div class="ex-sets-display">${ex.series}×</div>
-      <div class="ex-reps">${esc(ex.reps)}</div>
+      <div><div class="ex-name">${esc(ex.nome)}</div>${ex.nota ? `<div class="ex-note">${esc(ex.nota)}</div>` : ''}</div>
+      <div class="ex-dir">
+        ${opcoesDe(ex._orig ? ex._orig.id : ex.id).length ? `<button type="button" class="ex-trocar${ex._orig ? ' trocado' : ''}" data-trocar="${esc(ex._orig ? ex._orig.id : ex.id)}" title="Trocar por uma variação">⇄ TROCAR</button>` : ''}
+        <div class="ex-sr"><span class="ex-sets-display">${ex.series}×</span><span class="ex-reps">${esc(ex.reps)}</span></div>
+      </div>
     </div>
     ${badge}
     <div class="ex-series">${corpo}</div>
