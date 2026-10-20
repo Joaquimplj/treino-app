@@ -1956,7 +1956,7 @@ function salvarSessaoDoDia(diaId, avisar) {
   if (!exs.length && !nota) {
     // nada anotado: se a sessão de hoje só existia por causa disso, some com ela
     if (existente && existente.editado) {
-      diario = diario.filter(s => s.id !== existente.id);
+      registrarApagado(existente.id); diario = diario.filter(s => s.id !== existente.id);
       salvarDiario();
       renderCalendario();
       renderEvolucao();
@@ -2005,7 +2005,7 @@ function resetarDia(diaId) {
   }));
   salvarProg();
   if (s) {
-    diario = diario.filter(x => x.id !== s.id);
+    registrarApagado(s.id); diario = diario.filter(x => x.id !== s.id);
     salvarDiario();
   }
   const sa = sessaoAuto();
@@ -2414,7 +2414,7 @@ function salvarCorrecao(id) {
   const nota = box.querySelector('.ed-nota').value.trim();
   if (!novos.length && !nota) {
     if (!confirm('Não sobrou nenhum valor. Excluir a sessão inteira?')) return;
-    diario = diario.filter(x => x.id !== id);
+    registrarApagado(id); diario = diario.filter(x => x.id !== id);
   } else {
     s.exercicios = novos; s.nota = nota; s.editado = true;
   }
@@ -2436,7 +2436,7 @@ el('dia-detalhe').addEventListener('click', e => {
   const del = e.target.closest('[data-del]');
   if (!del) return;
   if (confirm('Excluir esta sessão?')) {
-    diario = diario.filter(x => x.id !== del.dataset.del);
+    registrarApagado(del.dataset.del); diario = diario.filter(x => x.id !== del.dataset.del);
     salvarDiario();
     renderCalendario();
     renderEvolucao();
@@ -2886,8 +2886,40 @@ el('peso-body').addEventListener('click', e => {
 // Sem configuração salva, o app já entra no grupo padrão (ninguém precisa digitar código).
 // Quem desligar em ⚙ fica salvo com ativo:false e é respeitado.
 const SALA_PADRAO = 'f3h5w7tijiz44e';
+// Só o site publicado entra no grupo sozinho; cópia de teste (localhost etc.) nunca mexe na nuvem de vocês.
+const SITE_OFICIAL = location.hostname === 'joaquimplj.github.io';
 function syncCfg() {
-  return ler(LSK.sync) || { apiKey: FIREBASE_CFG_PADRAO.apiKey, projectId: FIREBASE_CFG_PADRAO.projectId, sala: SALA_PADRAO, ativo: true };
+  return ler(LSK.sync) || { apiKey: FIREBASE_CFG_PADRAO.apiKey, projectId: FIREBASE_CFG_PADRAO.projectId, sala: SALA_PADRAO, ativo: SITE_OFICIAL };
+}
+
+// ---- treinos apagados de propósito (pra junção entre aparelhos não ressuscitar) ----
+function apagados() { return ler(chaveP('ta_apagados_v1')) || []; }
+function registrarApagado(id) {
+  const a = apagados();
+  if (id && a.indexOf(id) < 0) { a.push(id); gravar(chaveP('ta_apagados_v1'), a); }
+}
+
+// Junta o que está na nuvem com o que está neste aparelho, em vez de substituir.
+// Devolve true se o aparelho ganhou treinos/pesos que só existiam na nuvem.
+function juntarComNuvem(rem) {
+  const ap = apagados();
+  (rem.apagados || []).forEach(id => { if (ap.indexOf(id) < 0) ap.push(id); });
+  gravar(chaveP('ta_apagados_v1'), ap);
+  const antes = diario.length + pesos.length;
+  const ids = new Set(diario.map(s => s.id));
+  const novos = (rem.diario || []).filter(s => s && !ids.has(s.id));
+  diario = diario.concat(novos).filter(s => ap.indexOf(s.id) < 0);
+  limparDiario(diario);
+  diario.sort((a, b) => new Date(b.data) - new Date(a.data));
+  const datas = new Set(pesos.map(x => x.data));
+  pesos = pesos.concat((rem.pesos || []).filter(x => x && !datas.has(x.data)));
+  pesos.sort((a, b) => new Date(b.data) - new Date(a.data));
+  const mudou = diario.length + pesos.length !== antes || novos.length > 0;
+  if (mudou) {
+    gravar(chaveP(LSK.diario), diario);
+    gravar(chaveP(LSK.pesos), pesos);
+  }
+  return mudou;
 }
 // só sincroniza depois que a pessoa escolheu o próprio nome neste aparelho
 function syncAtivo() { const c = syncCfg(); return !!(c && c.ativo && c.apiKey && c.projectId && c.sala && perfilTravado()); }
@@ -2938,10 +2970,20 @@ async function syncEnviar(silencioso) {
     // aparelho novo/vazio nunca sobrescreve a cópia da nuvem com nada
     if (!diario.length && !pesos.length) return false;
     const tok = await syncToken();
+    // antes de enviar, junta com a cópia atual da nuvem: nunca sobrescreve com uma cópia menor
+    const atual = await fetch(docURL(c, perfilAtivo), { headers: { Authorization: 'Bearer ' + tok } });
+    if (atual.ok) {
+      const dj = await atual.json();
+      let rem = null;
+      try { rem = JSON.parse(dj.fields.payload.stringValue); } catch (e) {}
+      if (rem && juntarComNuvem(rem)) { renderCalendario(); renderEvolucao(); renderPerfilChips(); renderDupla(); }
+    } else if (atual.status !== 404) {
+      throw new Error('http ' + atual.status); // sem conseguir ler a nuvem, não arrisca escrever
+    }
     const p = perfil();
     const payload = JSON.stringify({
       perfil: { peso: p.peso, altura: p.altura, meta: p.meta, metaPeso: p.metaPeso },
-      diario, pesos, progresso, trocas: trocasDoPerfil()
+      diario, pesos, progresso, trocas: trocasDoPerfil(), apagados: apagados()
     });
     const r = await fetch(docURL(c, perfilAtivo), {
       method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok },
