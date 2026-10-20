@@ -1566,9 +1566,12 @@ function toast(msg) {
   t._tm = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
+// Qual treino é de hoje: vem do campo "semana" de cada dia no rotina.json (0 = domingo … 6 = sábado)
 function diaDeHoje() {
   const wd = new Date().getDay();
-  return ({ 1: 'day1', 2: 'day2', 3: 'day3', 4: 'day4', 5: 'day5', 6: 'day5' })[wd] || '';
+  const d = (rotina.dias || []).find(x => !x.descanso && Array.isArray(x.semana) && x.semana.indexOf(wd) >= 0);
+  if (d) return d.id;
+  return ({ 1: 'day1', 2: 'day2', 3: 'day3', 4: 'day4', 5: 'day5', 6: 'day5' })[wd] || ''; // rotina antiga, sem "semana"
 }
 
 // =====================================================================
