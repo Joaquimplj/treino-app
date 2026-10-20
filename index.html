@@ -1338,7 +1338,68 @@ function perfil() { return perfis.find(p => p.id === perfilAtivo) || perfis[0]; 
 function salvarPerfis() { gravar(LSK.perfis, perfis); agendarSync(); }
 
 let progresso = ler(chaveP(LSK.prog)) || {};
+// ---- limites humanos: bloqueia digitação absurda e limpa o que já foi gravado ----
+// (acima dos recordes mundiais aproximados; halteres = peso por mão)
+const LIMITES_KG = [
+  [/leg press|hack/, 1200],
+  [/agachamento|squat/, 500],
+  [/stiff|terra|deadlift/, 500],
+  [/supino.*barra|supino reto/, 360],
+  [/halter/, 120],
+  [/rosca/, 120],
+  [/remada|puxada|high row/, 300],
+  [/elevacao|crossover|pec deck|triceps|desenvolvimento/, 150]
+];
+const LIMITE_KG_PADRAO = 500, LIMITE_REPS = 100;
+const LIMITES_CARDIO = { min: 600, km: 100, vel: 30, incl: 30 };
+function limiteKg(nome) {
+  const k = normNome(nome);
+  const hit = LIMITES_KG.find(([re]) => re.test(k));
+  return hit ? hit[1] : LIMITE_KG_PADRAO;
+}
+function limparSeries(series, nome) {
+  const lim = limiteKg(nome);
+  let fix = 0;
+  const ok = v => typeof v === 'number' && v > 0;
+  const out = (series || []).map(st => {
+    const o = Object.assign({}, st);
+    if (o.peso != null && !(ok(o.peso) && o.peso <= lim)) { o.peso = null; fix++; }
+    if (o.reps != null && !(ok(o.reps) && o.reps <= LIMITE_REPS)) { o.reps = null; fix++; }
+    if (Array.isArray(o.drops)) {
+      o.drops = o.drops.map(d => {
+        const dd = Object.assign({}, d);
+        if (dd.peso != null && !(ok(dd.peso) && dd.peso <= lim)) { dd.peso = null; fix++; }
+        if (dd.reps != null && !(ok(dd.reps) && dd.reps <= LIMITE_REPS)) { dd.reps = null; fix++; }
+        return dd;
+      }).filter(d => d.peso != null || d.reps != null);
+      if (!o.drops.length) delete o.drops;
+    }
+    return o;
+  }).filter(o => o.peso != null || o.reps != null || o.drops);
+  return { series: out, fix };
+}
+// devolve quantos valores absurdos foram removidos (mexe no array recebido)
+function limparDiario(arr) {
+  let fix = 0;
+  (arr || []).forEach(s => (s.exercicios || []).forEach(x => {
+    if (x.cardio) {
+      const c = x.sessao || {};
+      Object.keys(LIMITES_CARDIO).forEach(k => {
+        if (c[k] != null && !(typeof c[k] === 'number' && c[k] >= 0 && c[k] <= LIMITES_CARDIO[k])) { c[k] = null; fix++; }
+      });
+      return;
+    }
+    if (Array.isArray(x.componentes)) {
+      x.componentes.forEach(cp => { const r = limparSeries(cp.series, cp.nome); cp.series = r.series; fix += r.fix; });
+    } else {
+      const r = limparSeries(x.series, x.nome); x.series = r.series; fix += r.fix;
+    }
+  }));
+  return fix;
+}
+
 let diario = ler(chaveP(LSK.diario)) || [];
+if (limparDiario(diario)) gravar(chaveP(LSK.diario), diario); // o envio da abertura leva a versão limpa pra nuvem
 let pesos = ler(chaveP(LSK.pesos)) || [];
 let diaSelecionado = null;
 let semana = ler(LSK.semana) || 1;
@@ -1357,6 +1418,7 @@ function dadosDe(pid) {
     diario: ler(LSK.diario + '__' + pid) || [],
     pesos: ler(LSK.pesos + '__' + pid) || []
   };
+  limparDiario(local.diario);
   if (pid === perfilAtivo) return local;
 
   const rem = (typeof remotoDe === 'function') ? remotoDe(pid) : null;
@@ -1374,7 +1436,7 @@ function dadosDe(pid) {
   return {
     perfil: Object.assign({}, local.perfil, d.perfil || {}),
     progresso: d.progresso || {},
-    diario: d.diario || [],
+    diario: (limparDiario(d.diario || []), d.diario || []),
     pesos: d.pesos || [],
     viaSync: rem.atualizado
   };
@@ -1387,6 +1449,7 @@ function trocarPerfil(id) {
   gravar(LSK.perfilTravado, true);
   progresso = ler(chaveP(LSK.prog)) || {};
   diario = ler(chaveP(LSK.diario)) || [];
+  if (limparDiario(diario)) salvarDiario();
   pesos = ler(chaveP(LSK.pesos)) || [];
   evSel = null;
   aplicarExtras();
@@ -1984,6 +2047,25 @@ el('week').addEventListener('click', e => {
   const hdr = e.target.closest('[data-toggle]');
   if (hdr) { const d = el(hdr.dataset.toggle); if (d) d.classList.toggle('open'); }
 });
+
+// valor acima do limite humano é apagado antes de chegar a ser salvo
+el('week').addEventListener('input', e => {
+  const t = e.target;
+  if (!t.classList || !/in-(peso|reps|dpeso|dreps|c-)/.test(t.className)) return;
+  const v = numOuNull(t.value, false);
+  if (v == null) return;
+  const exEl = t.closest('[data-exid]');
+  const ex = exEl ? mapEx[exEl.dataset.exid] : null;
+  let lim, un;
+  const cls = t.className;
+  if (/in-c-/.test(cls)) { const k = cls.match(/in-c-(\w+)/)[1]; lim = LIMITES_CARDIO[k]; un = k === 'min' ? 'min' : (k === 'km' ? 'km' : (k === 'vel' ? 'km/h' : '%')); }
+  else if (/reps/.test(cls)) { lim = LIMITE_REPS; un = 'reps'; }
+  else { lim = limiteKg(ex ? ex.nome : ''); un = 'kg'; }
+  if (lim != null && v > lim) {
+    t.value = '';
+    toast('Valor fora do possível (máx. ' + fmtNum(lim) + ' ' + un + ') — apagado');
+  }
+}, true);
 
 // digitou carga/reps/nota → salva sozinho no diário (sem botão de salvar)
 el('week').addEventListener('input', e => {
@@ -2769,6 +2851,7 @@ function adotarRemotoSeVazio() {
   const d = rem && rem.dados;
   if (!d || (!(d.diario || []).length && !(d.pesos || []).length)) return false;
   diario = d.diario || [];
+  limparDiario(diario);
   pesos = d.pesos || [];
   progresso = d.progresso || {};
   gravar(chaveP(LSK.diario), diario);
@@ -3394,6 +3477,7 @@ el('file-backup').addEventListener('change', ev => {
       if (!perfis.some(p => p.id === perfilAtivo)) perfilAtivo = perfis[0].id;
       progresso = ler(chaveP(LSK.prog)) || {};
       diario = ler(chaveP(LSK.diario)) || [];
+  if (limparDiario(diario)) salvarDiario();
       pesos = ler(chaveP(LSK.pesos)) || [];
       aplicarExtras();
       indexar();
