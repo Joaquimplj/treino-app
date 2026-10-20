@@ -1,5 +1,5 @@
 {
-  "versao": "2026-10-20",
+  "versao": "2026-10-20.2",
   "nome": "ROTINA 5 DIAS",
   "subtitulo": "Push · Pull · Legs · Upper · Lower",
   "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
@@ -257,14 +257,19 @@
       {"id":"agachamento-bulgaro-no-smith","nome":"Agachamento Búlgaro no Smith","img":"Smith_Single-Leg_Split_Squat","anilhas":true}
     ]},
     { "ids": ["d3-3"], "opcoes": [
-      {"id":"extensora-unilateral","nome":"Extensora Unilateral","img":"Single-Leg_Leg_Extension"}
+      {"id":"extensora-unilateral","nome":"Extensora Unilateral","img":"Single-Leg_Leg_Extension"},
+      {"id":"agachamento-frontal","nome":"Agachamento Frontal","img":"Front_Barbell_Squat","anilhas":true},
+      {"id":"agachamento-sissy","nome":"Agachamento Sissy","img":"Weighted_Sissy_Squat"}
     ]},
     { "ids": ["d3-4"], "opcoes": [
       {"id":"stiff-com-halteres","nome":"Stiff com Halteres","img":"Stiff-Legged_Dumbbell_Deadlift"},
       {"id":"levantamento-terra-romeno","nome":"Levantamento Terra Romeno","img":"Romanian_Deadlift","anilhas":true}
     ]},
     { "ids": ["d3-5"], "opcoes": [
-      {"id":"cadeira-flexora","nome":"Cadeira Flexora","img":"Seated_Leg_Curl"}
+      {"id":"cadeira-flexora","nome":"Cadeira Flexora","img":"Seated_Leg_Curl"},
+      {"id":"flexora-em-pe","nome":"Flexora em Pé","img":"Standing_Leg_Curl"},
+      {"id":"stiff-com-halteres","nome":"Stiff com Halteres","img":"Stiff-Legged_Dumbbell_Deadlift"},
+      {"id":"good-morning","nome":"Good Morning","img":"Good_Morning","anilhas":true}
     ]},
     { "ids": ["d3-6"], "opcoes": [
       {"id":"panturrilha-em-pe","nome":"Panturrilha em Pé","img":"Standing_Calf_Raises"},
@@ -275,10 +280,14 @@
       {"id":"remada-unilateral-com-halter","nome":"Remada Unilateral com Halter","img":"One-Arm_Dumbbell_Row"}
     ]},
     { "ids": ["d5-2"], "opcoes": [
-      {"id":"agachamento-no-smith","nome":"Agachamento no Smith","img":"Smith_Machine_Squat","anilhas":true}
+      {"id":"agachamento-no-smith","nome":"Agachamento no Smith","img":"Smith_Machine_Squat","anilhas":true},
+      {"id":"leg-press-45","nome":"Leg Press 45°","img":"Leg_Press","base":0,"anilhas":true},
+      {"id":"agachamento-livre","nome":"Agachamento Livre","img":"Barbell_Squat","anilhas":true}
     ]},
     { "ids": ["d5-3"], "opcoes": [
-      {"id":"flexora-deitada","nome":"Flexora Deitada","img":"Lying_Leg_Curls"}
+      {"id":"flexora-deitada","nome":"Flexora Deitada","img":"Lying_Leg_Curls"},
+      {"id":"flexora-em-pe","nome":"Flexora em Pé","img":"Standing_Leg_Curl"},
+      {"id":"good-morning","nome":"Good Morning","img":"Good_Morning","anilhas":true}
     ]},
     { "ids": ["d5-4"], "opcoes": [
       {"id":"stiff-com-barra","nome":"Stiff com Barra","img":"Stiff-Legged_Barbell_Deadlift","anilhas":true},
@@ -287,6 +296,27 @@
     { "ids": ["d5-5"], "opcoes": [
       {"id":"panturrilha-sentada","nome":"Panturrilha Sentada","img":"Seated_Calf_Raise"},
       {"id":"panturrilha-no-leg-press","nome":"Panturrilha no Leg Press","img":"Calf_Press_On_The_Leg_Press_Machine"}
+    ]},
+    { "ids": ["d4-6"], "opcoes": [
+      {"id":"rosca-martelo-triceps-corda","nome":"Rosca Martelo + Tríceps Corda","img":"Hammer_Curls","componentes":["Rosca Martelo com Halteres","Tríceps Corda"],"imgs":{"Rosca Martelo com Halteres":"Hammer_Curls","Tríceps Corda":"Triceps_Pushdown_-_Rope_Attachment"}},
+      {"id":"rosca-no-cabo-triceps-na-polia","nome":"Rosca no Cabo + Tríceps na Polia","img":"Standing_Biceps_Cable_Curl","componentes":["Rosca no Cabo","Tríceps na Polia com Barra"],"imgs":{"Rosca no Cabo":"Standing_Biceps_Cable_Curl","Tríceps na Polia com Barra":"Triceps_Pushdown"}},
+      {"id":"rosca-scott-triceps-frances","nome":"Rosca Scott + Tríceps Francês","img":"Preacher_Curl","componentes":["Rosca Scott","Tríceps Francês com Halter"],"imgs":{"Rosca Scott":"Preacher_Curl","Tríceps Francês com Halter":"Dumbbell_One-Arm_Triceps_Extension"}}
+    ]},
+    { "ids": ["ab-1"], "opcoes": [
+      {"id":"abdominal-na-maquina","nome":"Abdominal na Máquina","img":"Ab_Crunch_Machine"},
+      {"id":"abdominal-supra-no-solo","nome":"Abdominal Supra no Solo","img":"Crunches"},
+      {"id":"prancha","nome":"Prancha","img":"Plank"}
+    ]},
+    { "ids": ["ab-2"], "opcoes": [
+      {"id":"elevacao-de-pernas-no-banco","nome":"Elevação de Pernas no Banco","img":"Flat_Bench_Lying_Leg_Raise"},
+      {"id":"abdominal-infra","nome":"Abdominal Infra","img":"Reverse_Crunch"},
+      {"id":"elevacao-de-joelhos-na-paralela","nome":"Elevação de Joelhos na Paralela","img":"Knee_Hip_Raise_On_Parallel_Bars"}
+    ]},
+    { "ids": ["cd-1"], "opcoes": [
+      {"id":"bicicleta-ergometrica","nome":"Bicicleta Ergométrica","img":"Bicycling_Stationary","cardio":true},
+      {"id":"eliptico","nome":"Elíptico","img":"Elliptical_Trainer","cardio":true},
+      {"id":"escada-stairmaster","nome":"Escada (Stairmaster)","img":"Stairmaster","cardio":true},
+      {"id":"remo-ergometrico","nome":"Remo Ergométrico","img":"Rowing_Stationary","cardio":true}
     ]}
   ],
   "progressao": {

@@ -1494,7 +1494,8 @@ function indexar() {
 // ---- galeria: cada pessoa pode trocar um exercício por uma variação (rotina.galeria) ----
 function trocasDoPerfil() { return ler(chaveP(LSK.trocas)) || {}; }
 function opcoesDe(exId) {
-  const g = (rotina.galeria || []).find(x => (x.ids || []).indexOf(exId) >= 0);
+  const base = String(exId).split('__')[0]; // finalização tem id "ab-1__day1"
+  const g = (rotina.galeria || []).find(x => (x.ids || []).indexOf(base) >= 0);
   return g ? (g.opcoes || []) : [];
 }
 function desfazerTrocas(r) {
@@ -1505,14 +1506,15 @@ function desfazerTrocas(r) {
 function aplicarTrocas() {
   const trocas = trocasDoPerfil();
   (rotina.dias || []).forEach(d => (d.secoes || []).forEach(s => {
-    if (s._extra || !Array.isArray(s.exercicios)) return;
+    if (!Array.isArray(s.exercicios)) return;
     s.exercicios = s.exercicios.map(x => {
       const op = opcoesDe(x.id).find(o => o.id === trocas[x.id]);
       if (!op) return x;
       // mantém séries/reps/técnicas do original; histórico próprio (id e nome novos)
       return { id: x.id + '__' + op.id, nome: op.nome, img: op.img, nota: op.nota || 'no lugar de ' + x.nome,
-        series: x.series, reps: x.reps, destaque: x.destaque, tecnicas: x.tecnicas,
-        anilhas: op.anilhas, faixas: op.faixas, _orig: x };
+        series: x.series, reps: op.cardio ? (x.cardio ? x.reps : '20 min') : x.reps, destaque: x.destaque, tecnicas: x.tecnicas,
+        anilhas: op.anilhas, base: op.base, faixas: op.faixas, cardio: op.cardio,
+        componentes: op.componentes, imgs: op.imgs, _orig: x };
     });
   }));
 }
