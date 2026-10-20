@@ -491,6 +491,18 @@
   .sess-dia { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
   .sess-del { background: none; border: none; color: #444; font-size: 16px; cursor: pointer; padding: 4px 6px; }
   .sess-del:hover { color: #f55; }
+  .sess-ed:hover { color: var(--accent); }
+  .sess-edit { border-color: rgba(245,161,66,.45); }
+  .ed-ex { padding: 8px 0; border-bottom: 1px dashed #1e1e1e; }
+  .ed-ex .se-nome { font-size: 13px; margin-bottom: 6px; display: block; }
+  .ed-row { display: grid; grid-template-columns: 30px 1fr 1fr 28px; gap: 6px; align-items: center; margin-bottom: 5px; }
+  .ed-n { font-family: 'Bebas Neue', sans-serif; font-size: 13px; color: var(--muted); }
+  .ed-row input, .ed-c { background: #0d0d0d; border: 1px solid var(--border); border-radius: 4px; color: var(--text); padding: 8px; font-size: 14px; width: 100%; min-width: 0; font-family: 'DM Sans', sans-serif; }
+  .ed-row input:focus, .ed-c:focus { outline: none; border-color: var(--accent2); }
+  .ed-ruim { border-color: #f55 !important; }
+  .ed-del { background: none; border: none; color: #555; font-size: 18px; cursor: pointer; }
+  .ed-del:hover { color: #f55; }
+  .ed-acoes { display: flex; gap: 8px; margin-top: 10px; }
   .sess-ex { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 7px 0; border-bottom: 1px dashed #1e1e1e; }
   .sess-ex:last-of-type { border-bottom: none; }
   .sess-ex .se-nome { color: var(--text); }
@@ -2239,11 +2251,11 @@ function renderDiaDetalhe() {
     el('dia-detalhe').innerHTML = `<div class="det-data">${rotulo.toUpperCase()}</div><div class="vazio">Nenhuma sessão nesse dia.</div>`;
     return;
   }
-  el('dia-detalhe').innerHTML = `<div class="det-data">${rotulo.toUpperCase()}</div>` + lista.map(s => `
+  el('dia-detalhe').innerHTML = `<div class="det-data">${rotulo.toUpperCase()}</div>` + lista.map(s => s.id === sessEditando ? sessaoEdicaoHTML(s) : `
     <div class="sess-card">
       <div class="sess-head">
         <span class="sess-dia">${esc(s.tag || '')} — ${esc(s.diaNome || '')}${s.semana ? ' · S' + s.semana : ''}</span>
-        <button class="sess-del" data-del="${s.id}" title="Excluir">✕</button>
+        <span><button class="sess-del sess-ed" data-editar="${s.id}" title="Corrigir valores">✎</button><button class="sess-del" data-del="${s.id}" title="Excluir">✕</button></span>
       </div>
       ${(s.exercicios || []).map(exDetalheHTML).join('')}
       ${s.nota ? `<div class="sess-nota">"${esc(s.nota)}"</div>` : ''}
@@ -2286,7 +2298,94 @@ el('cal-next').addEventListener('click', () => {
   renderCalendario();
 });
 
+// ---- corrigir uma sessão já salva ----
+let sessEditando = null;
+function edRowHTML(ei, ci, si, st) {
+  const v = x => (x != null ? fmtNum(x) : '');
+  return `<div class="ed-row" data-ei="${ei}" data-ci="${ci}" data-si="${si}">
+    <span class="ed-n">S${si + 1}</span>
+    <input class="ed-peso" type="text" inputmode="decimal" placeholder="kg" value="${v(st.peso)}">
+    <input class="ed-reps" type="text" inputmode="numeric" placeholder="reps" value="${v(st.reps)}">
+    <button type="button" class="ed-del" title="Apagar série">×</button>
+  </div>`;
+}
+function sessaoEdicaoHTML(s) {
+  const exs = (s.exercicios || []).map((x, ei) => {
+    if (x.cardio) {
+      const c = x.sessao || {};
+      const campo = (k, rot) => `<label class="cardio-campo"><span>${rot}</span><input class="ed-c" data-ei="${ei}" data-k="${k}" type="text" inputmode="decimal" value="${c[k] != null ? fmtNum(c[k]) : ''}"></label>`;
+      return `<div class="ed-ex"><div class="se-nome">${esc(x.nome)}</div><div class="cardio-grid">${campo('min', 'Tempo (min)')}${campo('km', 'Distância (km)')}${campo('vel', 'Velocidade (km/h)')}${campo('incl', 'Inclinação (%)')}</div></div>`;
+    }
+    if (Array.isArray(x.componentes)) {
+      return `<div class="ed-ex"><div class="se-nome">${esc(x.nome)}</div>` + x.componentes.map((cp, ci) =>
+        `<div class="sess-comp">${esc(cp.nome)}</div>` + (cp.series || []).map((st, si) => edRowHTML(ei, ci, si, st)).join('')).join('') + `</div>`;
+    }
+    return `<div class="ed-ex"><div class="se-nome">${esc(x.nome)}</div>${(x.series || []).map((st, si) => edRowHTML(ei, -1, si, st)).join('')}</div>`;
+  }).join('');
+  return `<div class="sess-card sess-edit" data-edit="${s.id}">
+    <div class="sess-head"><span class="sess-dia">✎ CORRIGINDO — ${esc(s.tag || '')} ${esc(s.diaNome || '')}</span></div>
+    ${exs}
+    <textarea class="dia-nota ed-nota" placeholder="Nota da sessão">${esc(s.nota || '')}</textarea>
+    <div class="ed-acoes"><button class="as-btn" data-ed-salvar="${s.id}">Salvar correção</button><button class="as-btn as-x" data-ed-cancelar="1">Cancelar</button></div>
+  </div>`;
+}
+function salvarCorrecao(id) {
+  const s = diario.find(x => x.id === id);
+  const box = document.querySelector(`[data-edit="${id}"]`);
+  if (!s || !box) return;
+  let erro = null;
+  const num = (inp, inteiro, lim, rot) => {
+    const v = numOuNull(inp.value, inteiro);
+    if (inp.value.trim() !== '' && (v == null || v < 0 || v > lim)) { erro = rot + ' fora do possível (máx. ' + fmtNum(lim) + ')'; inp.classList.add('ed-ruim'); }
+    return v;
+  };
+  box.querySelectorAll('.ed-ruim').forEach(i => i.classList.remove('ed-ruim'));
+  const novos = [];
+  (s.exercicios || []).forEach((x, ei) => {
+    if (x.cardio) {
+      const c = {};
+      box.querySelectorAll(`.ed-c[data-ei="${ei}"]`).forEach(inp => { c[inp.dataset.k] = num(inp, false, LIMITES_CARDIO[inp.dataset.k], inp.dataset.k); });
+      if (c.min != null || c.km != null || c.vel != null || c.incl != null) novos.push(Object.assign({}, x, { sessao: c }));
+      return;
+    }
+    // drops da série original são preservados
+    const lerSeries = (orig, ci, nome) => [...box.querySelectorAll(`.ed-row[data-ei="${ei}"][data-ci="${ci}"]`)].map(row => {
+      const st = Object.assign({}, orig[+row.dataset.si] || {});
+      st.peso = num(row.querySelector('.ed-peso'), false, limiteKg(nome), 'Carga');
+      st.reps = num(row.querySelector('.ed-reps'), true, LIMITE_REPS, 'Reps');
+      return st;
+    }).filter(st => st.peso != null || st.reps != null);
+    if (Array.isArray(x.componentes)) {
+      const comps = x.componentes.map((cp, ci) => Object.assign({}, cp, { series: lerSeries(cp.series || [], ci, cp.nome) })).filter(cp => cp.series.length);
+      if (comps.length) novos.push(Object.assign({}, x, { componentes: comps }));
+    } else {
+      const series = lerSeries(x.series || [], -1, x.nome);
+      if (series.length) novos.push(Object.assign({}, x, { series }));
+    }
+  });
+  if (erro) { toast(erro); return; }
+  const nota = box.querySelector('.ed-nota').value.trim();
+  if (!novos.length && !nota) {
+    if (!confirm('Não sobrou nenhum valor. Excluir a sessão inteira?')) return;
+    diario = diario.filter(x => x.id !== id);
+  } else {
+    s.exercicios = novos; s.nota = nota; s.editado = true;
+  }
+  sessEditando = null;
+  salvarDiario();
+  renderCalendario(); renderEvolucao(); renderDupla(); renderPerfilChips();
+  if (keyFromISO(s.data) === dateKey(new Date())) renderRotina();
+  toast('Sessão corrigida ✓');
+}
+
 el('dia-detalhe').addEventListener('click', e => {
+  const ed = e.target.closest('[data-editar]');
+  if (ed) { sessEditando = ed.dataset.editar; renderDiaDetalhe(); return; }
+  if (e.target.closest('[data-ed-cancelar]')) { sessEditando = null; renderDiaDetalhe(); return; }
+  const sv = e.target.closest('[data-ed-salvar]');
+  if (sv) { salvarCorrecao(sv.dataset.edSalvar); return; }
+  const rm = e.target.closest('.ed-del');
+  if (rm) { rm.closest('.ed-row').remove(); return; }
   const del = e.target.closest('[data-del]');
   if (!del) return;
   if (confirm('Excluir esta sessão?')) {
@@ -2503,7 +2602,8 @@ function renderEvPonto(pts) {
     `<span class="evp-tag">${esc(MODOS[evModo].rot)}: ${esc(fmtVal(v, evModo))}</span>`,
     d != null ? `<span class="evp-tag ${d > 0 ? 'up' : (d < 0 ? 'down' : '')}">${d > 0 ? '+' : ''}${esc(fmtVal(d, evModo))} vs anterior</span>` : '',
     p.tag ? `<span class="evp-tag">${esc(p.tag)}${p.semana ? ' · S' + p.semana : ''}</span>` : '',
-    `<button class="evp-ir" data-ir="${p.t.getTime()}">ver no calendário</button>`
+    `<button class="evp-ir" data-ir="${p.t.getTime()}">ver no calendário</button>`,
+    p.sessaoId ? `<button class="evp-ir" data-ir="${p.t.getTime()}" data-corrigir="${esc(p.sessaoId)}">✎ corrigir</button>` : ''
   ].join('');
   box.innerHTML = `<div class="ev-ponto">
     <div class="evp-head"><span class="evp-data">${esc(rotulo.toUpperCase())}</span><button class="evp-fechar" data-evp-x="1">✕</button></div>
@@ -2519,8 +2619,9 @@ el('ev-ponto').addEventListener('click', e => {
     const dt = new Date(+ir.dataset.ir);
     calRef = { ano: dt.getFullYear(), mes: dt.getMonth() };
     calSel = dateKey(dt);
+    if (ir.dataset.corrigir) sessEditando = ir.dataset.corrigir;
     renderCalendario();
-    el('cal-grid').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    (ir.dataset.corrigir ? el('dia-detalhe') : el('cal-grid')).scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 });
 
