@@ -1,5 +1,5 @@
 {
-  "versao": "2026-09-16",
+  "versao": "2026-10-20",
   "nome": "ROTINA 5 DIAS",
   "subtitulo": "Push · Pull · Legs · Upper · Lower",
   "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
@@ -188,6 +188,106 @@
         { "id": "cd-1", "nome": "Esteira", "img": "Walking_Treadmill", "faixas": [20,30,45,60], "cardio": true, "nota": "Zona 2 — ritmo que dá pra conversar puxado · progressão: sobe inclinação antes de sobe velocidade", "series": 1, "reps": "20 min", "metaMin": 30 }
       ]
     }
+  ],
+  "galeria": [
+    { "ids": ["d1-1","d4-1"], "opcoes": [
+      {"id":"supino-inclinado-articulado","nome":"Supino Inclinado Articulado","img":"Leverage_Incline_Chest_Press"},
+      {"id":"supino-inclinado-com-barra","nome":"Supino Inclinado com Barra","img":"Barbell_Incline_Bench_Press_-_Medium_Grip","anilhas":true},
+      {"id":"supino-inclinado-no-smith","nome":"Supino Inclinado no Smith","img":"Smith_Machine_Incline_Bench_Press","anilhas":true},
+      {"id":"crucifixo-inclinado-com-halteres","nome":"Crucifixo Inclinado com Halteres","img":"Incline_Dumbbell_Flyes"}
+    ]},
+    { "ids": ["d1-2"], "opcoes": [
+      {"id":"supino-reto-articulado","nome":"Supino Reto Articulado","img":"Leverage_Chest_Press"},
+      {"id":"supino-reto-com-halteres","nome":"Supino Reto com Halteres","img":"Dumbbell_Bench_Press"},
+      {"id":"supino-reto-no-smith","nome":"Supino Reto no Smith","img":"Smith_Machine_Bench_Press","anilhas":true},
+      {"id":"supino-declinado-com-barra","nome":"Supino Declinado com Barra","img":"Decline_Barbell_Bench_Press","anilhas":true}
+    ]},
+    { "ids": ["d1-3"], "opcoes": [
+      {"id":"desenvolvimento-na-maquina","nome":"Desenvolvimento na Máquina","img":"Leverage_Shoulder_Press"},
+      {"id":"desenvolvimento-com-barra","nome":"Desenvolvimento com Barra","img":"Seated_Barbell_Military_Press","anilhas":true},
+      {"id":"desenvolvimento-arnold","nome":"Desenvolvimento Arnold","img":"Arnold_Dumbbell_Press"},
+      {"id":"desenvolvimento-no-cabo","nome":"Desenvolvimento no Cabo","img":"Cable_Shoulder_Press"}
+    ]},
+    { "ids": ["d1-4","d4-5"], "opcoes": [
+      {"id":"elevacao-lateral-no-cabo","nome":"Elevação Lateral no Cabo","img":"Cable_Seated_Lateral_Raise"},
+      {"id":"elevacao-lateral-sentado","nome":"Elevação Lateral Sentado","img":"Seated_Side_Lateral_Raise"}
+    ]},
+    { "ids": ["d1-5","d4-2"], "opcoes": [
+      {"id":"voador-peck-deck","nome":"Voador (Peck Deck)","img":"Butterfly"},
+      {"id":"crucifixo-com-halteres","nome":"Crucifixo com Halteres","img":"Dumbbell_Flyes"},
+      {"id":"crucifixo-no-cabo","nome":"Crucifixo no Cabo","img":"Flat_Bench_Cable_Flyes"}
+    ]},
+    { "ids": ["d1-6"], "opcoes": [
+      {"id":"triceps-na-polia-com-barra","nome":"Tríceps na Polia com Barra","img":"Triceps_Pushdown"},
+      {"id":"triceps-testa","nome":"Tríceps Testa","img":"EZ-Bar_Skullcrusher"},
+      {"id":"triceps-frances-com-halter","nome":"Tríceps Francês com Halter","img":"Dumbbell_One-Arm_Triceps_Extension"}
+    ]},
+    { "ids": ["d2-6"], "opcoes": [
+      {"id":"barra-fixa","nome":"Barra Fixa","img":"Pullups"},
+      {"id":"puxada-triangulo","nome":"Puxada Triângulo","img":"V-Bar_Pulldown"},
+      {"id":"puxada-supinada","nome":"Puxada Supinada","img":"Underhand_Cable_Pulldowns"}
+    ]},
+    { "ids": ["d2-2","d4-3"], "opcoes": [
+      {"id":"remada-articulada","nome":"Remada Articulada","img":"Leverage_Iso_Row"},
+      {"id":"remada-unilateral-com-halter","nome":"Remada Unilateral com Halter","img":"One-Arm_Dumbbell_Row"},
+      {"id":"remada-baixa-no-cabo","nome":"Remada Baixa no Cabo","img":"Seated_Cable_Rows"}
+    ]},
+    { "ids": ["d2-3"], "opcoes": [
+      {"id":"remada-cavalinho","nome":"Remada Cavalinho","img":"T-Bar_Row_with_Handle","anilhas":true},
+      {"id":"remada-curvada-com-halteres","nome":"Remada Curvada com Halteres","img":"Bent_Over_Two-Dumbbell_Row"},
+      {"id":"remada-curvada-no-smith","nome":"Remada Curvada no Smith","img":"Smith_Machine_Bent_Over_Row","anilhas":true}
+    ]},
+    { "ids": ["d2-4"], "opcoes": [
+      {"id":"rosca-com-halteres","nome":"Rosca com Halteres","img":"Dumbbell_Bicep_Curl"},
+      {"id":"rosca-scott","nome":"Rosca Scott","img":"Preacher_Curl"},
+      {"id":"rosca-no-cabo","nome":"Rosca no Cabo","img":"Standing_Biceps_Cable_Curl"}
+    ]},
+    { "ids": ["d2-5"], "opcoes": [
+      {"id":"rosca-martelo-na-corda","nome":"Rosca Martelo na Corda","img":"Cable_Hammer_Curls_-_Rope_Attachment"},
+      {"id":"rosca-martelo-alternada","nome":"Rosca Martelo Alternada","img":"Alternate_Hammer_Curl"}
+    ]},
+    { "ids": ["d3-1","d5-1"], "opcoes": [
+      {"id":"agachamento-hack","nome":"Agachamento Hack","img":"Hack_Squat","anilhas":true},
+      {"id":"agachamento-no-smith","nome":"Agachamento no Smith","img":"Smith_Machine_Squat","anilhas":true}
+    ]},
+    { "ids": ["d3-2"], "opcoes": [
+      {"id":"agachamento-no-smith","nome":"Agachamento no Smith","img":"Smith_Machine_Squat","anilhas":true},
+      {"id":"agachamento-hack","nome":"Agachamento Hack","img":"Hack_Squat","anilhas":true},
+      {"id":"afundo-com-halteres","nome":"Afundo com Halteres","img":"Dumbbell_Lunges"},
+      {"id":"agachamento-bulgaro-no-smith","nome":"Agachamento Búlgaro no Smith","img":"Smith_Single-Leg_Split_Squat","anilhas":true}
+    ]},
+    { "ids": ["d3-3"], "opcoes": [
+      {"id":"extensora-unilateral","nome":"Extensora Unilateral","img":"Single-Leg_Leg_Extension"}
+    ]},
+    { "ids": ["d3-4"], "opcoes": [
+      {"id":"stiff-com-halteres","nome":"Stiff com Halteres","img":"Stiff-Legged_Dumbbell_Deadlift"},
+      {"id":"levantamento-terra-romeno","nome":"Levantamento Terra Romeno","img":"Romanian_Deadlift","anilhas":true}
+    ]},
+    { "ids": ["d3-5"], "opcoes": [
+      {"id":"cadeira-flexora","nome":"Cadeira Flexora","img":"Seated_Leg_Curl"}
+    ]},
+    { "ids": ["d3-6"], "opcoes": [
+      {"id":"panturrilha-em-pe","nome":"Panturrilha em Pé","img":"Standing_Calf_Raises"},
+      {"id":"panturrilha-no-leg-press","nome":"Panturrilha no Leg Press","img":"Calf_Press_On_The_Leg_Press_Machine"}
+    ]},
+    { "ids": ["d4-4"], "opcoes": [
+      {"id":"remada-articulada","nome":"Remada Articulada","img":"Leverage_Iso_Row"},
+      {"id":"remada-unilateral-com-halter","nome":"Remada Unilateral com Halter","img":"One-Arm_Dumbbell_Row"}
+    ]},
+    { "ids": ["d5-2"], "opcoes": [
+      {"id":"agachamento-no-smith","nome":"Agachamento no Smith","img":"Smith_Machine_Squat","anilhas":true}
+    ]},
+    { "ids": ["d5-3"], "opcoes": [
+      {"id":"flexora-deitada","nome":"Flexora Deitada","img":"Lying_Leg_Curls"}
+    ]},
+    { "ids": ["d5-4"], "opcoes": [
+      {"id":"stiff-com-barra","nome":"Stiff com Barra","img":"Stiff-Legged_Barbell_Deadlift","anilhas":true},
+      {"id":"levantamento-terra-romeno","nome":"Levantamento Terra Romeno","img":"Romanian_Deadlift","anilhas":true}
+    ]},
+    { "ids": ["d5-5"], "opcoes": [
+      {"id":"panturrilha-sentada","nome":"Panturrilha Sentada","img":"Seated_Calf_Raise"},
+      {"id":"panturrilha-no-leg-press","nome":"Panturrilha no Leg Press","img":"Calf_Press_On_The_Leg_Press_Machine"}
+    ]}
   ],
   "progressao": {
     "titulo": "PROGRESSÃO — COMO CHEGAR NOS 600 KG",

@@ -310,3 +310,17 @@ Ajuste em **⚙ → Fechamento automático do treino**: OFF · 3h · 4h · 5h.
 
 Se um dia quiser um `.apk` instalável fora do Chrome: com o app já publicado,
 entra em **pwabuilder.com**, cola a URL e ele gera o pacote Android sozinho.
+
+## Galeria de variações (trocar exercício)
+
+Cada exercício com variações cadastradas mostra um **⇄** ao lado do nome. Tocando nele abre a
+galeria com foto de cada opção — ex: Supino Inclinado com Halteres → *Articulado*, *com Barra*,
+*no Smith*, *Crucifixo Inclinado*. Escolheu, troca **só na rotina de quem escolheu** (o perfil
+do aparelho); o resto do grupo continua com o original. A troca vai junto na sincronização.
+
+- O exercício trocado mantém séries, reps e técnicas do original, mas tem **histórico próprio**
+  (gráfico e recordes separados — articulado não mistura com halter)
+- A troca vale por dia: trocar o supino da segunda não troca o da quinta
+- Pra voltar, abre o ⇄ e escolhe a primeira opção (*original da rotina*)
+- A galeria fica no `rotina.json` → `"galeria"`: cada item tem `"ids"` (exercícios da rotina) e
+  `"opcoes"` (`id`, `nome`, `img` do free-exercise-db e `"anilhas": true` se for com barra)
