@@ -674,6 +674,9 @@
   .lb-box { max-width: 520px; }
   .lb-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
   .lb-imgs img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; background: #fff; border: 1px solid var(--border); }
+  .lb-imgs.uma { grid-template-columns: 1fr; }
+  .lb-imgs.uma img { aspect-ratio: auto; max-height: 60vh; object-fit: contain; }
+  img[src^="img/"] { object-fit: contain !important; } /* foto de aparelho: mostra inteiro, sem cortar */
   .lb-nota { font-size: 13px; color: var(--muted); line-height: 1.55; margin-top: 12px; }
   .lb-credito { font-size: 10px; color: #444; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; }
 
@@ -920,7 +923,7 @@
 <div id="lightbox" class="modal" hidden>
   <div class="modal-box lb-box">
     <h2 id="lb-titulo">—</h2>
-    <div class="modal-sub">início · fim do movimento</div>
+    <div class="modal-sub" id="lb-imgs-sub">início · fim do movimento</div>
     <div class="lb-imgs"><img id="lb-img0" alt="início"><img id="lb-img1" alt="fim"></div>
     <p class="lb-nota" id="lb-nota"></p>
     <div class="lb-credito">fotos: free-exercise-db (domínio público)</div>
@@ -1098,6 +1101,9 @@ const FIREBASE_CFG_PADRAO = {
 // Fotos dos exercícios: free-exercise-db (domínio público / Unlicense).
 // O rotina.json pode trazer "img" por exercício; isto aqui é o fallback por nome.
 const IMG_BASE = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/';
+// "local:arquivo.jpg" = foto hospedada no próprio app (pasta img/), pra aparelho que o banco não tem
+function fotoLocal(img) { return /^local:/.test(img || ''); }
+function fotoURL(img, n) { return fotoLocal(img) ? 'img/' + img.slice(6) : IMG_BASE + img + '/' + (n || 0) + '.jpg'; }
 const IMG_PADRAO = {
   'supino inclinado com halteres': 'Incline_Dumbbell_Press',
   'supino reto com barra': 'Barbell_Bench_Press_-_Medium_Grip',
@@ -1702,7 +1708,7 @@ function exHTML(ex) {
   const img = imgDe(ex);
   return `<div class="exercise${ex.destaque ? ' highlight' : ''}${done ? ' ex-done' : ''}" id="ex-${ex.id}" data-exid="${ex.id}">
     <div class="ex-top${img ? ' com-img' : ''}">
-      ${img ? `<img class="ex-thumb" src="${IMG_BASE}${esc(img)}/0.jpg" loading="lazy" alt="" data-img="${esc(img)}" data-nome="${esc(ex.nome)}" data-nota="${esc(ex.nota || '')}">` : ''}
+      ${img ? `<img class="ex-thumb" src="${esc(fotoURL(img, 0))}" loading="lazy" alt="" data-img="${esc(img)}" data-nome="${esc(ex.nome)}" data-nota="${esc(ex.nota || '')}">` : ''}
       <div><div class="ex-name">${esc(ex.nome)}</div>${ex.nota ? `<div class="ex-note">${esc(ex.nota)}</div>` : ''}</div>
       <div class="ex-dir">
         ${opcoesDe(ex._orig ? ex._orig.id : ex.id).length ? `<button type="button" class="ex-trocar${ex._orig ? ' trocado' : ''}" data-trocar="${esc(ex._orig ? ex._orig.id : ex.id)}" title="Trocar por uma variação">⇄ TROCAR</button>` : ''}
@@ -3312,11 +3318,16 @@ function abrirFigura(img, nome, nota) {
   if (!img) return;
   el('lb-titulo').textContent = nome || '';
   el('lb-nota').textContent = nota || '';
+  const local = fotoLocal(img);
   ['lb-img0', 'lb-img1'].forEach((id, n) => {
     const im = el(id);
     delete im.dataset.tentou; im.style.visibility = ''; // a mesma <img> é reaproveitada a cada abertura
-    im.src = IMG_BASE + img + '/' + n + '.jpg';
+    im.hidden = local && n === 1; // foto própria do app tem uma pose só
+    im.src = fotoURL(img, n);
   });
+  el('lb-imgs-sub').textContent = local ? 'aparelho' : 'início · fim do movimento';
+  el('lb-img0').parentNode.classList.toggle('uma', local);
+  document.querySelector('.lb-credito').hidden = local;
   el('lightbox').hidden = false;
 }
 el('lb-fechar').addEventListener('click', () => { el('lightbox').hidden = true; });
@@ -3348,7 +3359,7 @@ function abrirGaleria(exId) {
     .concat(opcoesDe(exId).map(o => ({ id: o.id, nome: o.nome, img: o.img, sub: o.anilhas ? 'com barra/anilhas' : '' })));
   el('gl-sub').textContent = 'só muda pra você · ' + perfil().nome;
   el('gl-lista').innerHTML = itens.map(it => `<button type="button" class="gl-item${it.id === atual ? ' gl-on' : ''}" data-op="${it.id == null ? '' : esc(it.id)}">
-      ${it.img ? `<img src="${IMG_BASE}${esc(it.img)}/0.jpg" loading="lazy" alt="">` : '<span class="gl-sem"></span>'}
+      ${it.img ? `<img src="${esc(fotoURL(it.img, 0))}" loading="lazy" alt="">` : '<span class="gl-sem"></span>'}
       <span class="gl-txt"><b>${esc(it.nome)}</b>${it.sub ? `<small>${esc(it.sub)}</small>` : ''}</span>
       ${it.id === atual ? '<span class="gl-check">✓</span>' : ''}
     </button>`).join('');

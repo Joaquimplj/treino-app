@@ -325,3 +325,6 @@ do aparelho); o resto do grupo continua com o original. A troca vai junto na sin
 - Pra voltar, abre o ⇄ e escolhe a primeira opção (*original da rotina*)
 - A galeria fica no `rotina.json` → `"galeria"`: cada item tem `"ids"` (exercícios da rotina) e
   `"opcoes"` (`id`, `nome`, `img` do free-exercise-db e `"anilhas": true` se for com barra)
+- Aparelho que o banco de fotos não tem pode usar foto própria do app: coloca o arquivo na pasta
+  `img/` e usa `"img": "local:arquivo.jpg"` (é o caso do Supino Inclinado/Reto Articulado, banco
+  deitado com braços articulados)

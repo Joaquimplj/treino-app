@@ -1,5 +1,5 @@
 {
-  "versao": "2026-10-20.2",
+  "versao": "2026-10-20.3",
   "nome": "ROTINA 5 DIAS",
   "subtitulo": "Push · Pull · Legs · Upper · Lower",
   "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
@@ -191,13 +191,13 @@
   ],
   "galeria": [
     { "ids": ["d1-1","d4-1"], "opcoes": [
-      {"id":"supino-inclinado-articulado","nome":"Supino Inclinado Articulado","img":"Leverage_Incline_Chest_Press"},
+      {"id":"supino-inclinado-articulado","nome":"Supino Inclinado Articulado","img":"local:supino-inclinado-articulado.jpg"},
       {"id":"supino-inclinado-com-barra","nome":"Supino Inclinado com Barra","img":"Barbell_Incline_Bench_Press_-_Medium_Grip","anilhas":true},
       {"id":"supino-inclinado-no-smith","nome":"Supino Inclinado no Smith","img":"Smith_Machine_Incline_Bench_Press","anilhas":true},
       {"id":"crucifixo-inclinado-com-halteres","nome":"Crucifixo Inclinado com Halteres","img":"Incline_Dumbbell_Flyes"}
     ]},
     { "ids": ["d1-2"], "opcoes": [
-      {"id":"supino-reto-articulado","nome":"Supino Reto Articulado","img":"Leverage_Chest_Press"},
+      {"id":"supino-reto-articulado","nome":"Supino Reto Articulado","img":"local:supino-reto-articulado.jpg"},
       {"id":"supino-reto-com-halteres","nome":"Supino Reto com Halteres","img":"Dumbbell_Bench_Press"},
       {"id":"supino-reto-no-smith","nome":"Supino Reto no Smith","img":"Smith_Machine_Bench_Press","anilhas":true},
       {"id":"supino-declinado-com-barra","nome":"Supino Declinado com Barra","img":"Decline_Barbell_Bench_Press","anilhas":true}
