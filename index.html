@@ -854,7 +854,7 @@
 
     <div class="modal-sec">
       <h4>Anilhas da academia</h4>
-      <p class="cfg-hint">Ao tocar no campo de kg de um exercício com barra, o app mostra quais anilhas colocar de cada lado. Marca aqui as que existem na sua academia. Barra olímpica = 20 kg; leg press e hack contam só as anilhas.</p>
+      <p class="cfg-hint">Ao tocar no campo de kg de um exercício com barra, o app mostra quais anilhas colocar de cada lado. Marca aqui as que existem na sua academia. O peso anotado é só o das anilhas (sem a barra): 80 kg = 40 de cada lado.</p>
       <div class="cfg-opts cfg-wrap" id="cfg-anilhas"></div>
     </div>
 
@@ -1180,10 +1180,11 @@ function usaAnilhas(ex) {
   if (/halter|barra fixa|cabo|polia|maquina|cadeira|corda/.test(k)) return false;
   return /barra|leg press|hack/.test(k);
 }
+// O peso anotado é só o das anilhas (sem a barra), então nada é descontado.
+// Um exercício pode trazer "base" no rotina.json se um dia precisar contar a barra.
 function baseDe(ex) {
   if (ex && typeof ex.base === 'number') return ex.base;
-  const k = normNome(ex ? ex.nome : '');
-  return /leg press|hack/.test(k) ? 0 : 20; // sled: só as anilhas; barra olímpica: 20 kg
+  return 0;
 }
 function anilhasPorLado(total, base) {
   const disp = anilhasDisponiveis();

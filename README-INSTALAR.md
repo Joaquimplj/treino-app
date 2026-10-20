@@ -239,7 +239,7 @@ carregadas da internet na primeira vez e guardadas no cache pra funcionar offlin
 
 Nos exercícios com barra, leg press e hack, ao tocar no campo de **kg** aparece embaixo
 da série quais anilhas colocar **de cada lado** (ex: `250 kg → 25 + 25 + 25 + 25 + 25`).
-Barra olímpica conta 20 kg; leg press e hack contam só as anilhas. Se o peso não fecha com
+O peso anotado é **só o das anilhas, sem a barra** (80 kg = 40 de cada lado). Se o peso não fecha com
 as anilhas da academia, ele avisa quanto sobra.
 
 - **⚙ → Anilhas da academia**: marca as anilhas que existem lá (25 · 20 · 15 · 10 · 5 · 3 · 2,5 · 2 · 1,25 · 1)
