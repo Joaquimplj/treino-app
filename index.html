@@ -37,7 +37,7 @@
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
-    padding: 28px 16px 210px;
+    padding: 16px 14px 210px;
     position: relative; width: 100%;
     touch-action: pan-y;
   }
@@ -46,77 +46,111 @@
   .view-anim { animation: tabslide .18s ease; }
 
   /* ===== HEADER ===== */
-  .header { text-align: center; margin-bottom: 24px; position: relative; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .header { text-align: center; margin-bottom: 14px; position: relative; max-width: 800px; margin-left: auto; margin-right: auto; }
   .header h1 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(44px, 9vw, 80px);
-    letter-spacing: 4px; line-height: 1; color: var(--accent);
+    font-size: clamp(36px, 8vw, 68px);
+    letter-spacing: 3px; line-height: 1; color: var(--accent);
   }
-  .header p { color: var(--muted); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-top: 8px; }
-  .versao-chip { margin-top: 8px; font-size: 10px; color: #555; letter-spacing: 2px; text-transform: uppercase; }
+  .header p { color: var(--muted); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; margin-top: 5px; }
+  .versao-chip { margin-top: 4px; font-size: 10px; color: #555; letter-spacing: 2px; text-transform: uppercase; }
   .rotina-switch {
-    display: inline-flex; gap: 4px; margin-top: 12px; padding: 3px;
+    display: inline-flex; gap: 4px; margin-top: 8px; padding: 3px;
     background: var(--card); border: 1px solid var(--border); border-radius: 999px;
   }
   .rs-btn {
     border: 0; background: transparent; color: var(--muted);
     font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700;
-    letter-spacing: 1.5px; padding: 6px 14px; border-radius: 999px;
+    letter-spacing: 1.5px; padding: 5px 13px; border-radius: 999px;
     cursor: pointer; transition: all .15s;
   }
   .rs-btn:hover { color: var(--text); }
   .rs-btn.rs-on { background: var(--accent); color: #000; }
   .icon-btn {
-    position: absolute; right: 0; top: 2px;
+    position: absolute; right: 0; top: 0;
     background: var(--card); border: 1px solid var(--border);
-    color: var(--muted); width: 40px; height: 40px; border-radius: 50%;
-    font-size: 17px; cursor: pointer; transition: all .15s;
+    color: var(--muted); width: 38px; height: 38px; border-radius: 50%;
+    font-size: 16px; cursor: pointer; transition: all .15s;
   }
   .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-  .meta { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .meta { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto; }
   .meta-item { background: var(--card); border: 1px solid var(--border); padding: 10px 16px; border-radius: 4px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
   .meta-item span { color: var(--accent); font-weight: 600; }
 
-  .goal-bar { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 18px 22px; border-radius: 4px; margin: 0 auto 24px; max-width: 800px; }
+  .goal-bar { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 16px 20px; border-radius: 4px; margin: 0 auto 20px; max-width: 800px; }
   .goal-bar h3 { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--accent); margin-bottom: 6px; }
   .goal-bar p { font-size: 14px; color: var(--text); font-weight: 300; }
 
   /* ===== MICROCICLO (seletor de semana) ===== */
-  .microciclo { max-width: 800px; margin: 0 auto 24px; }
-  .micro-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .micro-head h3 { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--accent2); }
-  .week-chips { display: flex; gap: 8px; }
+  .microciclo { max-width: 800px; margin: 0 auto 14px; }
+  .micro-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+  .micro-head h3 { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 3px; color: var(--accent2); }
+  .week-chips { display: flex; gap: 6px; }
   .week-chip {
-    flex: 1; padding: 11px 6px; border-radius: 6px; border: 1px solid var(--border);
+    flex: 1; padding: 8px 4px; border-radius: 6px; border: 1px solid var(--border);
     background: var(--card); color: var(--muted); cursor: pointer; transition: all .15s;
-    display: flex; flex-direction: column; align-items: center; gap: 2px; user-select: none;
+    display: flex; flex-direction: column; align-items: center; gap: 1px; user-select: none;
   }
-  .week-chip .wc-n { font-family: 'Bebas Neue', sans-serif; font-size: 20px; line-height: 1; letter-spacing: 1px; }
+  .week-chip .wc-n { font-family: 'Bebas Neue', sans-serif; font-size: 18px; line-height: 1; letter-spacing: 1px; }
   .week-chip .wc-t { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; }
   .week-chip:hover { border-color: var(--accent2); }
   .week-chip.wc-on { border-color: var(--accent2); background: rgba(245,161,66,0.1); color: var(--accent2); }
-  .semana-desc { margin-top: 10px; font-size: 12px; color: var(--muted); line-height: 1.55; padding-left: 10px; border-left: 2px solid var(--accent2); }
+  .semana-desc { margin-top: 7px; font-size: 11px; color: var(--muted); line-height: 1.45; padding-left: 9px; border-left: 2px solid var(--accent2); }
+
+  /* ===== RESUMO SEMANAL (consistência) ===== */
+  .semana-strip {
+    max-width: 800px; margin: 0 auto 12px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ss-left { display: flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+  .ss-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: var(--accent); line-height: 1; }
+  .ss-lbl { font-size: 11px; color: var(--muted); letter-spacing: .5px; }
+  .ss-bar { flex: 1; height: 6px; background: #0d0d0d; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; min-width: 36px; }
+  .ss-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width .35s ease; }
+  .ss-streak {
+    font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 1.5px;
+    color: var(--muted); border: 1px solid var(--border); border-radius: 999px;
+    padding: 3px 9px; white-space: nowrap;
+  }
+  .ss-streak.ss-on { color: var(--accent2); border-color: rgba(245,161,66,.45); background: rgba(245,161,66,.08); }
 
   /* ===== DIAS / ROTINA ===== */
-  .week { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+  .week { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
 
   .day { background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; transition: border-color 0.2s; }
   .day:hover { border-color: #333; }
+  .day.day-today { border-color: rgba(200,245,66,0.45); box-shadow: 0 0 0 1px rgba(200,245,66,0.08); }
+  .day.open:not(.day-today):not(.day-complete) { border-color: #383838; }
   .day.day-complete { border-color: var(--done-border) !important; background: #0d1600; }
 
-  .day-header { display: flex; align-items: center; gap: 16px; padding: 18px 18px; cursor: pointer; user-select: none; }
-  .day-num { font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: var(--border); line-height: 1; min-width: 44px; }
-  .day.active .day-num { color: var(--accent); }
+  .day-header { display: flex; align-items: center; gap: 14px; padding: 15px 16px; cursor: pointer; user-select: none; position: relative; }
+  .day-num { font-family: 'Bebas Neue', sans-serif; font-size: 34px; color: #3a3a3a; line-height: 1; min-width: 38px; }
+  .day.day-today .day-num { color: var(--accent); }
+  .day.open:not(.day-today) .day-num { color: #888; }
   .day.day-complete .day-num { color: var(--done-border); }
   .day-info { flex: 1; min-width: 0; }
-  .day-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
-  .day-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--text); }
-  .day.active .day-name { color: var(--accent); }
+  .day-label { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+  .hoje-pill {
+    font-family: 'DM Sans', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+    background: var(--accent); color: #000; padding: 1px 6px; border-radius: 999px;
+  }
+  .day-name { font-family: 'Bebas Neue', sans-serif; font-size: 21px; letter-spacing: 1.8px; color: #ccc; }
+  .day.day-today .day-name { color: var(--accent); }
+  .day.open:not(.day-today) .day-name { color: var(--text); }
   .day.day-complete .day-name { color: #4a8a00; }
 
-  .day-tag { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; border: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
-  .day.active .day-tag { border-color: var(--accent); color: var(--accent); background: rgba(200,245,66,0.06); }
+  .day-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .day-prog-txt { font-size: 10px; color: var(--muted); letter-spacing: 1px; white-space: nowrap; }
+  .day.day-today .day-prog-txt { color: rgba(200,245,66,0.8); }
+  .day.day-complete .day-prog-txt { color: #4a8a00; }
+  .day-prog-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,0.04); }
+  .day-prog-fill { height: 100%; background: var(--accent); transition: width .25s ease; }
+  .day.day-complete .day-prog-fill { background: #4a8a00; }
+
+  .day-tag { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 3px 9px; border-radius: 2px; border: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
+  .day.day-today .day-tag { border-color: var(--accent); color: var(--accent); background: rgba(200,245,66,0.06); }
   .day-rest .day-tag { border-color: #333; color: #444; }
   .day.day-complete .day-tag { border-color: var(--done-border); color: #4a8a00; background: rgba(74,138,0,0.1); }
 
@@ -148,17 +182,27 @@
   }
   .tecnica-badge b { font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 10px; }
 
+  .ex-ref {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+    margin-top: 8px; padding: 5px 9px; border-radius: 4px;
+    background: rgba(255,255,255,0.025); border: 1px solid #1d1d1d;
+    font-size: 11px; color: #888;
+  }
+  .ex-ref b { color: var(--text); font-weight: 500; }
+  .ex-ref .ex-pr { color: var(--accent); font-weight: 600; white-space: nowrap; }
+
   .series-row { display: flex; align-items: center; gap: 7px; margin-top: 12px; flex-wrap: wrap; }
   .series-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
+  @keyframes dotpop { 0% { transform: scale(1); } 45% { transform: scale(1.14); } 100% { transform: scale(1); } }
   .serie-dot {
-    width: 34px; height: 34px; border-radius: 50%;
+    width: 40px; height: 40px; border-radius: 50%;
     border: 2px solid var(--border); background: transparent; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--muted);
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--muted);
     transition: all 0.15s; user-select: none;
   }
   .serie-dot:hover { border-color: var(--accent); color: var(--accent); }
-  .serie-dot.done { background: var(--accent); border-color: var(--accent); color: #000; }
+  .serie-dot.done { background: var(--accent); border-color: var(--accent); color: #000; animation: dotpop .22s ease; }
   .mark-ex-btn {
     margin-left: auto; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
     padding: 5px 10px; border-radius: 3px; border: 1px solid var(--border);
@@ -167,15 +211,25 @@
   .mark-ex-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   /* ===== SÉRIES COM ANOTAÇÃO (na própria rotina) ===== */
-  .ex-series { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
-  .sr-row { display: grid; grid-template-columns: 34px 1fr 1fr 30px; gap: 7px; align-items: center; }
+  .ex-series { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .sr-row { display: grid; grid-template-columns: 40px 1fr 1fr 34px; gap: 7px; align-items: center; }
   .sr-row input {
     background: #0d0d0d; border: 1px solid var(--border); border-radius: 4px;
     color: var(--text); padding: 10px 9px; font-size: 15px; width: 100%;
     font-family: 'DM Sans', sans-serif; min-width: 0;
   }
-  .sr-row input::placeholder { color: #4a4a4a; }
+  .sr-row input::placeholder { color: #666; }
   .sr-row input:focus { outline: none; border-color: var(--accent); background: #101010; }
+  .sr-tools { padding: 5px 0 3px 47px; display: flex; flex-direction: column; gap: 5px; }
+  .sr-quick { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+  .sr-qbtn {
+    background: #141414; border: 1px solid #2c2c2c; border-radius: 999px;
+    color: #bbb; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
+    padding: 5px 9px; cursor: pointer; transition: all .12s; white-space: nowrap;
+  }
+  .sr-qbtn:hover, .sr-qbtn:active { border-color: var(--accent); color: var(--accent); background: rgba(200,245,66,0.08); }
+  .sr-qbtn.q-copy { border-color: rgba(245,161,66,0.4); color: var(--accent2); }
+  .sr-qbtn.q-copy:hover, .sr-qbtn.q-copy:active { background: rgba(245,161,66,0.12); border-color: var(--accent2); }
   .sr-mais {
     background: transparent; border: 1px solid var(--border); border-radius: 6px;
     color: #4a4a4a; font-size: 13px; cursor: pointer; height: 100%; min-height: 38px;
@@ -314,12 +368,12 @@
   .cfg-opt.cfg-on { border-color: var(--accent2); background: rgba(245,161,66,0.12); color: var(--accent2); }
 
   /* ===== PERFIS ===== */
-  .perfil-bar { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; max-width: 800px; margin-left: auto; margin-right: auto; flex-wrap: wrap; }
+  .perfil-bar { display: flex; gap: 7px; justify-content: center; margin-bottom: 10px; max-width: 800px; margin-left: auto; margin-right: auto; flex-wrap: wrap; }
   .pf-aviso { width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #444; margin-top: 4px; }
   .perfil-btn {
-    flex: 1; max-width: 200px; padding: 10px 14px; border-radius: 8px;
+    flex: 1; max-width: 200px; padding: 7px 12px; border-radius: 8px;
     border: 1px solid var(--border); background: var(--card); color: var(--muted);
-    font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 3px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2.5px;
     cursor: pointer; transition: all .15s; display: flex; flex-direction: column; align-items: center; gap: 1px;
   }
   .perfil-btn .pb-sub { font-family: 'DM Sans', sans-serif; font-size: 9px; letter-spacing: 1px; color: #444; text-transform: uppercase; }
@@ -542,10 +596,11 @@
   #timer-widget {
     position: fixed; bottom: calc(64px + env(safe-area-inset-bottom));
     left: 50%; transform: translateX(-50%);
-    background: #111; border: 1px solid #2a2a2a; border-radius: 60px;
-    padding: 10px 14px; display: flex; align-items: center; gap: 10px;
-    z-index: 1000; box-shadow: 0 8px 32px rgba(0,0,0,0.6); user-select: none;
-    max-width: calc(100vw - 16px); transition: transform .25s ease, opacity .25s ease;
+    background: #111; border: 1px solid #2a2a2a; border-radius: 26px;
+    padding: 8px 12px 10px; display: flex; align-items: center; justify-content: center; gap: 7px;
+    flex-wrap: wrap; overflow: hidden;
+    z-index: 1000; box-shadow: 0 8px 32px rgba(0,0,0,0.65); user-select: none;
+    max-width: calc(100vw - 14px); transition: transform .25s ease, opacity .25s ease;
     touch-action: none;
   }
   #timer-widget.running { border-color: var(--accent); }
@@ -553,9 +608,13 @@
   #timer-widget.tucked { opacity: 0; pointer-events: none; }
   @keyframes pulse-border { from { border-color: var(--accent2); } to { border-color: #ff6600; } }
 
+  .timer-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,0.06); pointer-events: none; }
+  .timer-prog-fill { height: 100%; width: 100%; background: var(--accent); transition: width .25s linear; }
+  #timer-widget.finished .timer-prog-fill { background: var(--accent2); }
+
   .timer-drag {
-    display: flex; align-items: center; gap: 10px;
-    cursor: grab; touch-action: none; padding: 4px 2px 4px 4px; border-radius: 40px;
+    display: flex; align-items: center; gap: 7px;
+    cursor: grab; touch-action: none; padding: 2px 2px 2px 3px; border-radius: 40px;
   }
   .timer-drag:active { cursor: grabbing; }
   .timer-grip { display: flex; flex-direction: column; gap: 3px; padding: 2px; }
@@ -563,44 +622,54 @@
   #timer-widget.running .timer-grip span { background: var(--muted); }
 
   #timer-display {
-    font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 3px;
-    color: var(--text); min-width: 70px; text-align: center; cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px;
+    color: var(--text); min-width: 54px; text-align: center; cursor: pointer; line-height: 1;
   }
   #timer-widget.running #timer-display { color: var(--accent); }
   #timer-widget.finished #timer-display { color: var(--accent2); }
 
-  .timer-presets { display: flex; gap: 5px; }
+  .timer-adj { display: flex; gap: 4px; }
+  .adj-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; padding: 4px 6px;
+    border-radius: 14px; border: 1px solid #262626; background: #161616;
+    color: #999; cursor: pointer; transition: all .12s;
+  }
+  .adj-btn:hover, .adj-btn:active { border-color: var(--accent); color: var(--accent); }
+
+  .timer-presets { display: flex; gap: 4px; }
   .preset-btn {
-    font-family: 'Bebas Neue', sans-serif; font-size: 14px; padding: 6px 10px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 13px; padding: 5px 8px;
     border-radius: 20px; border: 1px solid var(--border); background: transparent;
     color: var(--muted); cursor: pointer; transition: all 0.15s; letter-spacing: 1px;
   }
   .preset-btn:hover { border-color: var(--accent); color: var(--accent); }
   .preset-btn.active-preset { background: var(--accent); color: #000; border-color: var(--accent); }
 
-  .timer-controls { display: flex; gap: 7px; }
+  .timer-controls { display: flex; gap: 6px; }
   .timer-btn {
-    width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
-    background: transparent; color: var(--text); font-size: 15px; cursor: pointer;
+    width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border);
+    background: transparent; color: var(--text); font-size: 14px; cursor: pointer;
     display: flex; align-items: center; justify-content: center; transition: all 0.15s;
   }
   .timer-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .timer-btn.play-btn { background: var(--accent); border-color: var(--accent); color: #000; font-size: 13px; }
+  .timer-btn.play-btn { background: var(--accent); border-color: var(--accent); color: #000; font-size: 12px; }
 
   /* ===== TIMER EM PÉ (lateral direita / esquerda) ===== */
   #timer-widget.pos-direita, #timer-widget.pos-esquerda {
-    flex-direction: column; gap: 8px; border-radius: 40px; padding: 12px 9px;
+    flex-direction: column; flex-wrap: nowrap; gap: 6px; border-radius: 32px; padding: 10px 8px 12px;
     bottom: auto; top: 50%; max-width: none; max-height: calc(100vh - 40px);
   }
   #timer-widget.pos-direita { left: auto; right: 8px; }
   #timer-widget.pos-esquerda { left: 8px; right: auto; }
-  #timer-widget.pos-direita .timer-drag, #timer-widget.pos-esquerda .timer-drag { flex-direction: column; gap: 6px; padding: 2px; }
+  #timer-widget.pos-direita .timer-drag, #timer-widget.pos-esquerda .timer-drag { flex-direction: column; gap: 5px; padding: 2px; }
   #timer-widget.pos-direita .timer-grip, #timer-widget.pos-esquerda .timer-grip { flex-direction: row; gap: 3px; }
-  #timer-widget.pos-direita #timer-display, #timer-widget.pos-esquerda #timer-display { font-size: 26px; min-width: 0; letter-spacing: 2px; }
-  #timer-widget.pos-direita .timer-presets, #timer-widget.pos-esquerda .timer-presets { flex-direction: column; gap: 4px; }
-  #timer-widget.pos-direita .preset-btn, #timer-widget.pos-esquerda .preset-btn { font-size: 12px; padding: 5px 8px; }
-  #timer-widget.pos-direita .timer-controls, #timer-widget.pos-esquerda .timer-controls { flex-direction: column; gap: 6px; }
-  #timer-widget.pos-direita .timer-btn, #timer-widget.pos-esquerda .timer-btn { width: 34px; height: 34px; }
+  #timer-widget.pos-direita #timer-display, #timer-widget.pos-esquerda #timer-display { font-size: 24px; min-width: 0; letter-spacing: 1.5px; }
+  #timer-widget.pos-direita .timer-adj, #timer-widget.pos-esquerda .timer-adj { flex-direction: row; gap: 3px; }
+  #timer-widget.pos-direita .adj-btn, #timer-widget.pos-esquerda .adj-btn { font-size: 10px; padding: 3px 4px; }
+  #timer-widget.pos-direita .timer-presets, #timer-widget.pos-esquerda .timer-presets { flex-direction: column; gap: 3px; }
+  #timer-widget.pos-direita .preset-btn, #timer-widget.pos-esquerda .preset-btn { font-size: 12px; padding: 4px 7px; }
+  #timer-widget.pos-direita .timer-controls, #timer-widget.pos-esquerda .timer-controls { flex-direction: column; gap: 5px; }
+  #timer-widget.pos-direita .timer-btn, #timer-widget.pos-esquerda .timer-btn { width: 32px; height: 32px; }
 
   #timer-tab.tab-esquerda {
     right: auto; left: 0; border-radius: 0 30px 30px 0;
@@ -693,7 +762,7 @@
   .lb-credito { font-size: 10px; color: #444; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; }
 
   /* ===== ANILHAS POR LADO ===== */
-  .sr-anilhas { font-size: 11px; color: var(--accent2); padding: 4px 0 2px 41px; letter-spacing: .3px; }
+  .sr-anilhas { font-size: 11px; color: var(--accent2); padding: 1px 0; letter-spacing: .3px; }
   .cfg-opts.cfg-wrap { flex-wrap: wrap; }
 
   /* ===== RANK / NÍVEL ===== */
@@ -760,6 +829,7 @@
       <div class="week-chips" id="week-chips"></div>
       <div class="semana-desc" id="semana-desc"></div>
     </div>
+    <div class="semana-strip" id="semana-strip"></div>
     <div class="auto-sessao" id="auto-sessao" hidden></div>
     <div class="week" id="week"></div>
     <button class="reset-week-btn" id="btn-reset-semana">↺ Resetar marcações da semana</button>
@@ -812,15 +882,21 @@
     <div class="timer-grip"><span></span><span></span><span></span></div>
     <div id="timer-display">1:00</div>
   </div>
+  <div class="timer-adj">
+    <button type="button" class="adj-btn" data-adj="-15">-15s</button>
+    <button type="button" class="adj-btn" data-adj="15">+15s</button>
+  </div>
   <div class="timer-presets">
-    <button class="preset-btn active-preset" data-secs="60">1:00</button>
-    <button class="preset-btn" data-secs="90">1:30</button>
-    <button class="preset-btn" data-secs="120">2:00</button>
+    <button type="button" class="preset-btn active-preset" data-secs="60">1:00</button>
+    <button type="button" class="preset-btn" data-secs="90">1:30</button>
+    <button type="button" class="preset-btn" data-secs="120">2:00</button>
+    <button type="button" class="preset-btn" data-secs="180">3:00</button>
   </div>
   <div class="timer-controls">
-    <button class="timer-btn play-btn" id="play-btn">▶</button>
-    <button class="timer-btn" id="btn-timer-reset">↺</button>
+    <button type="button" class="timer-btn play-btn" id="play-btn">▶</button>
+    <button type="button" class="timer-btn" id="btn-timer-reset">↺</button>
   </div>
+  <div class="timer-prog"><div class="timer-prog-fill" id="timer-prog-fill"></div></div>
 </div>
 
 <!-- ABA PARA PUXAR O TIMER DE VOLTA -->
@@ -904,11 +980,16 @@
     </div>
 
     <div class="modal-sec">
-      <h4>Posição do cronômetro</h4>
+      <h4>Cronômetro de descanso</h4>
       <div class="cfg-opts" id="cfg-timer-pos">
         <button class="cfg-opt" data-pos="esquerda">⬅ EM PÉ</button>
         <button class="cfg-opt" data-pos="baixo">⬇ EMBAIXO</button>
         <button class="cfg-opt" data-pos="direita">EM PÉ ➡</button>
+      </div>
+      <p class="cfg-hint" style="margin-top:12px">Iniciar descanso automaticamente ao marcar uma série:</p>
+      <div class="cfg-opts" id="cfg-timer-auto">
+        <button class="cfg-opt" data-auto="1">ON</button>
+        <button class="cfg-opt" data-auto="0">OFF</button>
       </div>
     </div>
 
@@ -1102,7 +1183,8 @@ const LSK = {
   perfilTravado: 'ta_perfil_travado_v1',
   sync: 'ta_sync_cfg_v1', syncTok: 'ta_sync_tok_v1', syncSt: 'ta_sync_status_v1', remoto: 'ta_remoto_v1',
   anilhas: 'ta_anilhas_v1', trocas: 'ta_trocas_v1',
-  modoRotina: 'ta_modo_rotina_v1', rotina4d: 'ta_rotina_4d_v1'
+  modoRotina: 'ta_modo_rotina_v1', rotina4d: 'ta_rotina_4d_v1',
+  timerAuto: 'ta_timer_auto_v1'
 };
 
 // Perfis: cada um com seus dados (marcações, diário, peso corporal).
@@ -1657,7 +1739,7 @@ function atualizarTecnicas() {
 function renderModoRotina() {
   const m = modoRotinaAtual();
   document.querySelectorAll('#rotina-switch .rs-btn').forEach(b => b.classList.toggle('rs-on', b.dataset.modo === m));
-  document.querySelectorAll('#cfg-rotina-modo .cfg-opt').forEach(b => b.classList.toggle('on', b.dataset.modo === m));
+  document.querySelectorAll('#cfg-rotina-modo .cfg-opt').forEach(b => b.classList.toggle('cfg-on', b.dataset.modo === m));
 }
 function renderHeader() {
   el('titulo-app').textContent = rotina.nome || 'TREINO';
@@ -1695,9 +1777,8 @@ function notaDoDia(diaId) {
 // O que já foi anotado hoje pra este exercício, e o que foi feito da última vez
 // (a última vez vira placeholder cinza: mostra a referência sem virar dado falso).
 function dadosDoEx(exId) {
-  const hojeK = dateKey(new Date());
   const diaId = mapExDia[exId];
-  const sHoje = diario.find(s => s.diaId === diaId && keyFromISO(s.data) === hojeK);
+  const sHoje = sessaoDeHoje(diaId);
   const hoje = sHoje ? (sHoje.exercicios || []).find(x => x.id === exId) : null;
   const ult = ultimaSessaoEx(exId, sHoje ? sHoje.id : null);
   return { hoje: hoje || null, ult: ult || null };
@@ -1731,12 +1812,50 @@ function rotuloMarcar(ex, done) {
   return ex && ex.cardio ? 'Marcar ✓' : 'Tudo ✓';
 }
 
+function melhorSerieDe(series) {
+  let top = null;
+  (series || []).forEach(st => {
+    if (st && typeof st.peso === 'number') {
+      if (!top || st.peso > top.peso || (st.peso === top.peso && (st.reps || 0) > (top.reps || 0))) top = st;
+    }
+  });
+  return top;
+}
+
+function exRefHTML(ex, ult) {
+  let ultTxt = '', prTxt = '';
+  if (ex.cardio) {
+    if (ult && ult.sessao) {
+      const ct = cardioTexto(ult.sessao);
+      if (ct && ct !== '—') ultTxt = ct;
+    }
+    const pr = melhorDe(diario, ex.nome, 'min');
+    if (pr != null) prTxt = fmtNum(pr) + ' min';
+  } else if (Array.isArray(ex.componentes) && ex.componentes.length) {
+    const prs = ex.componentes.map(n => {
+      const pr = melhorDe(diario, n);
+      return pr != null ? n.split(' ')[0] + ' ' + fmtNum(pr) + 'kg' : null;
+    }).filter(Boolean);
+    if (prs.length) prTxt = prs.join(' · ');
+  } else {
+    if (ult && Array.isArray(ult.series)) {
+      const top = melhorSerieDe(ult.series);
+      if (top) ultTxt = fmtNum(top.peso) + 'kg' + (top.reps != null ? ' × ' + top.reps : '');
+    }
+    const pr = melhorDe(diario, ex.nome);
+    if (pr != null) prTxt = fmtNum(pr) + 'kg';
+  }
+  if (!ultTxt && !prTxt) return '';
+  return `<div class="ex-ref">${ultTxt ? `<span>Última: <b>${esc(ultTxt)}</b></span>` : '<span></span>'}${prTxt ? `<span class="ex-pr">🏆 PR ${esc(prTxt)}</span>` : ''}</div>`;
+}
+
 function exHTML(ex) {
   const a = normProg(ex);
   const done = a.length > 0 && a.every(Boolean);
   const badge = ex.tecnicas ? `<div class="tecnica-badge" id="tec-${ex.id}" hidden></div>` : '';
   const d = dadosDoEx(ex.id);
   const spark = sparkHTML(ex.nome);
+  const refStrip = exRefHTML(ex, d.ult);
 
   let corpo;
   if (ex.cardio) {
@@ -1761,6 +1880,7 @@ function exHTML(ex) {
         <div class="ex-sr"><span class="ex-sets-display">${ex.series}×</span><span class="ex-reps">${esc(ex.reps)}</span></div>
       </div>
     </div>
+    ${refStrip}
     ${badge}
     <div class="ex-series">${corpo}</div>
     <div class="ex-rodape">
@@ -1768,6 +1888,16 @@ function exHTML(ex) {
       <button class="mark-ex-btn${done ? ' all-done' : ''}" data-tudo="${ex.id}">${rotuloMarcar(ex, done)}</button>
     </div>
   </div>`;
+}
+
+function contarSeriesDia(dia) {
+  let done = 0, total = 0;
+  (dia.secoes || []).forEach(s => (s.exercicios || []).forEach(x => {
+    const a = normProg(x);
+    total += x.series;
+    done += a.filter(Boolean).length;
+  }));
+  return { done, total, pct: total ? Math.round(done / total * 100) : 0 };
 }
 
 function diaHTML(dia) {
@@ -1781,15 +1911,24 @@ function diaHTML(dia) {
       <div class="day-body"><div class="rest-day-body">${esc(dia.texto || '')}</div></div>
     </div>`;
   }
-  const aberto = dia.id === diaDeHoje() ? ' open' : '';
+  const ehHoje = dia.id === diaDeHoje();
+  const c = contarSeriesDia(dia);
   const secoes = (dia.secoes || []).map(s =>
     `<div class="section-label">${esc(s.titulo)}</div><div class="exercise-list">${(s.exercicios || []).map(exHTML).join('')}</div>`).join('');
   const dica = dia.dica ? `<div class="tip"><strong>${esc(dia.dica.rotulo)}:</strong> ${esc(dia.dica.texto)}</div>` : '';
-  return `<div class="day active${aberto}" id="${dia.id}">
+  return `<div class="day${ehHoje ? ' day-today open' : ''}" id="${dia.id}">
     <div class="day-header" data-toggle="${dia.id}">
       <div class="day-num">${esc(dia.num)}</div>
-      <div class="day-info"><div class="day-label">${esc(dia.label)}</div><div class="day-name">${esc(dia.nome)}</div></div>
-      <div class="day-tag">${esc(dia.tag)}</div><div class="chevron">▾</div>
+      <div class="day-info">
+        <div class="day-label">${esc(dia.label)}${ehHoje ? '<span class="hoje-pill">HOJE</span>' : ''}</div>
+        <div class="day-name">${esc(dia.nome)}</div>
+      </div>
+      <div class="day-right">
+        <div class="day-tag">${esc(dia.tag)}</div>
+        <div class="day-prog-txt" id="dp-txt-${dia.id}">${c.done}/${c.total} séries</div>
+      </div>
+      <div class="chevron">▾</div>
+      <div class="day-prog-bar"><div class="day-prog-fill" id="dp-bar-${dia.id}" style="width:${c.pct}%"></div></div>
     </div>
     <div class="day-body">${secoes}
       <textarea class="dia-nota" data-nota="${dia.id}" placeholder="Nota da sessão (opcional)... ex: leg press subiu fácil, joelho ok">${esc(notaDoDia(dia.id))}</textarea>
@@ -1904,12 +2043,41 @@ el('mp-salvar').addEventListener('click', () => {
   toast('Perfil salvo ✓');
 });
 
+function renderSemanaStrip() {
+  const box = el('semana-strip');
+  if (!box) return;
+  const metaSem = (rotina.dias || []).filter(d => !d.descanso).length || 5;
+  const wkAtual = semanaKey(new Date());
+  const sessVal = (diario || []).filter(s => (s.exercicios || []).length);
+  const feitas = sessVal.filter(s => semanaKey(new Date(s.data)) === wkAtual).length;
+  const pct = Math.min(100, Math.round(feitas / metaSem * 100));
+
+  // streak de semanas consecutivas com pelo menos 1 treino
+  const semanasAtivas = new Set(sessVal.map(s => semanaKey(new Date(s.data))));
+  let streak = 0;
+  const cursor = new Date();
+  if (!semanasAtivas.has(wkAtual)) cursor.setDate(cursor.getDate() - 7);
+  while (semanasAtivas.has(semanaKey(cursor))) {
+    streak++;
+    cursor.setDate(cursor.getDate() - 7);
+    if (streak > 520) break;
+  }
+
+  box.innerHTML = `<div class="ss-left">
+      <span class="ss-num">${feitas}/${metaSem}</span>
+      <span class="ss-lbl">treinos esta semana</span>
+    </div>
+    <div class="ss-bar"><div class="ss-fill" style="width:${pct}%"></div></div>
+    <span class="ss-streak${streak > 0 ? ' ss-on' : ''}">🔥 ${streak} sem</span>`;
+}
+
 function renderRotina() {
   renderMetaBar();
   const gb = rotina.metaPrincipal;
   el('goal-bar').innerHTML = gb ? `<h3>${esc(gb.titulo)}</h3><p>${esc(gb.texto)}</p>` : '';
   el('goal-bar').style.display = gb ? '' : 'none';
   renderMicrociclo();
+  renderSemanaStrip();
   el('week').innerHTML = (rotina.dias || []).map(diaHTML).join('');
   const pn = rotina.progressao;
   el('progress-note').innerHTML = pn ? `<h3>${esc(pn.titulo)}</h3><ul>${(pn.itens || []).map(i => `<li>${esc(i)}</li>`).join('')}</ul>` : '';
@@ -1935,10 +2103,12 @@ function atualizarStatusEx(exId) {
 function atualizarStatusDia(diaId, fromUser) {
   const dia = (rotina.dias || []).find(d => d.id === diaId);
   if (!dia || dia.descanso) return;
-  const all = (dia.secoes || []).every(s => (s.exercicios || []).every(x => {
-    const a = progresso[x.id] || [];
-    return a.length === x.series && a.every(Boolean);
-  }));
+  const c = contarSeriesDia(dia);
+  const all = c.total > 0 && c.done === c.total;
+  const txtEl = el('dp-txt-' + diaId);
+  if (txtEl) txtEl.textContent = c.done + '/' + c.total + ' séries';
+  const barEl = el('dp-bar-' + diaId);
+  if (barEl) barEl.style.width = c.pct + '%';
   const dEl = el(diaId);
   if (!dEl) return;
   const antes = dEl.classList.contains('day-complete');
@@ -2001,6 +2171,7 @@ function salvarSessaoDoDia(diaId, avisar) {
     if (existente && existente.editado) {
       registrarApagado(existente.id); diario = diario.filter(s => s.id !== existente.id);
       salvarDiario();
+      renderSemanaStrip();
       renderCalendario();
       renderEvolucao();
     }
@@ -2026,6 +2197,7 @@ function salvarSessaoDoDia(diaId, avisar) {
   }
   salvarDiario();
   avisarRecordes(sessaoDeHoje(diaId));
+  renderSemanaStrip();
   renderCalendario();
   renderEvolucao();
   if (avisar) toast('Anotado ✓');
@@ -2114,6 +2286,53 @@ el('week').addEventListener('click', e => {
     return;
   }
 
+  const bump = e.target.closest('[data-bump]');
+  if (bump) {
+    const block = bump.closest('.set-block');
+    const exEl = bump.closest('[data-exid]');
+    const inP = block && block.querySelector('.in-peso');
+    if (!inP || !exEl) return;
+    const ex = mapEx[exEl.dataset.exid];
+    const delta = parseFloat(bump.dataset.bump);
+    const cur = numOuNull(inP.value, false);
+    const ph = numOuNull(inP.placeholder, false);
+    const base = cur != null ? cur : (ph != null ? ph : 0);
+    let novo = Math.max(0, Math.round((base + delta) * 10) / 10);
+    const lim = limiteKg(ex ? ex.nome : '');
+    if (novo > lim) { novo = lim; toast('Máx. ' + fmtNum(lim) + ' kg'); }
+    inP.value = novo > 0 ? fmtNum(novo) : '';
+    atualizarDicaAnilhas(inP);
+    if (navigator.vibrate) navigator.vibrate(10);
+    const diaId = diaDoElemento(inP);
+    if (diaId) agendarSalvarDia(diaId);
+    return;
+  }
+  const copiar = e.target.closest('[data-copiar-set]');
+  if (copiar) {
+    const block = copiar.closest('.set-block');
+    const exEl = copiar.closest('[data-exid]');
+    if (!block || !exEl) return;
+    const inP = block.querySelector('.in-peso'), inR = block.querySelector('.in-reps');
+    const pesoTxt = inP.value.trim() || (numOuNull(inP.placeholder, false) != null ? inP.placeholder : '');
+    const repsTxt = inR.value.trim();
+    if (!pesoTxt && !repsTxt) { toast('Digita a carga antes de copiar'); return; }
+    // para supersets, copia apenas dentro do mesmo componente
+    let irmaos = [];
+    let cur = block.nextElementSibling;
+    while (cur && cur.classList.contains('set-block')) { irmaos.push(cur); cur = cur.nextElementSibling; }
+    let copiados = 0;
+    irmaos.forEach(b => {
+      const bp = b.querySelector('.in-peso'), br = b.querySelector('.in-reps');
+      if (bp && !bp.value.trim() && pesoTxt) { bp.value = pesoTxt; copiados++; }
+      if (br && !br.value.trim() && repsTxt) br.value = repsTxt;
+    });
+    const diaId = diaDoElemento(block);
+    if (diaId) salvarSessaoDoDia(diaId);
+    if (navigator.vibrate) navigator.vibrate(12);
+    toast(copiados ? 'Copiado pra ' + copiados + ' série(s) seguinte(s) ✓' : 'Próximas séries já preenchidas');
+    return;
+  }
+
   const dot = e.target.closest('.serie-dot');
   if (dot) {
     const id = dot.dataset.ex, i = +dot.dataset.i;
@@ -2124,7 +2343,11 @@ el('week').addEventListener('click', e => {
     salvarProg();
     dot.classList.toggle('done', a[i]);
     atualizarStatusEx(id);
-    if (a[i]) iniciarSessaoAuto(mapExDia[id]);
+    if (a[i]) {
+      if (navigator.vibrate) navigator.vibrate(15);
+      iniciarSessaoAuto(mapExDia[id]);
+      if (timerAutoAtivo()) iniciarDescansoAuto();
+    }
     salvarSessaoDoDia(mapExDia[id]);
     return;
   }
@@ -2140,7 +2363,10 @@ el('week').addEventListener('click', e => {
     const exEl = el('ex-' + id);
     if (exEl) exEl.querySelectorAll('.serie-dot').forEach((d, i) => d.classList.toggle('done', a[i]));
     atualizarStatusEx(id);
-    if (!all) iniciarSessaoAuto(mapExDia[id]);
+    if (!all) {
+      if (navigator.vibrate) navigator.vibrate(20);
+      iniciarSessaoAuto(mapExDia[id]);
+    }
     salvarSessaoDoDia(mapExDia[id]);
     return;
   }
@@ -2463,6 +2689,7 @@ function salvarCorrecao(id) {
   }
   sessEditando = null;
   salvarDiario();
+  renderSemanaStrip();
   renderCalendario(); renderEvolucao(); renderDupla(); renderPerfilChips();
   if (keyFromISO(s.data) === dateKey(new Date())) renderRotina();
   toast('Sessão corrigida ✓');
@@ -2481,6 +2708,7 @@ el('dia-detalhe').addEventListener('click', e => {
   if (confirm('Excluir esta sessão?')) {
     registrarApagado(del.dataset.del); diario = diario.filter(x => x.id !== del.dataset.del);
     salvarDiario();
+    renderSemanaStrip();
     renderCalendario();
     renderEvolucao();
   }
@@ -2871,17 +3099,28 @@ function renderPesoCard() {
   const atual = pts[pts.length - 1].peso;
   const inicio = pts[0].peso;
   const dif = Math.round((atual - inicio) * 10) / 10;
-  const clsD = dif < 0 ? 'up' : (dif > 0 ? 'down' : ''); // emagrecer: perder peso é o "bom"
+  const ganhando = p.metaPeso != null && p.metaPeso > inicio;
+  const clsD = ganhando ? (dif > 0 ? 'up' : (dif < 0 ? 'down' : '')) : (dif < 0 ? 'up' : (dif > 0 ? 'down' : ''));
 
   let metaHTML = '';
   if (p.metaPeso != null) {
-    const total = inicio - p.metaPeso;
-    const feito = inicio - atual;
-    const pct = total > 0 ? Math.max(0, Math.min(100, Math.round(feito / total * 100))) : (atual <= p.metaPeso ? 100 : 0);
-    const faltam = Math.round((atual - p.metaPeso) * 10) / 10;
+    let pct, faltam, batida;
+    if (ganhando) {
+      const total = p.metaPeso - inicio;
+      const feito = atual - inicio;
+      pct = total > 0 ? Math.max(0, Math.min(100, Math.round(feito / total * 100))) : (atual >= p.metaPeso ? 100 : 0);
+      faltam = Math.round((p.metaPeso - atual) * 10) / 10;
+      batida = atual >= p.metaPeso;
+    } else {
+      const total = inicio - p.metaPeso;
+      const feito = inicio - atual;
+      pct = total > 0 ? Math.max(0, Math.min(100, Math.round(feito / total * 100))) : (atual <= p.metaPeso ? 100 : 0);
+      faltam = Math.round((atual - p.metaPeso) * 10) / 10;
+      batida = atual <= p.metaPeso;
+    }
     metaHTML = `<div class="ev-meta">
       <h4>META — ${fmtNum(p.metaPeso)} KG</h4>
-      <div class="goal-row"><span>${faltam > 0 ? 'Faltam <b>' + fmtNum(faltam) + ' kg</b>' : '<b>Meta batida ✓</b>'}</span><span>${pct}%</span></div>
+      <div class="goal-row"><span>${!batida ? 'Faltam <b>' + fmtNum(Math.abs(faltam)) + ' kg</b>' : '<b>Meta batida ✓</b>'}</span><span>${pct}%</span></div>
       <div class="goal-track"><div class="goal-fill" style="width:${pct}%"></div></div>
     </div>`;
   }
@@ -3019,7 +3258,7 @@ async function syncEnviar(silencioso) {
       const dj = await atual.json();
       let rem = null;
       try { rem = JSON.parse(dj.fields.payload.stringValue); } catch (e) {}
-      if (rem && juntarComNuvem(rem)) { renderCalendario(); renderEvolucao(); renderPerfilChips(); renderDupla(); }
+      if (rem && juntarComNuvem(rem)) { renderSemanaStrip(); renderCalendario(); renderEvolucao(); renderPerfilChips(); renderDupla(); }
     } else if (atual.status !== 404) {
       throw new Error('http ' + atual.status); // sem conseguir ler a nuvem, não arrisca escrever
     }
@@ -3475,22 +3714,35 @@ el('gl-fechar').addEventListener('click', () => { el('modal-galeria').hidden = t
 el('modal-galeria').addEventListener('click', e => { if (e.target === el('modal-galeria')) el('modal-galeria').hidden = true; });
 el('lightbox').addEventListener('click', e => { if (e.target === el('lightbox')) el('lightbox').hidden = true; });
 
-// tocou no campo de kg de um exercício com barra → mostra as anilhas por lado
+// tocou no campo de kg → mostra atalhos rápidos (-2,5 / +2,5 / +5 / +10 / copiar) + anilhas por lado
 function atualizarDicaAnilhas(input) {
   const exEl = input.closest('[data-exid]');
   const block = input.closest('.set-block');
   if (!exEl || !block) return;
   const ex = mapEx[exEl.dataset.exid];
-  if (!usaAnilhas(ex)) return;
-  exEl.querySelectorAll('.sr-anilhas').forEach(n => { if (!block.contains(n)) n.remove(); });
-  let dica = block.querySelector('.sr-anilhas');
-  if (!dica) {
-    dica = document.createElement('div');
-    dica.className = 'sr-anilhas';
-    block.querySelector('.sr-row').insertAdjacentElement('afterend', dica);
+  if (!ex || ex.cardio) return;
+  document.querySelectorAll('#week .sr-tools').forEach(n => { if (!block.contains(n)) n.remove(); });
+  let tools = block.querySelector('.sr-tools');
+  if (!tools) {
+    tools = document.createElement('div');
+    tools.className = 'sr-tools';
+    const pesado = usaAnilhas(ex) || limiteKg(ex.nome) >= 500;
+    const temProx = !!(block.nextElementSibling && block.nextElementSibling.classList.contains('set-block'));
+    const quick = `<div class="sr-quick">
+      <button type="button" class="sr-qbtn" data-bump="-2.5">−2,5</button>
+      <button type="button" class="sr-qbtn" data-bump="2.5">+2,5</button>
+      <button type="button" class="sr-qbtn" data-bump="5">+5</button>
+      ${pesado ? '<button type="button" class="sr-qbtn" data-bump="10">+10</button>' : ''}
+      ${temProx ? '<button type="button" class="sr-qbtn q-copy" data-copiar-set="1" title="Copiar para próximas séries vazias">↓ copiar</button>' : ''}
+    </div>`;
+    tools.innerHTML = (usaAnilhas(ex) ? '<div class="sr-anilhas"></div>' : '') + quick;
+    block.querySelector('.sr-row').insertAdjacentElement('afterend', tools);
   }
-  const v = numOuNull(input.value, false) != null ? numOuNull(input.value, false) : numOuNull(input.placeholder, false);
-  dica.textContent = v == null ? 'digita o peso total pra ver as anilhas por lado' : '🏋 ' + textoAnilhas(v, ex);
+  const dica = tools.querySelector('.sr-anilhas');
+  if (dica) {
+    const v = numOuNull(input.value, false) != null ? numOuNull(input.value, false) : numOuNull(input.placeholder, false);
+    dica.textContent = v == null ? 'digita o peso total pra ver as anilhas por lado' : '🏋 ' + textoAnilhas(v, ex);
+  }
 }
 el('week').addEventListener('focusin', e => {
   if (e.target.classList && e.target.classList.contains('in-peso')) atualizarDicaAnilhas(e.target);
@@ -3540,7 +3792,10 @@ function iniciarSessaoAuto(diaId) {
 // carga da última vez (o placeholder), igual a marcar tudo à mão.
 function concluirDiaAuto(diaId, avisar) {
   const dia = (rotina.dias || []).find(d => d.id === diaId);
-  if (!dia || dia.descanso) return;
+  if (!dia || dia.descanso) {
+    limparSessaoAuto();
+    return;
+  }
   (dia.secoes || []).forEach(sec => (sec.exercicios || []).forEach(x => {
     progresso[x.id] = Array(x.series).fill(true);
   }));
@@ -3565,7 +3820,8 @@ function renderAutoBanner() {
   if (!box) return;
   const s = sessaoAuto();
   if (!s || !autoHoras()) { box.hidden = true; box.innerHTML = ''; return; }
-  const dia = (rotina.dias || []).find(d => d.id === s.diaId);
+  const dia = (rotina.dias || []).find(d => d.id === s.diaId && !d.descanso);
+  if (!dia) { box.hidden = true; box.innerHTML = ''; return; }
   const fim = new Date(fimDaSessao(s));
   const rest = Math.max(0, fimDaSessao(s) - Date.now());
   const hh = Math.floor(rest / 3600000), mm = Math.floor((rest % 3600000) / 60000);
@@ -3573,7 +3829,7 @@ function renderAutoBanner() {
   box.innerHTML = `<div class="as-info">
       <span class="as-dot"></span>
       <div>
-        <div class="as-t">SESSÃO EM ANDAMENTO${dia ? ' — ' + esc(dia.tag) : ''}</div>
+        <div class="as-t">SESSÃO EM ANDAMENTO — ${esc(dia.tag)}</div>
         <div class="as-s">fecha sozinha em ${hh}h${pad2(mm)} · às ${pad2(fim.getHours())}:${pad2(fim.getMinutes())}</div>
       </div>
     </div>
@@ -3621,6 +3877,7 @@ setInterval(verificarSessaoAuto, 30000);
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) return;
   verificarSessaoAuto();
+  tickTimer();
   // voltou pro app: busca o que o outro registrou (no máximo 1x a cada 2 min)
   const st = syncStatus();
   if (syncAtivo() && (!st.leitura || Date.now() - new Date(st.leitura) > 120000)) syncBaixar(true);
@@ -3658,8 +3915,8 @@ document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', (
 let swX = null, swY = null, swValido = false;
 document.addEventListener('pointerdown', e => {
   if (!e.isPrimary) { swValido = false; return; } // ignora multitouch
-  if (e.target.closest('#timer-widget, #timer-tab, #tabbar, input, textarea, .modal-box')) { swValido = false; return; }
-  if (!el('modal-config').hidden) { swValido = false; return; }
+  if (e.target.closest('#timer-widget, #timer-tab, #tabbar, input, textarea, .modal-box, .ev-chips, .sr-quick')) { swValido = false; return; }
+  if (document.querySelector('.modal:not([hidden])')) { swValido = false; return; }
   swX = e.clientX; swY = e.clientY; swValido = true;
 }, { passive: true });
 document.addEventListener('pointerup', e => {
@@ -3706,22 +3963,35 @@ async function precarregarOutroModo(modo) {
 async function alternarModoRotina(modo) {
   if (modo !== '4d' && modo !== '5d') return;
   if (modo === modoRotinaAtual()) return;
-  gravar(chaveP(LSK.modoRotina), modo);
-  renderModoRotina();
   const cached = ler(chaveRotinaModo(modo));
-  if (cached && Array.isArray(cached.dias)) {
+  const temCache = !!(cached && Array.isArray(cached.dias));
+  let nova = null;
+  if (temCache) {
+    gravar(chaveP(LSK.modoRotina), modo);
     aplicarRotina(cached, true);
   }
   if (location.protocol.startsWith('http')) {
     try {
       const r = await fetch(arquivoRotinaModo(modo) + '?t=' + Date.now(), { cache: 'no-store' });
       if (r.ok) {
-        const nova = await r.json();
-        if (nova && Array.isArray(nova.dias)) {
-          if (!cached || nova.versao !== cached.versao) aplicarRotina(nova, true);
-        }
+        const j = await r.json();
+        if (j && Array.isArray(j.dias)) nova = j;
       }
     } catch (e) {}
+  }
+  if (nova) {
+    gravar(chaveP(LSK.modoRotina), modo);
+    if (!temCache || nova.versao !== cached.versao) aplicarRotina(nova, true);
+    else renderModoRotina();
+  } else if (!temCache) {
+    if (modo === '5d') {
+      gravar(chaveP(LSK.modoRotina), modo);
+      aplicarRotina(DEFAULT_ROTINA, true);
+    } else {
+      renderModoRotina();
+      toast('Sem conexão — rotina 4 dias ainda não está em cache');
+      return;
+    }
   }
   toast(modo === '4d' ? 'Rotina 4 dias (Upper / Lower)' : 'Rotina 5 dias (PPL + Upper/Lower)');
 }
@@ -3803,7 +4073,7 @@ el('file-backup').addEventListener('change', ev => {
   rd.onload = () => {
     try {
       const j = JSON.parse(rd.result);
-      if (j.rotina && Array.isArray(j.rotina.dias)) { rotina = j.rotina; gravar(LSK.rotina, rotina); }
+      if (j.rotina && Array.isArray(j.rotina.dias)) { rotina = j.rotina; gravar(chaveRotinaModo(modoRotinaAtual()), rotina); }
       if (Array.isArray(j.perfis) && j.perfis.length) { perfis = j.perfis; salvarPerfis(); }
       if (j.dados && typeof j.dados === 'object') {
         // backup novo: um bloco por perfil
@@ -3837,9 +4107,16 @@ el('file-backup').addEventListener('change', ev => {
 });
 
 // =====================================================================
-// TIMER
+// TIMER (wall-clock: não atrasa com tela bloqueada ou app em segundo plano)
 // =====================================================================
-let timerTotal = 60, timerLeft = 60, timerRunning = false, timerInterval = null, audioCtx = null;
+let timerTotal = 60, timerLeft = 60, timerRunning = false, timerInterval = null, timerEndAt = null, audioCtx = null;
+
+function timerAutoAtivo() { const v = ler(LSK.timerAuto); return v == null ? true : !!v; }
+function renderCfgTimerAuto() {
+  const on = timerAutoAtivo();
+  document.querySelectorAll('#cfg-timer-auto .cfg-opt').forEach(b =>
+    b.classList.toggle('cfg-on', (b.dataset.auto === '1') === on));
+}
 
 document.addEventListener('pointerdown', () => {
   try {
@@ -3865,30 +4142,67 @@ function apitar() {
   if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
 }
 
+function tickTimer() {
+  if (!timerRunning || !timerEndAt) return;
+  const rest = Math.max(0, Math.ceil((timerEndAt - Date.now()) / 1000));
+  if (rest !== timerLeft) {
+    timerLeft = rest;
+    updateTimerDisplay();
+  }
+  if (timerLeft <= 0) {
+    timerRunning = false;
+    timerEndAt = null;
+    clearInterval(timerInterval);
+    updateTimerState();
+    apitar();
+  }
+}
+
 function setPreset(secs, btn) {
   document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
   btn.classList.add('active-preset');
-  timerTotal = secs; timerLeft = secs; timerRunning = false;
+  timerTotal = secs; timerLeft = secs; timerRunning = false; timerEndAt = null;
   clearInterval(timerInterval);
+  updateTimerDisplay(); updateTimerState();
+}
+
+function ajustarTimer(delta) {
+  timerLeft = Math.max(0, timerLeft + delta);
+  if (timerLeft > timerTotal) timerTotal = timerLeft;
+  if (timerRunning) {
+    if (timerLeft <= 0) {
+      timerRunning = false;
+      timerEndAt = null;
+      clearInterval(timerInterval);
+      apitar();
+    } else {
+      timerEndAt = Date.now() + timerLeft * 1000;
+    }
+  }
+  updateTimerDisplay(); updateTimerState();
+}
+
+function iniciarDescansoAuto() {
+  clearInterval(timerInterval);
+  timerLeft = timerTotal;
+  timerRunning = true;
+  timerEndAt = Date.now() + timerLeft * 1000;
+  timerInterval = setInterval(tickTimer, 250);
   updateTimerDisplay(); updateTimerState();
 }
 
 function toggleTimer() {
   if (timerLeft === 0) { resetTimer(); return; }
-  timerRunning = !timerRunning;
   if (timerRunning) {
-    timerInterval = setInterval(() => {
-      timerLeft--;
-      updateTimerDisplay();
-      if (timerLeft <= 0) {
-        timerRunning = false;
-        clearInterval(timerInterval);
-        updateTimerState();
-        apitar();
-      }
-    }, 1000);
-  } else {
+    tickTimer();
+    timerRunning = false;
+    timerEndAt = null;
     clearInterval(timerInterval);
+  } else {
+    timerRunning = true;
+    timerEndAt = Date.now() + timerLeft * 1000;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(tickTimer, 250);
   }
   updateTimerState();
 }
@@ -3896,6 +4210,7 @@ function toggleTimer() {
 function resetTimer() {
   clearInterval(timerInterval);
   timerRunning = false;
+  timerEndAt = null;
   timerLeft = timerTotal;
   updateTimerDisplay(); updateTimerState();
 }
@@ -3905,6 +4220,11 @@ function updateTimerDisplay() {
   const txt = m + ':' + String(s).padStart(2, '0');
   el('timer-display').textContent = txt;
   el('tt-time').textContent = txt;
+  const fill = el('timer-prog-fill');
+  if (fill) {
+    const pct = timerTotal > 0 ? Math.max(0, Math.min(100, Math.round(timerLeft / timerTotal * 100))) : 0;
+    fill.style.width = pct + '%';
+  }
 }
 
 function updateTimerState() {
@@ -3916,8 +4236,17 @@ function updateTimerState() {
 }
 
 document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => setPreset(+b.dataset.secs, b)));
+document.querySelectorAll('.adj-btn').forEach(b => b.addEventListener('click', () => ajustarTimer(+b.dataset.adj)));
 el('play-btn').addEventListener('click', toggleTimer);
 el('btn-timer-reset').addEventListener('click', resetTimer);
+el('cfg-timer-auto').addEventListener('click', e => {
+  const b = e.target.closest('[data-auto]');
+  if (!b) return;
+  const on = b.dataset.auto === '1';
+  gravar(LSK.timerAuto, on);
+  renderCfgTimerAuto();
+  toast(on ? 'Descanso inicia ao marcar série ✓' : 'Descanso automático desligado');
+});
 
 // ---- posição (embaixo / em pé na direita / em pé na esquerda) ----
 const timerWidget = el('timer-widget'), timerTab = el('timer-tab'), timerDrag = el('timer-drag');
@@ -4007,6 +4336,7 @@ renderEvolucao();
 renderPesoCard();
 renderDupla();
 renderCfgAuto();
+renderCfgTimerAuto();
 renderCfgPerfil();
 renderSyncStatus();
 if (syncAtivo()) { syncBaixar(true).then(() => syncEnviar(true)); }

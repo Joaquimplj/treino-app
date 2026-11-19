@@ -1,7 +1,7 @@
 // Service worker — app de treino
 // Shell (index.html) e rotina.json: NETWORK-FIRST (sempre pega a versao nova online,
 // cai pro cache só offline). Demais assets: cache-first (rapido + offline).
-const CACHE = 'treino-v31';
+const CACHE = 'treino-v32';
 const ASSETS = ['./', './index.html', './rotina.json', './rotina-4d.json', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -28,7 +28,7 @@ self.addEventListener('fetch', e => {
     const chave = url.pathname.endsWith('/rotina-4d.json') ? './rotina-4d.json' : './rotina.json';
     e.respondWith(
       fetch(e.request)
-        .then(r => { const cp = r.clone(); caches.open(CACHE).then(c => c.put(chave, cp)); return r; })
+        .then(r => { if (r && r.ok) { const cp = r.clone(); caches.open(CACHE).then(c => c.put(chave, cp)); } return r; })
         .catch(() => caches.match(chave))
     );
     return;

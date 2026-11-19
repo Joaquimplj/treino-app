@@ -1,7 +1,7 @@
 {
   "name": "Rotina de Treino",
   "short_name": "Treino",
-  "description": "Rotina 5 dias + diário de cargas — meta: Leg Press 600 kg",
+  "description": "Rotina 4 ou 5 dias + diário de cargas — meta: Leg Press 600 kg",
   "lang": "pt-BR",
   "start_url": "./",
   "scope": "./",
