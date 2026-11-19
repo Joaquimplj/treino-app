@@ -1,5 +1,5 @@
 {
-  "versao": "2026-10-20.4",
+  "versao": "2026-11-19.1",
   "nome": "ROTINA 5 DIAS",
   "subtitulo": "Push · Legs · Pull · Lower · Upper",
   "rodape": "Rotina gerada para 80 kg · 1,70 m · Meta: 600 kg Leg Press",
@@ -72,7 +72,7 @@
         {
           "titulo": "Posterior + Panturrilha",
           "exercicios": [
-            { "id": "d3-4", "nome": "Stiff com Barra", "img": "Stiff-Legged_Barbell_Deadlift", "faixas": [40,60,80,100], "anilhas": true, "nota": "Quadril atrás · não arredonda lombar", "series": 3, "reps": "10 reps" },
+            { "id": "d3-4", "nome": "Levantamento Pélvico na Máquina", "img": "Barbell_Hip_Thrust", "faixas": [40,60,80,100], "nota": "Glúteo e posterior · sem forçar a coluna · segura 1s no topo", "series": 3, "reps": "10–12 reps" },
             { "id": "d3-5", "nome": "Flexora Deitada", "img": "Lying_Leg_Curls", "series": 3, "reps": "12 reps" },
             { "id": "d3-6", "nome": "Panturrilha Sentada", "img": "Seated_Calf_Raise", "nota": "Joelho dobrado = sóleo · pausa de 1s embaixo (alongado)", "series": 4, "reps": "15–20 reps" }
           ]
@@ -94,7 +94,7 @@
           "exercicios": [
             { "id": "d2-6", "nome": "Puxada Alta (ou Barra Fixa)", "img": "Wide-Grip_Lat_Pulldown", "faixas": [40,55,70,85], "nota": "Puxada vertical · largura do dorsal · pode trocar por Barra Fixa", "series": 4, "reps": "8–12 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
             { "id": "d2-2", "nome": "High Row Unilateral — Máquina Articulada", "img": "Leverage_High_Row", "nota": "Uma alça de cada vez · mais amplitude · corrige assimetria", "series": 3, "reps": "10 reps cada lado", "destaque": true },
-            { "id": "d2-3", "nome": "Remada Curvada com Barra", "img": "Bent_Over_Barbell_Row", "faixas": [40,60,80,100], "anilhas": true, "nota": "Complemento livre · coluna neutra", "series": 3, "reps": "8 reps" }
+            { "id": "d2-3", "nome": "Pulldown na Polia", "img": "Straight-Arm_Pulldown", "nota": "Braços estendidos · foco no dorsal · sem forçar a coluna", "series": 3, "reps": "10–12 reps" }
           ]
         },
         {
@@ -127,7 +127,7 @@
           "titulo": "Posterior",
           "exercicios": [
             { "id": "d5-3", "nome": "Cadeira Flexora", "img": "Seated_Leg_Curl", "nota": "Sentado · varia da flexora deitada da terça", "series": 4, "reps": "10–12 reps" },
-            { "id": "d5-4", "nome": "Stiff com Halteres", "img": "Stiff-Legged_Dumbbell_Deadlift", "nota": "Posterior de coxa · lombar neutra · carga moderada", "series": 3, "reps": "10–12 reps" },
+            { "id": "d5-4", "nome": "Levantamento Pélvico na Máquina", "img": "Barbell_Hip_Thrust", "faixas": [40,60,80,100], "nota": "2ª frequência · glúteo e posterior sem forçar a coluna", "series": 3, "reps": "10–12 reps" },
             { "id": "d5-5", "nome": "Panturrilha em Pé", "img": "Standing_Calf_Raises", "series": 4, "reps": "15–20 reps" }
           ]
         }
@@ -239,9 +239,9 @@
       {"id":"remada-baixa-no-cabo","nome":"Remada Baixa no Cabo","img":"Seated_Cable_Rows"}
     ]},
     { "ids": ["d2-3"], "opcoes": [
-      {"id":"remada-cavalinho","nome":"Remada Cavalinho","img":"T-Bar_Row_with_Handle","anilhas":true},
-      {"id":"remada-curvada-com-halteres","nome":"Remada Curvada com Halteres","img":"Bent_Over_Two-Dumbbell_Row"},
-      {"id":"remada-curvada-no-smith","nome":"Remada Curvada no Smith","img":"Smith_Machine_Bent_Over_Row","anilhas":true}
+      {"id":"pulldown-com-corda","nome":"Pulldown com Corda","img":"Rope_Straight-Arm_Pulldown"},
+      {"id":"pullover-com-halter","nome":"Pullover com Halter","img":"Straight-Arm_Dumbbell_Pullover"},
+      {"id":"remada-articulada-peito-apoiado","nome":"Remada Articulada (Peito Apoiado)","img":"Leverage_Iso_Row"}
     ]},
     { "ids": ["d2-4"], "opcoes": [
       {"id":"rosca-com-halteres","nome":"Rosca com Halteres","img":"Dumbbell_Bicep_Curl"},
@@ -267,15 +267,14 @@
       {"id":"agachamento-frontal","nome":"Agachamento Frontal","img":"Front_Barbell_Squat","anilhas":true},
       {"id":"agachamento-sissy","nome":"Agachamento Sissy","img":"Weighted_Sissy_Squat"}
     ]},
-    { "ids": ["d3-4"], "opcoes": [
-      {"id":"stiff-com-halteres","nome":"Stiff com Halteres","img":"Stiff-Legged_Dumbbell_Deadlift"},
-      {"id":"levantamento-terra-romeno","nome":"Levantamento Terra Romeno","img":"Romanian_Deadlift","anilhas":true}
+    { "ids": ["d3-4","d5-4"], "opcoes": [
+      {"id":"elevacao-pelvica-unilateral","nome":"Elevação Pélvica Unilateral","img":"Single_Leg_Glute_Bridge"},
+      {"id":"ponte-de-gluteo","nome":"Ponte de Glúteo (Glute Bridge)","img":"Barbell_Glute_Bridge"},
+      {"id":"gluteo-na-polia","nome":"Glúteo na Polia (Coice)","img":"Glute_Kickback"}
     ]},
     { "ids": ["d3-5"], "opcoes": [
       {"id":"cadeira-flexora","nome":"Cadeira Flexora","img":"Seated_Leg_Curl"},
-      {"id":"flexora-em-pe","nome":"Flexora em Pé","img":"Standing_Leg_Curl"},
-      {"id":"stiff-com-halteres","nome":"Stiff com Halteres","img":"Stiff-Legged_Dumbbell_Deadlift"},
-      {"id":"good-morning","nome":"Good Morning","img":"Good_Morning","anilhas":true}
+      {"id":"flexora-em-pe","nome":"Flexora em Pé","img":"Standing_Leg_Curl"}
     ]},
     { "ids": ["d3-6"], "opcoes": [
       {"id":"panturrilha-em-pe","nome":"Panturrilha em Pé","img":"Standing_Calf_Raises"},
@@ -292,12 +291,7 @@
     ]},
     { "ids": ["d5-3"], "opcoes": [
       {"id":"flexora-deitada","nome":"Flexora Deitada","img":"Lying_Leg_Curls"},
-      {"id":"flexora-em-pe","nome":"Flexora em Pé","img":"Standing_Leg_Curl"},
-      {"id":"good-morning","nome":"Good Morning","img":"Good_Morning","anilhas":true}
-    ]},
-    { "ids": ["d5-4"], "opcoes": [
-      {"id":"stiff-com-barra","nome":"Stiff com Barra","img":"Stiff-Legged_Barbell_Deadlift","anilhas":true},
-      {"id":"levantamento-terra-romeno","nome":"Levantamento Terra Romeno","img":"Romanian_Deadlift","anilhas":true}
+      {"id":"flexora-em-pe","nome":"Flexora em Pé","img":"Standing_Leg_Curl"}
     ]},
     { "ids": ["d5-5"], "opcoes": [
       {"id":"panturrilha-sentada","nome":"Panturrilha Sentada","img":"Seated_Calf_Raise"},
