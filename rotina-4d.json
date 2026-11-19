@@ -1,0 +1,308 @@
+{
+  "versao": "2026-11-19.4",
+  "nome": "ROTINA 4 DIAS",
+  "subtitulo": "Upper · Lower · Upper · Lower",
+  "rodape": "Rotina 4 dias · 80 kg · 1,70 m · Meta: 600 kg Leg Press",
+  "info": [
+    { "rotulo": "Peso", "valor": "80 kg" },
+    { "rotulo": "Altura", "valor": "1,70 m" },
+    { "rotulo": "Meta", "valor": "600 kg Leg Press" },
+    { "rotulo": "Sessão", "valor": "~1h" }
+  ],
+  "metaPrincipal": {
+    "titulo": "META PRINCIPAL",
+    "texto": "Leg Press 600 kg + Supino Inclinado com Halteres como âncora. Divisão Upper/Lower em 4 dias para manter frequência 2×/semana em pernas, peito e costas, sem sobrecarregar a coluna."
+  },
+  "microciclo": {
+    "ativo": true,
+    "titulo": "MICROCICLO",
+    "semanas": [
+      { "n": 1, "tema": "Base", "desc": "Carga sólida e técnica limpa. Deixa 1–2 reps na reserva. Sem técnica avançada." },
+      { "n": 2, "tema": "Intensidade", "desc": "Drop set na última série dos exercícios-chave (Leg Press, Supino Inclinado, Puxada Alta)." },
+      { "n": 3, "tema": "Progressão", "desc": "Sobe a carga. Sem técnica — foco em bater mais peso/reps que na semana 1." },
+      { "n": 4, "tema": "Pico", "desc": "Rest-pause na última série dos exercícios-chave. Depois recomeça na semana 1." }
+    ]
+  },
+  "dias": [
+    {
+      "id": "u1",
+      "num": "01",
+      "label": "Segunda",
+      "semana": [1],
+      "nome": "UPPER A — Peito · Costas · Ombro",
+      "tag": "Upper",
+      "descanso": false,
+      "secoes": [
+        {
+          "titulo": "Peito",
+          "exercicios": [
+            { "id": "u1-1", "nome": "Supino Inclinado com Halteres", "img": "Incline_Dumbbell_Press", "faixas": [20,30,42], "nota": "Exercício âncora · foco em amplitude", "series": 4, "reps": "8–10 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
+            { "id": "u1-2", "nome": "Supino Reto com Barra (leve declínio)", "img": "Barbell_Bench_Press_-_Medium_Grip", "faixas": [40,60,80,100], "anilhas": true, "nota": "Step embaixo de um pé do banco = leve declínio · pega mais o peito inferior", "series": 3, "reps": "6–8 reps" }
+          ]
+        },
+        {
+          "titulo": "Costas",
+          "exercicios": [
+            { "id": "u1-3", "nome": "Puxada Alta (ou Barra Fixa)", "img": "Wide-Grip_Lat_Pulldown", "faixas": [40,55,70,85], "nota": "Puxada vertical · largura do dorsal · pode trocar por Barra Fixa", "series": 4, "reps": "8–12 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
+            { "id": "u1-4", "nome": "High Row Unilateral — Máquina Articulada", "img": "Leverage_High_Row", "nota": "Uma alça de cada vez · mais amplitude · corrige assimetria", "series": 3, "reps": "10 reps cada lado", "destaque": true }
+          ]
+        },
+        {
+          "titulo": "Ombro + Tríceps",
+          "exercicios": [
+            { "id": "u1-5", "nome": "Elevação Lateral", "img": "Side_Lateral_Raise", "series": 3, "reps": "15 reps" },
+            { "id": "u1-6", "nome": "Tríceps Corda", "img": "Triceps_Pushdown_-_Rope_Attachment", "series": 3, "reps": "12 reps" }
+          ]
+        }
+      ],
+      "dica": { "rotulo": "Foco", "texto": "Começa pesado no Supino Inclinado e na Puxada Alta. Mantém o ritmo firme pra fechar tudo em ~1h." }
+    },
+    {
+      "id": "l1",
+      "num": "02",
+      "label": "Terça",
+      "semana": [2],
+      "nome": "LOWER A — Quad · Posterior · Glúteo",
+      "tag": "Lower",
+      "descanso": false,
+      "secoes": [
+        {
+          "titulo": "Principal — Meta 600 kg",
+          "exercicios": [
+            { "id": "l1-1", "nome": "Leg Press 45°", "img": "Leg_Press", "faixas": [200,300,400,500,600], "anilhas": true, "base": 0, "nota": "Exercício âncora · progressão semanal obrigatória", "series": 5, "reps": "8–12 reps", "destaque": true, "metaCarga": 600, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
+            { "id": "l1-2", "nome": "Agachamento Hack", "img": "Hack_Squat", "faixas": [60,100,140,180], "anilhas": true, "base": 0, "nota": "Costas apoiadas · poupa a coluna · amplitude completa", "series": 3, "reps": "8–10 reps" },
+            { "id": "l1-3", "nome": "Cadeira Extensora", "img": "Leg_Extensions", "faixas": [40,60,80,100], "series": 3, "reps": "12–15 reps" }
+          ]
+        },
+        {
+          "titulo": "Posterior + Panturrilha",
+          "exercicios": [
+            { "id": "l1-4", "nome": "Levantamento Pélvico na Máquina", "img": "Barbell_Hip_Thrust", "faixas": [40,60,80,100], "nota": "Glúteo e posterior · sem forçar a coluna · segura 1s no topo", "series": 3, "reps": "10–12 reps" },
+            { "id": "l1-5", "nome": "Flexora Deitada", "img": "Lying_Leg_Curls", "series": 3, "reps": "12 reps" },
+            { "id": "l1-6", "nome": "Panturrilha Sentada", "img": "Seated_Calf_Raise", "nota": "Joelho dobrado = sóleo · pausa de 1s embaixo (alongado)", "series": 4, "reps": "15–20 reps" }
+          ]
+        }
+      ],
+      "dica": { "rotulo": "Leg Press", "texto": "Anota a carga toda sessão. Adiciona 5–10 kg por semana. Quando travar, adiciona uma série antes de aumentar o peso." }
+    },
+    {
+      "id": "rest-q",
+      "num": "03",
+      "label": "Quarta",
+      "semana": [3],
+      "nome": "DESCANSO ATIVO",
+      "tag": "Rest",
+      "descanso": true,
+      "texto": "Pausa estratégica no meio da semana para recuperar pernas, peito e costas antes dos dois últimos treinos. Caminhada leve ou mobilidade de quadril."
+    },
+    {
+      "id": "u2",
+      "num": "04",
+      "label": "Quinta",
+      "semana": [4],
+      "nome": "UPPER B — Peito · Costas · Ombro · Braços",
+      "tag": "Upper",
+      "descanso": false,
+      "secoes": [
+        {
+          "titulo": "Peito + Ombro",
+          "exercicios": [
+            { "id": "u2-1", "nome": "Supino Inclinado com Halteres", "img": "Incline_Dumbbell_Press", "faixas": [20,30,42], "nota": "2ª frequência semanal · intensidade moderada", "series": 3, "reps": "10–12 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
+            { "id": "u2-2", "nome": "Crossover / Pec Deck", "img": "Cable_Crossover", "series": 3, "reps": "12–15 reps" },
+            { "id": "u2-3", "nome": "Desenvolvimento com Halteres", "img": "Dumbbell_Shoulder_Press", "faixas": [12,18,24,30], "nota": "Amplitude completa", "series": 3, "reps": "10–12 reps" }
+          ]
+        },
+        {
+          "titulo": "Costas",
+          "exercicios": [
+            { "id": "u2-4", "nome": "Pulldown na Polia", "img": "Straight-Arm_Pulldown", "nota": "Braços estendidos · foco no dorsal · sem forçar a coluna", "series": 3, "reps": "10–12 reps" },
+            { "id": "u2-5", "nome": "Remada Baixa (Cabo)", "img": "Seated_Cable_Rows", "series": 3, "reps": "12 reps" }
+          ]
+        },
+        {
+          "titulo": "Braços",
+          "exercicios": [
+            { "id": "u2-6", "nome": "Rosca Direta + Tríceps Testa", "img": "Barbell_Curl", "imgs": {"Rosca Direta":"Barbell_Curl","Tríceps Testa":"EZ-Bar_Skullcrusher"}, "nota": "Superset · anota os dois", "series": 3, "reps": "10 reps cada", "componentes": ["Rosca Direta", "Tríceps Testa"] },
+            { "id": "u2-7", "nome": "Rosca Martelo com Halteres", "img": "Hammer_Curls", "series": 3, "reps": "12 reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l2",
+      "num": "05",
+      "label": "Sexta ou Sábado",
+      "semana": [5,6],
+      "nome": "LOWER B — Pernas foco Posterior",
+      "tag": "Lower",
+      "descanso": false,
+      "secoes": [
+        {
+          "titulo": "Principal",
+          "exercicios": [
+            { "id": "l2-1", "nome": "Leg Press 45°", "img": "Leg_Press", "faixas": [200,300,400,500,600], "anilhas": true, "base": 0, "nota": "2ª frequência · carga um pouco menor que na terça", "series": 4, "reps": "10–15 reps", "destaque": true, "tecnicas": { "2": "Drop set — última série", "4": "Rest-pause — última série" } },
+            { "id": "l2-2", "nome": "Cadeira Extensora", "img": "Leg_Extensions", "faixas": [40,60,80,100], "series": 3, "reps": "12–15 reps" }
+          ]
+        },
+        {
+          "titulo": "Posterior + Glúteo + Panturrilha",
+          "exercicios": [
+            { "id": "l2-3", "nome": "Cadeira Flexora", "img": "Seated_Leg_Curl", "nota": "Sentado · varia da flexora deitada da terça", "series": 4, "reps": "10–12 reps" },
+            { "id": "l2-4", "nome": "Levantamento Pélvico na Máquina", "img": "Barbell_Hip_Thrust", "faixas": [40,60,80,100], "nota": "2ª frequência · glúteo e posterior sem forçar a coluna", "series": 3, "reps": "10–12 reps" },
+            { "id": "l2-5", "nome": "Panturrilha em Pé", "img": "Standing_Calf_Raises", "series": 4, "reps": "15–20 reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rest-fds",
+      "num": "06",
+      "label": "Sábado / Domingo",
+      "semana": [],
+      "nome": "DESCANSO ATIVO",
+      "tag": "Rest",
+      "descanso": true,
+      "texto": "Caminhada leve, alongamento ou mobilidade de quadril. Nada de treino pesado. A recuperação é onde o músculo cresce."
+    }
+  ],
+  "extras": [
+    {
+      "perfil": "joaquim",
+      "dias": ["u1", "u2"],
+      "titulo": "Finalização — Abdominal",
+      "exercicios": [
+        { "id": "ab-1", "nome": "Abdominal na Polia (corda)", "img": "Cable_Crunch", "nota": "Ajoelhado · desce com o abdômen, não com o braço · dá pra progredir carga", "series": 3, "reps": "12–15 reps" },
+        { "id": "ab-2", "nome": "Elevação de Pernas", "img": "Hanging_Leg_Raise", "nota": "Suspenso na barra ou no banco · sem balanço · lombar colada", "series": 3, "reps": "12–15 reps" }
+      ]
+    },
+    {
+      "perfil": "igor",
+      "dias": ["u1", "u2"],
+      "titulo": "Finalização — Cardio",
+      "exercicios": [
+        { "id": "cd-1", "nome": "Esteira", "img": "Walking_Treadmill", "faixas": [20,30,45,60], "cardio": true, "nota": "Zona 2 — ritmo que dá pra conversar puxado · progressão: sobe inclinação antes de sobe velocidade", "series": 1, "reps": "20 min", "metaMin": 30 }
+      ]
+    }
+  ],
+  "galeria": [
+    { "ids": ["u1-1","u2-1"], "opcoes": [
+      {"id":"supino-inclinado-articulado","nome":"Supino Inclinado Articulado","img":"local:supino-inclinado-articulado.jpg"},
+      {"id":"supino-inclinado-com-barra","nome":"Supino Inclinado com Barra","img":"Barbell_Incline_Bench_Press_-_Medium_Grip","anilhas":true},
+      {"id":"supino-inclinado-no-smith","nome":"Supino Inclinado no Smith","img":"Smith_Machine_Incline_Bench_Press","anilhas":true},
+      {"id":"crucifixo-inclinado-com-halteres","nome":"Crucifixo Inclinado com Halteres","img":"Incline_Dumbbell_Flyes"}
+    ]},
+    { "ids": ["u1-2"], "opcoes": [
+      {"id":"supino-reto-articulado","nome":"Supino Reto Articulado","img":"local:supino-reto-articulado.jpg"},
+      {"id":"supino-reto-com-halteres","nome":"Supino Reto com Halteres","img":"Dumbbell_Bench_Press"},
+      {"id":"supino-reto-no-smith","nome":"Supino Reto no Smith","img":"Smith_Machine_Bench_Press","anilhas":true},
+      {"id":"supino-declinado-com-barra","nome":"Supino Declinado com Barra","img":"Decline_Barbell_Bench_Press","anilhas":true}
+    ]},
+    { "ids": ["u1-3"], "opcoes": [
+      {"id":"barra-fixa","nome":"Barra Fixa","img":"Pullups"},
+      {"id":"puxada-triangulo","nome":"Puxada Triângulo","img":"V-Bar_Pulldown"},
+      {"id":"puxada-supinada","nome":"Puxada Supinada","img":"Underhand_Cable_Pulldowns"}
+    ]},
+    { "ids": ["u1-4"], "opcoes": [
+      {"id":"remada-articulada","nome":"Remada Articulada","img":"Leverage_Iso_Row"},
+      {"id":"remada-unilateral-com-halter","nome":"Remada Unilateral com Halter","img":"One-Arm_Dumbbell_Row"},
+      {"id":"remada-baixa-no-cabo","nome":"Remada Baixa no Cabo","img":"Seated_Cable_Rows"}
+    ]},
+    { "ids": ["u1-5"], "opcoes": [
+      {"id":"elevacao-lateral-no-cabo","nome":"Elevação Lateral no Cabo","img":"Cable_Seated_Lateral_Raise"},
+      {"id":"elevacao-lateral-sentado","nome":"Elevação Lateral Sentado","img":"Seated_Side_Lateral_Raise"}
+    ]},
+    { "ids": ["u1-6"], "opcoes": [
+      {"id":"triceps-na-polia-com-barra","nome":"Tríceps na Polia com Barra","img":"Triceps_Pushdown"},
+      {"id":"triceps-testa","nome":"Tríceps Testa","img":"EZ-Bar_Skullcrusher"},
+      {"id":"triceps-frances-com-halter","nome":"Tríceps Francês com Halter","img":"Dumbbell_One-Arm_Triceps_Extension"}
+    ]},
+    { "ids": ["u2-2"], "opcoes": [
+      {"id":"voador-peck-deck","nome":"Voador (Peck Deck)","img":"Butterfly"},
+      {"id":"crucifixo-com-halteres","nome":"Crucifixo com Halteres","img":"Dumbbell_Flyes"},
+      {"id":"crucifixo-no-cabo","nome":"Crucifixo no Cabo","img":"Flat_Bench_Cable_Flyes"}
+    ]},
+    { "ids": ["u2-3"], "opcoes": [
+      {"id":"desenvolvimento-na-maquina","nome":"Desenvolvimento na Máquina","img":"Leverage_Shoulder_Press"},
+      {"id":"desenvolvimento-com-barra","nome":"Desenvolvimento com Barra","img":"Seated_Barbell_Military_Press","anilhas":true},
+      {"id":"desenvolvimento-arnold","nome":"Desenvolvimento Arnold","img":"Arnold_Dumbbell_Press"},
+      {"id":"desenvolvimento-no-cabo","nome":"Desenvolvimento no Cabo","img":"Cable_Shoulder_Press"}
+    ]},
+    { "ids": ["u2-4"], "opcoes": [
+      {"id":"pulldown-com-corda","nome":"Pulldown com Corda","img":"Rope_Straight-Arm_Pulldown"},
+      {"id":"pullover-com-halter","nome":"Pullover com Halter","img":"Straight-Arm_Dumbbell_Pullover"},
+      {"id":"remada-articulada-peito-apoiado","nome":"Remada Articulada (Peito Apoiado)","img":"Leverage_Iso_Row"}
+    ]},
+    { "ids": ["u2-5"], "opcoes": [
+      {"id":"remada-articulada","nome":"Remada Articulada","img":"Leverage_Iso_Row"},
+      {"id":"remada-unilateral-com-halter","nome":"Remada Unilateral com Halter","img":"One-Arm_Dumbbell_Row"}
+    ]},
+    { "ids": ["u2-6"], "opcoes": [
+      {"id":"rosca-martelo-triceps-corda","nome":"Rosca Martelo + Tríceps Corda","img":"Hammer_Curls","componentes":["Rosca Martelo com Halteres","Tríceps Corda"],"imgs":{"Rosca Martelo com Halteres":"Hammer_Curls","Tríceps Corda":"Triceps_Pushdown_-_Rope_Attachment"}},
+      {"id":"rosca-no-cabo-triceps-na-polia","nome":"Rosca no Cabo + Tríceps na Polia","img":"Standing_Biceps_Cable_Curl","componentes":["Rosca no Cabo","Tríceps na Polia com Barra"],"imgs":{"Rosca no Cabo":"Standing_Biceps_Cable_Curl","Tríceps na Polia com Barra":"Triceps_Pushdown"}},
+      {"id":"rosca-scott-triceps-frances","nome":"Rosca Scott + Tríceps Francês","img":"Preacher_Curl","componentes":["Rosca Scott","Tríceps Francês com Halter"],"imgs":{"Rosca Scott":"Preacher_Curl","Tríceps Francês com Halter":"Dumbbell_One-Arm_Triceps_Extension"}}
+    ]},
+    { "ids": ["u2-7"], "opcoes": [
+      {"id":"rosca-martelo-na-corda","nome":"Rosca Martelo na Corda","img":"Cable_Hammer_Curls_-_Rope_Attachment"},
+      {"id":"rosca-martelo-alternada","nome":"Rosca Martelo Alternada","img":"Alternate_Hammer_Curl"}
+    ]},
+    { "ids": ["l1-1","l2-1"], "opcoes": [
+      {"id":"agachamento-hack","nome":"Agachamento Hack","img":"Hack_Squat","anilhas":true},
+      {"id":"agachamento-no-smith","nome":"Agachamento no Smith","img":"Smith_Machine_Squat","anilhas":true}
+    ]},
+    { "ids": ["l1-2"], "opcoes": [
+      {"id":"agachamento-no-smith","nome":"Agachamento no Smith","img":"Smith_Machine_Squat","anilhas":true},
+      {"id":"afundo-com-halteres","nome":"Afundo com Halteres","img":"Dumbbell_Lunges"},
+      {"id":"agachamento-bulgaro-no-smith","nome":"Agachamento Búlgaro no Smith","img":"Smith_Single-Leg_Split_Squat","anilhas":true}
+    ]},
+    { "ids": ["l1-3","l2-2"], "opcoes": [
+      {"id":"extensora-unilateral","nome":"Extensora Unilateral","img":"Single-Leg_Leg_Extension"},
+      {"id":"agachamento-sissy","nome":"Agachamento Sissy","img":"Weighted_Sissy_Squat"}
+    ]},
+    { "ids": ["l1-4","l2-4"], "opcoes": [
+      {"id":"elevacao-pelvica-unilateral","nome":"Elevação Pélvica Unilateral","img":"Single_Leg_Glute_Bridge"},
+      {"id":"ponte-de-gluteo","nome":"Ponte de Glúteo (Glute Bridge)","img":"Barbell_Glute_Bridge"},
+      {"id":"gluteo-na-polia","nome":"Glúteo na Polia (Coice)","img":"Glute_Kickback"}
+    ]},
+    { "ids": ["l1-5"], "opcoes": [
+      {"id":"cadeira-flexora","nome":"Cadeira Flexora","img":"Seated_Leg_Curl"},
+      {"id":"flexora-em-pe","nome":"Flexora em Pé","img":"Standing_Leg_Curl"}
+    ]},
+    { "ids": ["l2-3"], "opcoes": [
+      {"id":"flexora-deitada","nome":"Flexora Deitada","img":"Lying_Leg_Curls"},
+      {"id":"flexora-em-pe","nome":"Flexora em Pé","img":"Standing_Leg_Curl"}
+    ]},
+    { "ids": ["l1-6"], "opcoes": [
+      {"id":"panturrilha-em-pe","nome":"Panturrilha em Pé","img":"Standing_Calf_Raises"},
+      {"id":"panturrilha-no-leg-press","nome":"Panturrilha no Leg Press","img":"Calf_Press_On_The_Leg_Press_Machine"}
+    ]},
+    { "ids": ["l2-5"], "opcoes": [
+      {"id":"panturrilha-sentada","nome":"Panturrilha Sentada","img":"Seated_Calf_Raise"},
+      {"id":"panturrilha-no-leg-press","nome":"Panturrilha no Leg Press","img":"Calf_Press_On_The_Leg_Press_Machine"}
+    ]},
+    { "ids": ["ab-1"], "opcoes": [
+      {"id":"abdominal-na-maquina","nome":"Abdominal na Máquina","img":"Ab_Crunch_Machine"},
+      {"id":"abdominal-supra-no-solo","nome":"Abdominal Supra no Solo","img":"Crunches"},
+      {"id":"prancha","nome":"Prancha","img":"Plank"}
+    ]},
+    { "ids": ["ab-2"], "opcoes": [
+      {"id":"elevacao-de-pernas-no-banco","nome":"Elevação de Pernas no Banco","img":"Flat_Bench_Lying_Leg_Raise"},
+      {"id":"abdominal-infra","nome":"Abdominal Infra","img":"Reverse_Crunch"},
+      {"id":"elevacao-de-joelhos-na-paralela","nome":"Elevação de Joelhos na Paralela","img":"Knee_Hip_Raise_On_Parallel_Bars"}
+    ]},
+    { "ids": ["cd-1"], "opcoes": [
+      {"id":"bicicleta-ergometrica","nome":"Bicicleta Ergométrica","img":"Bicycling_Stationary","cardio":true},
+      {"id":"eliptico","nome":"Elíptico","img":"Elliptical_Trainer","cardio":true},
+      {"id":"escada-stairmaster","nome":"Escada (Stairmaster)","img":"Stairmaster","cardio":true},
+      {"id":"remo-ergometrico","nome":"Remo Ergométrico","img":"Rowing_Stationary","cardio":true}
+    ]}
+  ],
+  "progressao": {
+    "titulo": "PROGRESSÃO — ROTINA 4 DIAS (UPPER / LOWER)",
+    "itens": [
+      "Microciclo de 4 semanas: S1 base, S2 drop set, S3 sobe carga, S4 rest-pause — depois recomeça",
+      "Leg press: aumenta 5–10 kg por semana. Se falhar nas reps, mantém o peso e adiciona 1 série",
+      "Quarta livre (Descanso Ativo) garante recuperação total entre o primeiro e o segundo bloco",
+      "Todas as cargas e recordes são compartilhados com a rotina de 5 dias — alterna a semana que quiser sem perder histórico"
+    ]
+  }
+}

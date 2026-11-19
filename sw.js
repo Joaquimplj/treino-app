@@ -1,8 +1,8 @@
 // Service worker — app de treino
 // Shell (index.html) e rotina.json: NETWORK-FIRST (sempre pega a versao nova online,
 // cai pro cache só offline). Demais assets: cache-first (rapido + offline).
-const CACHE = 'treino-v30';
-const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
+const CACHE = 'treino-v31';
+const ASSETS = ['./', './index.html', './rotina.json', './rotina-4d.json', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -23,12 +23,13 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   const mesmaOrigem = url.origin === location.origin;
 
-  // rotina.json: rede primeiro (canal de atualizacao do treino), cache como fallback
-  if (mesmaOrigem && url.pathname.endsWith('/rotina.json')) {
+  // rotina.json e rotina-4d.json: rede primeiro (canal de atualizacao do treino), cache como fallback
+  if (mesmaOrigem && (url.pathname.endsWith('/rotina.json') || url.pathname.endsWith('/rotina-4d.json'))) {
+    const chave = url.pathname.endsWith('/rotina-4d.json') ? './rotina-4d.json' : './rotina.json';
     e.respondWith(
       fetch(e.request)
-        .then(r => { const cp = r.clone(); caches.open(CACHE).then(c => c.put('./rotina.json', cp)); return r; })
-        .catch(() => caches.match('./rotina.json'))
+        .then(r => { const cp = r.clone(); caches.open(CACHE).then(c => c.put(chave, cp)); return r; })
+        .catch(() => caches.match(chave))
     );
     return;
   }

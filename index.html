@@ -54,6 +54,18 @@
   }
   .header p { color: var(--muted); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-top: 8px; }
   .versao-chip { margin-top: 8px; font-size: 10px; color: #555; letter-spacing: 2px; text-transform: uppercase; }
+  .rotina-switch {
+    display: inline-flex; gap: 4px; margin-top: 12px; padding: 3px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 999px;
+  }
+  .rs-btn {
+    border: 0; background: transparent; color: var(--muted);
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; padding: 6px 14px; border-radius: 999px;
+    cursor: pointer; transition: all .15s;
+  }
+  .rs-btn:hover { color: var(--text); }
+  .rs-btn.rs-on { background: var(--accent); color: #000; }
   .icon-btn {
     position: absolute; right: 0; top: 2px;
     background: var(--card); border: 1px solid var(--border);
@@ -729,6 +741,10 @@
   <h1 id="titulo-app">ROTINA 5 DIAS</h1>
   <p id="subtitulo">Push · Pull · Legs · Upper · Lower</p>
   <div class="versao-chip">treino <span id="versao-chip">v?</span></div>
+  <div class="rotina-switch" id="rotina-switch" role="group" aria-label="Divisão da rotina">
+    <button type="button" class="rs-btn" data-modo="5d">5 DIAS</button>
+    <button type="button" class="rs-btn" data-modo="4d">4 DIAS</button>
+  </div>
   <button class="icon-btn" id="btn-config" title="Ajustes">⚙</button>
 </div>
 
@@ -841,6 +857,15 @@
   <div class="modal-box">
     <h2>AJUSTES</h2>
     <div class="modal-sub">treino <span id="cfg-versao-treino">v?</span></div>
+
+    <div class="modal-sec">
+      <h4>Divisão da rotina</h4>
+      <p class="cfg-hint">Alterne entre 5 dias (Push/Legs/Pull/Lower/Upper) e 4 dias (Upper/Lower) quando quiser. Cargas, recordes e diário continuam os mesmos.</p>
+      <div class="cfg-opts" id="cfg-rotina-modo">
+        <button class="cfg-opt" data-modo="5d">5 DIAS</button>
+        <button class="cfg-opt" data-modo="4d">4 DIAS</button>
+      </div>
+    </div>
 
     <div class="modal-sec">
       <h4>Atualização do treino</h4>
@@ -1076,7 +1101,8 @@ const LSK = {
   perfis: 'ta_perfis_v1', perfilAtivo: 'ta_perfil_v1', pesos: 'ta_pesos_v1',
   perfilTravado: 'ta_perfil_travado_v1',
   sync: 'ta_sync_cfg_v1', syncTok: 'ta_sync_tok_v1', syncSt: 'ta_sync_status_v1', remoto: 'ta_remoto_v1',
-  anilhas: 'ta_anilhas_v1', trocas: 'ta_trocas_v1'
+  anilhas: 'ta_anilhas_v1', trocas: 'ta_trocas_v1',
+  modoRotina: 'ta_modo_rotina_v1', rotina4d: 'ta_rotina_4d_v1'
 };
 
 // Perfis: cada um com seus dados (marcações, diário, peso corporal).
@@ -1336,9 +1362,12 @@ function el(id) { return document.getElementById(id); }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function pad2(n) { return String(n).padStart(2, '0'); }
 
-let rotina = ler(LSK.rotina) || DEFAULT_ROTINA;
 let perfis = ler(LSK.perfis);
 let perfilAtivo = ler(LSK.perfilAtivo) || 'joaquim';
+function modoRotinaAtual() { return ler(LSK.modoRotina + '__' + perfilAtivo) === '4d' ? '4d' : '5d'; }
+function chaveRotinaModo(m) { return m === '4d' ? LSK.rotina4d : LSK.rotina; }
+function arquivoRotinaModo(m) { return m === '4d' ? 'rotina-4d.json' : 'rotina.json'; }
+let rotina = ler(chaveRotinaModo(modoRotinaAtual())) || ler(LSK.rotina) || DEFAULT_ROTINA;
 
 // Migração: quem já usava o app tinha um diário só — ele vira o do Joaquim.
 if (!Array.isArray(perfis) || !perfis.length) {
@@ -1479,8 +1508,10 @@ function trocarPerfil(id) {
   if (limparDiario(diario)) salvarDiario();
   pesos = ler(chaveP(LSK.pesos)) || [];
   evSel = null;
+  rotina = ler(chaveRotinaModo(modoRotinaAtual())) || ler(LSK.rotina) || DEFAULT_ROTINA;
   aplicarExtras();
   indexar();
+  renderHeader();
   renderPerfilChips();
   renderRotina();
   renderCalendario();
@@ -1623,11 +1654,17 @@ function atualizarTecnicas() {
 // =====================================================================
 // RENDER — CABEÇALHO / ROTINA
 // =====================================================================
+function renderModoRotina() {
+  const m = modoRotinaAtual();
+  document.querySelectorAll('#rotina-switch .rs-btn').forEach(b => b.classList.toggle('rs-on', b.dataset.modo === m));
+  document.querySelectorAll('#cfg-rotina-modo .cfg-opt').forEach(b => b.classList.toggle('on', b.dataset.modo === m));
+}
 function renderHeader() {
   el('titulo-app').textContent = rotina.nome || 'TREINO';
   el('subtitulo').textContent = rotina.subtitulo || '';
   el('versao-chip').textContent = 'v' + (rotina.versao || '?');
   el('cfg-versao-treino').textContent = 'v' + (rotina.versao || '?');
+  renderModoRotina();
 }
 
 function normProg(ex) {
@@ -3639,18 +3676,54 @@ document.addEventListener('pointercancel', () => { swX = null; swValido = false;
 // =====================================================================
 // ATUALIZAÇÃO REMOTA + IMPORT/EXPORT
 // =====================================================================
-function aplicarRotina(nova) {
+function aplicarRotina(nova, manterProg) {
   rotina = nova;
-  gravar(LSK.rotina, rotina);
+  gravar(chaveRotinaModo(modoRotinaAtual()), rotina);
   aplicarExtras();
   indexar();
-  const ids = new Set(Object.keys(mapEx));
-  Object.keys(progresso).forEach(k => { if (!ids.has(k)) delete progresso[k]; });
-  salvarProg();
+  if (!manterProg) {
+    const ids = new Set(Object.keys(mapEx));
+    Object.keys(progresso).forEach(k => { if (!ids.has(k)) delete progresso[k]; });
+    salvarProg();
+  }
   renderHeader();
   renderRotina();
   renderEvolucao();
   renderAutoBanner();
+}
+
+async function precarregarOutroModo(modo) {
+  if (!location.protocol.startsWith('http')) return;
+  const outro = modo === '4d' ? '5d' : '4d';
+  try {
+    const r = await fetch(arquivoRotinaModo(outro) + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) return;
+    const j = await r.json();
+    if (j && Array.isArray(j.dias)) gravar(chaveRotinaModo(outro), j);
+  } catch (e) {}
+}
+
+async function alternarModoRotina(modo) {
+  if (modo !== '4d' && modo !== '5d') return;
+  if (modo === modoRotinaAtual()) return;
+  gravar(chaveP(LSK.modoRotina), modo);
+  renderModoRotina();
+  const cached = ler(chaveRotinaModo(modo));
+  if (cached && Array.isArray(cached.dias)) {
+    aplicarRotina(cached, true);
+  }
+  if (location.protocol.startsWith('http')) {
+    try {
+      const r = await fetch(arquivoRotinaModo(modo) + '?t=' + Date.now(), { cache: 'no-store' });
+      if (r.ok) {
+        const nova = await r.json();
+        if (nova && Array.isArray(nova.dias)) {
+          if (!cached || nova.versao !== cached.versao) aplicarRotina(nova, true);
+        }
+      }
+    } catch (e) {}
+  }
+  toast(modo === '4d' ? 'Rotina 4 dias (Upper / Lower)' : 'Rotina 5 dias (PPL + Upper/Lower)');
 }
 
 async function buscarAtualizacao(manual) {
@@ -3658,21 +3731,32 @@ async function buscarAtualizacao(manual) {
     if (manual) toast('Atualização online só funciona com o app hospedado');
     return;
   }
+  const modo = modoRotinaAtual();
   try {
-    const r = await fetch('rotina.json?t=' + Date.now(), { cache: 'no-store' });
+    const r = await fetch(arquivoRotinaModo(modo) + '?t=' + Date.now(), { cache: 'no-store' });
     if (!r.ok) throw new Error('http ' + r.status);
     const nova = await r.json();
     if (!nova || !Array.isArray(nova.dias)) throw new Error('formato');
-    if (nova.versao !== rotina.versao) {
-      aplicarRotina(nova);
+    if (nova.versao !== rotina.versao || nova.nome !== rotina.nome) {
+      aplicarRotina(nova, true);
       toast('Treino atualizado: v' + nova.versao);
     } else if (manual) {
       toast('Treino já está na última versão');
     }
+    precarregarOutroModo(modo);
   } catch (e) {
     if (manual) toast('Não consegui buscar a atualização');
   }
 }
+
+el('rotina-switch').addEventListener('click', e => {
+  const b = e.target.closest('[data-modo]');
+  if (b) alternarModoRotina(b.dataset.modo);
+});
+el('cfg-rotina-modo').addEventListener('click', e => {
+  const b = e.target.closest('[data-modo]');
+  if (b) alternarModoRotina(b.dataset.modo);
+});
 
 el('btn-config').addEventListener('click', () => { el('modal-config').hidden = false; });
 el('btn-fechar-modal').addEventListener('click', () => { el('modal-config').hidden = true; });
