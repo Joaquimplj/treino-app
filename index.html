@@ -596,9 +596,9 @@
   #timer-widget {
     position: fixed; bottom: calc(64px + env(safe-area-inset-bottom));
     left: 50%; transform: translateX(-50%);
-    background: #111; border: 1px solid #2a2a2a; border-radius: 26px;
-    padding: 8px 12px 10px; display: flex; align-items: center; justify-content: center; gap: 7px;
-    flex-wrap: wrap; overflow: hidden;
+    background: #111; border: 1px solid #2a2a2a; border-radius: 22px;
+    padding: 9px 14px 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    overflow: hidden;
     z-index: 1000; box-shadow: 0 8px 32px rgba(0,0,0,0.65); user-select: none;
     max-width: calc(100vw - 14px); transition: transform .25s ease, opacity .25s ease;
     touch-action: none;
@@ -612,21 +612,34 @@
   .timer-prog-fill { height: 100%; width: 100%; background: var(--accent); transition: width .25s linear; }
   #timer-widget.finished .timer-prog-fill { background: var(--accent2); }
 
+  .timer-top { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
   .timer-drag {
-    display: flex; align-items: center; gap: 7px;
-    cursor: grab; touch-action: none; padding: 2px 2px 2px 3px; border-radius: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: grab; touch-action: none; padding: 6px 5px; border-radius: 12px;
   }
   .timer-drag:active { cursor: grabbing; }
   .timer-grip { display: flex; flex-direction: column; gap: 3px; padding: 2px; }
   .timer-grip span { width: 4px; height: 4px; border-radius: 50%; background: #444; }
   #timer-widget.running .timer-grip span { background: var(--muted); }
 
+  .timer-disp-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
   #timer-display {
-    font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px;
     color: var(--text); min-width: 54px; text-align: center; cursor: pointer; line-height: 1;
   }
   #timer-widget.running #timer-display { color: var(--accent); }
   #timer-widget.finished #timer-display { color: var(--accent2); }
+
+  .timer-delta {
+    font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 1px;
+    padding: 1px 6px; border-radius: 10px; line-height: 1.2;
+    opacity: 0; transform: translateY(2px); transition: opacity .18s ease, transform .18s ease;
+    pointer-events: none; white-space: nowrap;
+  }
+  .timer-delta:empty { display: none; }
+  .timer-delta.show { opacity: 1; transform: translateY(0); }
+  .timer-delta.pos { color: #000; background: var(--accent); }
+  .timer-delta.neg { color: #000; background: var(--accent2); }
 
   .timer-adj { display: flex; gap: 4px; }
   .adj-btn {
@@ -636,9 +649,9 @@
   }
   .adj-btn:hover, .adj-btn:active { border-color: var(--accent); color: var(--accent); }
 
-  .timer-presets { display: flex; gap: 4px; }
+  .timer-presets { display: flex; gap: 4px; justify-content: center; }
   .preset-btn {
-    font-family: 'Bebas Neue', sans-serif; font-size: 13px; padding: 5px 8px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 13px; padding: 4px 8px;
     border-radius: 20px; border: 1px solid var(--border); background: transparent;
     color: var(--muted); cursor: pointer; transition: all 0.15s; letter-spacing: 1px;
   }
@@ -656,20 +669,59 @@
 
   /* ===== TIMER EM PÉ (lateral direita / esquerda) ===== */
   #timer-widget.pos-direita, #timer-widget.pos-esquerda {
-    flex-direction: column; flex-wrap: nowrap; gap: 6px; border-radius: 32px; padding: 10px 8px 12px;
+    flex-direction: column; flex-wrap: nowrap; gap: 6px; border-radius: 28px; padding: 10px 8px 12px;
     bottom: auto; top: 50%; max-width: none; max-height: calc(100vh - 40px);
   }
   #timer-widget.pos-direita { left: auto; right: 8px; }
   #timer-widget.pos-esquerda { left: 8px; right: auto; }
-  #timer-widget.pos-direita .timer-drag, #timer-widget.pos-esquerda .timer-drag { flex-direction: column; gap: 5px; padding: 2px; }
+  #timer-widget.pos-direita .timer-top, #timer-widget.pos-esquerda .timer-top { flex-direction: column; gap: 5px; }
+  #timer-widget.pos-direita .timer-drag, #timer-widget.pos-esquerda .timer-drag { flex-direction: column; padding: 3px 6px; }
   #timer-widget.pos-direita .timer-grip, #timer-widget.pos-esquerda .timer-grip { flex-direction: row; gap: 3px; }
-  #timer-widget.pos-direita #timer-display, #timer-widget.pos-esquerda #timer-display { font-size: 24px; min-width: 0; letter-spacing: 1.5px; }
+  #timer-widget.pos-direita .timer-disp-row, #timer-widget.pos-esquerda .timer-disp-row { flex-direction: column; gap: 2px; }
+  #timer-widget.pos-direita #timer-display, #timer-widget.pos-esquerda #timer-display { font-size: 22px; min-width: 0; letter-spacing: 1.5px; }
   #timer-widget.pos-direita .timer-adj, #timer-widget.pos-esquerda .timer-adj { flex-direction: row; gap: 3px; }
   #timer-widget.pos-direita .adj-btn, #timer-widget.pos-esquerda .adj-btn { font-size: 10px; padding: 3px 4px; }
   #timer-widget.pos-direita .timer-presets, #timer-widget.pos-esquerda .timer-presets { flex-direction: column; gap: 3px; }
   #timer-widget.pos-direita .preset-btn, #timer-widget.pos-esquerda .preset-btn { font-size: 12px; padding: 4px 7px; }
   #timer-widget.pos-direita .timer-controls, #timer-widget.pos-esquerda .timer-controls { flex-direction: column; gap: 5px; }
   #timer-widget.pos-direita .timer-btn, #timer-widget.pos-esquerda .timer-btn { width: 32px; height: 32px; }
+
+  /* ===== POPUP FLUTUANTE DO TIMER RODANDO ===== */
+  #timer-popup {
+    position: fixed; top: calc(12px + env(safe-area-inset-top)); left: 12px; z-index: 1050;
+    background: rgba(17,17,17,0.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--accent); border-radius: 18px; padding: 7px 10px 10px;
+    display: flex; align-items: center; gap: 7px; overflow: hidden;
+    max-width: calc(100vw - 24px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.72), 0 0 0 1px rgba(200,245,66,0.12);
+    opacity: 0; transform: translateY(-14px); pointer-events: none;
+    transition: opacity .22s ease, transform .22s ease; user-select: none;
+  }
+  #timer-popup.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .tp-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0;
+    animation: tp-pulse 1.1s ease-in-out infinite;
+  }
+  @keyframes tp-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.78); } }
+  #tp-time {
+    font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1.5px;
+    color: var(--accent); line-height: 1; min-width: 44px; text-align: center;
+  }
+  .tp-adj {
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; padding: 4px 6px;
+    border-radius: 12px; border: 1px solid #2b2b2b; background: #191919;
+    color: #bbb; cursor: pointer; line-height: 1; transition: all .12s;
+  }
+  .tp-adj:hover, .tp-adj:active { border-color: var(--accent); color: var(--accent); }
+  .tp-btn {
+    width: 28px; height: 28px; border-radius: 50%; border: 1px solid #2d2d2d;
+    background: #181818; color: var(--text); font-size: 12px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .12s;
+  }
+  .tp-btn.tp-pause { background: var(--accent); border-color: var(--accent); color: #000; }
+  .tp-btn.tp-stop:hover, .tp-btn.tp-stop:active { border-color: #f5704a; color: #f5704a; }
+  .tp-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,0.08); pointer-events: none; }
+  .tp-prog-fill { height: 100%; width: 100%; background: var(--accent); transition: width .25s linear; }
 
   #timer-tab.tab-esquerda {
     right: auto; left: 0; border-radius: 0 30px 30px 0;
@@ -768,29 +820,127 @@
   /* ===== RANK / NÍVEL ===== */
   .nv-big { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--text); line-height: 1; }
   .nv-xp { font-size: 11px; color: var(--muted); margin: 5px 0 8px; }
+  .rk-ico { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+  .rk-ico.t3 { filter: drop-shadow(0 0 4px rgba(242,201,76,.45)); }
+  .rk-ico.t4 { filter: drop-shadow(0 0 5px rgba(127,211,255,.55)); }
+  .rk-ico.t5 { filter: drop-shadow(0 0 6px rgba(200,245,66,.55)); }
   .rk-badge {
     display: inline-flex; align-items: center; gap: 6px; font-family: 'Bebas Neue', sans-serif;
     font-size: 15px; letter-spacing: 2px; padding: 6px 12px; border-radius: 20px;
     border: 1px solid var(--border); color: var(--muted); white-space: nowrap;
+    background: rgba(255,255,255,.03);
   }
-  .rk-badge.t1, .rk-cel.t1 { color: #d19a66; border-color: rgba(209,154,102,.5); }
-  .rk-badge.t2, .rk-cel.t2 { color: #cfd3d8; border-color: rgba(207,211,216,.5); }
-  .rk-badge.t3, .rk-cel.t3 { color: #f2c94c; border-color: rgba(242,201,76,.55); }
-  .rk-badge.t4, .rk-cel.t4 { color: #7fd3ff; border-color: rgba(127,211,255,.55); }
-  .rk-badge.t5, .rk-cel.t5 { color: var(--accent); border-color: rgba(200,245,66,.6); }
+  .rk-badge.t0 { color: #999; border-color: rgba(153,153,153,.35); background: rgba(153,153,153,.06); }
+  .rk-badge.t1 { color: #d19a66; border-color: rgba(209,154,102,.5); background: rgba(209,154,102,.09); }
+  .rk-badge.t2 { color: #cfd3d8; border-color: rgba(207,211,216,.5); background: rgba(207,211,216,.09); }
+  .rk-badge.t3 { color: #f2c94c; border-color: rgba(242,201,76,.55); background: rgba(242,201,76,.1); box-shadow: 0 0 12px rgba(242,201,76,.12); }
+  .rk-badge.t4 { color: #7fd3ff; border-color: rgba(127,211,255,.55); background: rgba(127,211,255,.1); box-shadow: 0 0 12px rgba(127,211,255,.14); }
+  .rk-badge.t5 { color: var(--accent); border-color: rgba(200,245,66,.6); background: rgba(200,245,66,.1); box-shadow: 0 0 14px rgba(200,245,66,.16); }
+  .rk-cel.t0 { color: #999; }
+  .rk-cel.t1 { color: #d19a66; }
+  .rk-cel.t2 { color: #cfd3d8; }
+  .rk-cel.t3 { color: #f2c94c; }
+  .rk-cel.t4 { color: #7fd3ff; }
+  .rk-cel.t5 { color: var(--accent); }
   .ev-rank { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
   .ev-rank-txt { font-size: 12px; color: var(--muted); }
-  .rk-tabela { background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-  .rk-row { display: grid; grid-template-columns: 1.4fr repeat(var(--n, 2), 1fr); gap: 8px; align-items: center; padding: 10px 12px; border-bottom: 1px dashed #1e1e1e; }
+
+  /* ===== PÓDIO DE NÍVEL ===== */
+  .rk-podio-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px; margin-top: 14px;
+  }
+  .rk-podio-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #1e1e1e;
+  }
+  .rk-podio-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 3px; color: var(--accent);
+  }
+  .rk-forma-pill {
+    font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 14px; border: 1px solid rgba(200,245,66,.3);
+    background: rgba(200,245,66,.07); color: var(--accent); white-space: nowrap;
+  }
+  .rk-podio-list { display: flex; flex-direction: column; gap: 8px; }
+  .rk-podio-row {
+    display: grid; grid-template-columns: 56px 1fr auto; gap: 10px; align-items: center;
+    padding: 9px 10px; border-radius: 6px; background: var(--surface);
+    border: 1px solid #1e1e1e; border-left: 3px solid #2b2b2b;
+  }
+  .rk-podio-row.p1 {
+    border-color: rgba(200,245,66,.26); border-left: 3px solid var(--accent);
+    background: linear-gradient(90deg, rgba(200,245,66,.09), rgba(242,201,76,.03) 55%, var(--surface));
+  }
+  .rk-podio-row.p2 { border-left-color: #cfd3d8; }
+  .rk-podio-row.p3 { border-left-color: #d19a66; }
+  .rk-podio-pos {
+    display: flex; align-items: center; gap: 5px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1px; color: var(--muted);
+  }
+  .rk-podio-row.p1 .rk-podio-pos { color: var(--accent); }
+  .rk-podio-row.p2 .rk-podio-pos { color: #cfd3d8; }
+  .rk-podio-row.p3 .rk-podio-pos { color: #d19a66; }
+  .rk-podio-info { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .rk-podio-nome { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rk-podio-sub { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+  .rk-podio-track { height: 4px; background: #1a1a1a; border-radius: 4px; overflow: hidden; margin-top: 2px; }
+  .rk-podio-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+  .rk-podio-row.p2 .rk-podio-fill { background: #cfd3d8; }
+  .rk-podio-row.p3 .rk-podio-fill { background: #d19a66; }
+  .rk-podio-xp {
+    font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 1px;
+    color: var(--text); white-space: nowrap; text-align: right;
+  }
+  .rk-podio-row.p1 .rk-podio-xp { color: var(--accent); }
+
+  /* ===== RANK DE CARGAS (MOBILE-FIRST) ===== */
+  .rk-scroll {
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border); border-radius: 8px; background: var(--card);
+  }
+  .rk-tabela { background: var(--card); min-width: 100%; width: max-content; }
+  .rk-row {
+    display: grid; grid-template-columns: minmax(130px, 1.4fr) repeat(var(--n, 2), minmax(84px, 1fr));
+    gap: 8px; align-items: center; padding: 10px 12px; border-bottom: 1px dashed #1e1e1e;
+    min-width: max-content;
+  }
   .rk-row:last-child { border-bottom: none; }
   .rk-head { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); background: var(--surface); border-bottom: 1px solid var(--border); }
+  .rk-head > span:not(:first-child) { padding: 0 6px; white-space: nowrap; }
+  .rk-ex, .rk-head > span:first-child {
+    position: sticky; left: 0; z-index: 2; background: var(--card);
+    border-right: 1px solid #1e1e1e; padding-right: 10px;
+  }
+  .rk-head > span:first-child { background: var(--surface); }
   .rk-ex { font-size: 12px; color: var(--text); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .rk-ex small, .rk-cel small { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #555; }
-  .rk-cel { display: flex; flex-direction: column; gap: 2px; font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 1px; color: var(--text); }
+  .rk-ex small { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #555; }
+  .rk-cel {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1px;
+    color: var(--text); padding: 4px 6px; border-radius: 6px; border: 1px solid transparent;
+  }
   .rk-cel.rk-vazio { color: #333; }
+  .rk-cel.rk-leader {
+    background: rgba(200,245,66,0.07); border-color: rgba(200,245,66,0.22);
+  }
+  .rk-val { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; line-height: 1; }
+  .rk-un { font-style: normal; font-size: 11px; margin-left: 2px; opacity: .75; }
+  .rk-tier-lbl {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-family: 'DM Sans', sans-serif; font-size: 9px; letter-spacing: 1px;
+    text-transform: uppercase; color: #666; white-space: nowrap;
+  }
+  .rk-cel.rk-leader .rk-tier-lbl { color: #c8d88a; }
+  .rk-legend {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 10px;
+    padding: 8px 10px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
+  }
+  .rk-leg-item { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
   @media (max-width: 340px) {
     .dupla-grid { grid-template-columns: 1fr; }
-    .rk-row { grid-template-columns: 1.2fr repeat(var(--n, 2), 1fr); padding: 10px 8px; gap: 6px; }
+    .rk-row { padding: 10px 8px; gap: 6px; }
   }
 
   /* ===== TOAST ===== */
@@ -805,6 +955,28 @@
 </style>
 </head>
 <body>
+<svg id="rk-defs" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <linearGradient id="rk-g0" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#888888"/><stop offset="100%" stop-color="#444444"/>
+    </linearGradient>
+    <linearGradient id="rk-g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e3a870"/><stop offset="50%" stop-color="#b56d3b"/><stop offset="100%" stop-color="#7d431d"/>
+    </linearGradient>
+    <linearGradient id="rk-g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/><stop offset="50%" stop-color="#cfd5dc"/><stop offset="100%" stop-color="#8d97a4"/>
+    </linearGradient>
+    <linearGradient id="rk-g3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff1a8"/><stop offset="50%" stop-color="#f2c94c"/><stop offset="100%" stop-color="#b88414"/>
+    </linearGradient>
+    <linearGradient id="rk-g4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e6f9ff"/><stop offset="50%" stop-color="#7fd3ff"/><stop offset="100%" stop-color="#2298d9"/>
+    </linearGradient>
+    <linearGradient id="rk-g5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f4ff99"/><stop offset="50%" stop-color="#c8f542"/><stop offset="100%" stop-color="#f2c94c"/>
+    </linearGradient>
+  </defs>
+</svg>
 
 <div class="header">
   <h1 id="titulo-app">ROTINA 5 DIAS</h1>
@@ -878,13 +1050,18 @@
 
 <!-- TIMER FLUTUANTE -->
 <div id="timer-widget">
-  <div class="timer-drag" id="timer-drag" title="Arraste para o lado para esconder">
-    <div class="timer-grip"><span></span><span></span><span></span></div>
-    <div id="timer-display">1:00</div>
-  </div>
-  <div class="timer-adj">
-    <button type="button" class="adj-btn" data-adj="-15">-15s</button>
-    <button type="button" class="adj-btn" data-adj="15">+15s</button>
+  <div class="timer-top">
+    <div class="timer-drag" id="timer-drag" title="Arraste para o lado para esconder">
+      <div class="timer-grip"><span></span><span></span><span></span></div>
+    </div>
+    <div class="timer-controls">
+      <button type="button" class="timer-btn play-btn" id="play-btn" aria-label="Iniciar ou pausar">▶</button>
+      <button type="button" class="timer-btn" id="btn-timer-reset" aria-label="Reiniciar">↺</button>
+    </div>
+    <div class="timer-adj">
+      <button type="button" class="adj-btn" data-adj="-15">-15s</button>
+      <button type="button" class="adj-btn" data-adj="15">+15s</button>
+    </div>
   </div>
   <div class="timer-presets">
     <button type="button" class="preset-btn active-preset" data-secs="60">1:00</button>
@@ -892,9 +1069,9 @@
     <button type="button" class="preset-btn" data-secs="120">2:00</button>
     <button type="button" class="preset-btn" data-secs="180">3:00</button>
   </div>
-  <div class="timer-controls">
-    <button type="button" class="timer-btn play-btn" id="play-btn">▶</button>
-    <button type="button" class="timer-btn" id="btn-timer-reset">↺</button>
+  <div class="timer-disp-row">
+    <div id="timer-display" title="Toque para iniciar ou pausar">1:00</div>
+    <span class="timer-delta" id="timer-delta"></span>
   </div>
   <div class="timer-prog"><div class="timer-prog-fill" id="timer-prog-fill"></div></div>
 </div>
@@ -903,6 +1080,18 @@
 <div id="timer-tab">
   <span class="tt-clock">⏱</span>
   <span class="tt-time" id="tt-time">1:00</span>
+</div>
+
+<!-- POPUP FLUTUANTE DO TIMER RODANDO -->
+<div id="timer-popup" aria-live="polite">
+  <span class="tp-dot" aria-hidden="true"></span>
+  <span id="tp-time">1:00</span>
+  <span class="timer-delta" id="tp-delta"></span>
+  <button type="button" class="tp-adj" data-adj="-15">-15s</button>
+  <button type="button" class="tp-adj" data-adj="15">+15s</button>
+  <button type="button" class="tp-btn tp-pause" id="tp-pause" aria-label="Pausar">⏸</button>
+  <button type="button" class="tp-btn tp-stop" id="tp-stop" aria-label="Parar e zerar">✕</button>
+  <div class="tp-prog"><div class="tp-prog-fill" id="tp-prog-fill"></div></div>
 </div>
 
 <!-- BARRA DE ABAS -->
@@ -1264,7 +1453,44 @@ const FAIXAS_PADRAO = {
   'esteira': [20, 30, 45, 60]
 };
 const FAIXA_NOMES = ['Iniciante', 'Bronze', 'Prata', 'Ouro', 'Diamante', 'Elite'];
-const FAIXA_ICONES = ['·', '🥉', '🥈', '🥇', '💎', '👑'];
+
+function faixaSVG(idx, size = 16) {
+  const i = Math.max(0, Math.min(5, idx | 0));
+  const s = `<svg class="rk-ico t${i}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true">`;
+  if (i === 0) {
+    return s + `<polygon points="12,3 20,7.5 20,16.5 12,21 4,16.5 4,7.5" stroke="url(#rk-g0)" stroke-width="2" fill="rgba(136,136,136,0.12)"/><circle cx="12" cy="12" r="2.6" fill="url(#rk-g0)"/></svg>`;
+  }
+  if (i === 1) {
+    return s + `<path d="M12 2.5L4.5 5.5v6.2c0 4.7 3.2 8.2 7.5 9.8 4.3-1.6 7.5-5.1 7.5-9.8V5.5L12 2.5z" fill="url(#rk-g1)" stroke="#5c2f12" stroke-width="1"/><path d="M8.5 11.2L12 14.5l3.5-3.3" stroke="#fff3e6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  }
+  if (i === 2) {
+    return s + `<path d="M12 2.5L4.5 5.5v6.2c0 4.7 3.2 8.2 7.5 9.8 4.3-1.6 7.5-5.1 7.5-9.8V5.5L12 2.5z" fill="url(#rk-g2)" stroke="#6c7580" stroke-width="1"/><path d="M7 6.5l10 10" stroke="rgba(255,255,255,0.45)" stroke-width="2"/><polygon points="12,7.8 15.2,11.8 12,15.8 8.8,11.8" fill="#ffffff" fill-opacity="0.88"/></svg>`;
+  }
+  if (i === 3) {
+    return s + `<path d="M7 4h10v5.5a5 5 0 0 1-10 0V4z" fill="url(#rk-g3)" stroke="#9e6d0b" stroke-width="1"/><path d="M7 6H4.2a2.2 2.2 0 0 0 0 4.4H7M17 6h2.8a2.2 2.2 0 0 1 0 4.4H17" stroke="url(#rk-g3)" stroke-width="1.8" stroke-linecap="round"/><path d="M12 14.5v3.5M8.5 20.5h7l-.8-2.5H9.3l-.8 2.5z" fill="url(#rk-g3)" stroke="#9e6d0b" stroke-width="1" stroke-linejoin="round"/><polygon points="12,6.2 12.9,8.2 15,8.4 13.4,9.8 13.9,11.8 12,10.7 10.1,11.8 10.6,9.8 9,8.4 11.1,8.2" fill="#fffdf0"/></svg>`;
+  }
+  if (i === 4) {
+    return s + `<polygon points="7,4 17,4 21.5,9.8 12,21 2.5,9.8" fill="url(#rk-g4)" stroke="#1a74ad" stroke-width="1" stroke-linejoin="round"/><polygon points="7,4 12,9.8 17,4" fill="#ffffff" fill-opacity="0.45"/><polygon points="12,9.8 16.5,9.8 12,21 7.5,9.8" fill="#ffffff" fill-opacity="0.22"/><path d="M2.5 9.8h19M7 4l.5 5.8M17 4l-.5 5.8" stroke="#e6f9ff" stroke-opacity="0.7" stroke-width="0.9"/></svg>`;
+  }
+  return s + `<path d="M3 17.5L5.2 7.5l4.4 4.3L12 5l2.4 6.8 4.4-4.3 2.2 10H3z" fill="url(#rk-g5)" stroke="#6c8214" stroke-width="1" stroke-linejoin="round"/><rect x="4" y="18.5" width="16" height="2.4" rx="1.2" fill="url(#rk-g5)"/><circle cx="12" cy="4.2" r="1.4" fill="#fff7b8"/><circle cx="5" cy="6.6" r="1.1" fill="#f4ff99"/><circle cx="19" cy="6.6" r="1.1" fill="#f4ff99"/><circle cx="12" cy="14.2" r="1.5" fill="#111" fill-opacity="0.55"/></svg>`;
+}
+
+function podioSVG(pos, size = 22) {
+  if (pos === 1) {
+    return `<svg class="rk-ico t5" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 18L4.3 8.2l3.4 3.8L9.6 6l2.4 5.2L14.4 6l1.9 6 3.4-3.8L21.5 18h-19z" fill="url(#rk-g5)" stroke="#8c7a12" stroke-width="1" stroke-linejoin="round"/><rect x="3.5" y="18.8" width="17" height="2.4" rx="1.2" fill="url(#rk-g3)"/><circle cx="12" cy="14.5" r="1.5" fill="#fff8c4"/><circle cx="9.6" cy="5.2" r="1.1" fill="#f4ff99"/><circle cx="14.4" cy="5.2" r="1.1" fill="#f4ff99"/></svg>`;
+  }
+  if (pos === 2) {
+    return `<svg class="rk-ico t2" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4h10v5.5a5 5 0 0 1-10 0V4z" fill="url(#rk-g2)" stroke="#707a86" stroke-width="1"/><path d="M7 6H4.3a2.1 2.1 0 0 0 0 4.2H7M17 6h2.7a2.1 2.1 0 0 1 0 4.2H17" stroke="url(#rk-g2)" stroke-width="1.8" stroke-linecap="round"/><path d="M12 14.5v3.5M8.5 20.5h7l-.8-2.5H9.3l-.8 2.5z" fill="url(#rk-g2)" stroke="#707a86" stroke-width="1" stroke-linejoin="round"/><text x="12" y="11.2" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="7.5" fill="#2c3138">2</text></svg>`;
+  }
+  if (pos === 3) {
+    return `<svg class="rk-ico t1" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4h10v5.5a5 5 0 0 1-10 0V4z" fill="url(#rk-g1)" stroke="#5c2f12" stroke-width="1"/><path d="M7 6H4.3a2.1 2.1 0 0 0 0 4.2H7M17 6h2.7a2.1 2.1 0 0 1 0 4.2H17" stroke="url(#rk-g1)" stroke-width="1.8" stroke-linecap="round"/><path d="M12 14.5v3.5M8.5 20.5h7l-.8-2.5H9.3l-.8 2.5z" fill="url(#rk-g1)" stroke="#5c2f12" stroke-width="1" stroke-linejoin="round"/><text x="12" y="11.2" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="7.5" fill="#fff3e6">3</text></svg>`;
+  }
+  return '';
+}
+
+function liderCrownSVG(size = 12) {
+  return `<svg class="rk-ico t3" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 18L5.2 8.2l4.3 4.1L12 5.8l2.5 6.5 4.3-4.1L21 18H3z" fill="url(#rk-g3)" stroke="#8a600a" stroke-width="1.2" stroke-linejoin="round"/><rect x="4" y="19" width="16" height="2" rx="1" fill="url(#rk-g3)"/></svg>`;
+}
 
 // Nível geral: XP acumulado com sessões, recordes e semanas cheias.
 const NIVEIS = ['Iniciante', 'Novato', 'Regular', 'Dedicado', 'Forte', 'Veterano', 'Monstro', 'Máquina', 'Lenda'];
@@ -1309,7 +1535,7 @@ function nivelCarga(valor, faixas) {
   const prox = idx < faixas.length ? faixas[idx] : null;
   const ant = idx > 0 ? faixas[idx - 1] : 0;
   const pct = prox != null ? Math.max(0, Math.min(100, Math.round(((valor || 0) - ant) / (prox - ant) * 100))) : 100;
-  return { idx, nome: FAIXA_NOMES[nomeIdx], icone: FAIXA_ICONES[nomeIdx], prox, proxNome: prox != null ? FAIXA_NOMES[Math.min(idx + 1, FAIXA_NOMES.length - 1)] : null, pct };
+  return { idx, nome: FAIXA_NOMES[nomeIdx], icone: faixaSVG(nomeIdx, 16), prox, proxNome: prox != null ? FAIXA_NOMES[Math.min(idx + 1, FAIXA_NOMES.length - 1)] : null, pct };
 }
 
 // ---- anilhas por lado ----
@@ -3020,7 +3246,7 @@ function renderEvolucao() {
       const nv = nivelCarga(melhor, fx);
       const un = evModo === 'carga' ? 'kg' : 'min';
       rankHTML = `<div class="ev-rank">
-        <span class="rk-badge t${nv.idx}">${nv.icone} ${esc(nv.nome.toUpperCase())}</span>
+        <span class="rk-badge t${nv.idx}">${faixaSVG(nv.idx, 18)}<span>${esc(nv.nome.toUpperCase())}</span></span>
         <span class="ev-rank-txt">${nv.prox != null
           ? 'próximo: ' + esc(nv.proxNome) + ' a ' + fmtNum(nv.prox) + ' ' + un + ' · faltam ' + fmtNum(nv.prox - melhor) + ' ' + un
           : 'topo da faixa — ' + fx.map(fmtNum).join(' · ') + ' ' + un}</span>
@@ -3590,8 +3816,29 @@ function renderDupla() {
   if (ativos.length >= 2) {
     const porXp = ativos.slice().sort((a, b) => b.rk.xp - a.rk.xp);
     const porForma = ativos.slice().sort((a, b) => b.rk.forma - a.rk.forma);
-    lideres = `<div class="tip"><strong>Ranking de nível:</strong> ${porXp.map((x, i) => (i + 1) + 'º ' + esc(x.r.p.nome) + ' (' + x.rk.xp + ' XP)').join(' · ')}.
-      <strong>Melhor forma:</strong> ${esc(porForma[0].r.p.nome)} (${porForma[0].rk.forma}%).</div>`;
+    const maxXp = Math.max(1, porXp[0].rk.xp);
+    const rowsPodio = porXp.map((x, i) => {
+      const pos = i + 1;
+      const pct = Math.max(6, Math.round(x.rk.xp / maxXp * 100));
+      const ico = pos <= 3 ? podioSVG(pos, 22) : '';
+      const pCls = pos <= 3 ? ' p' + pos : '';
+      return `<div class="rk-podio-row${pCls}">
+        <div class="rk-podio-pos">${ico}<span>${pos <= 3 ? pos + 'º' : '#' + pos}</span></div>
+        <div class="rk-podio-info">
+          <div class="rk-podio-nome">${esc(x.r.p.nome)}</div>
+          <div class="rk-podio-sub">NV ${x.rk.nivel} · ${esc(x.rk.nome)}</div>
+          <div class="rk-podio-track"><div class="rk-podio-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="rk-podio-xp">${x.rk.xp} XP</div>
+      </div>`;
+    }).join('');
+    lideres = `<div class="rk-podio-card">
+      <div class="rk-podio-head">
+        <span class="rk-podio-title">RANKING DE NÍVEL</span>
+        <span class="rk-forma-pill">MELHOR FORMA: ${esc(porForma[0].r.p.nome)} · ${porForma[0].rk.forma}%</span>
+      </div>
+      <div class="rk-podio-list">${rowsPodio}</div>
+    </div>`;
   }
 
   // ---- RANK DE CARGAS: faixa de cada um nos exercícios-chave ----
@@ -3601,22 +3848,36 @@ function renderDupla() {
   (rotina.dias || []).forEach(d => (d.secoes || []).forEach(s => (s.exercicios || []).forEach(x => addAlvo(x.nome, x.cardio))));
   (rotina.extras || []).forEach(e => (e.exercicios || []).forEach(x => addAlvo(x.nome, x.cardio)));
   const linhasRank = alvos.map(a => {
-    const cels = resumos.map(r => {
-      const v = melhorDe(r.dados.diario, a.nome, a.cardio ? 'min' : undefined);
+    const fx = faixasDe(a.nome);
+    const vals = resumos.map(r => melhorDe(r.dados.diario, a.nome, a.cardio ? 'min' : undefined));
+    const nonNull = vals.filter(v => v != null);
+    if (!nonNull.length) return '';
+    const maxVal = Math.max.apply(null, nonNull);
+    const temLider = maxVal > 0 && (nonNull.length >= 2 || nonNull.length === 1);
+    const un = a.cardio ? 'min' : 'kg';
+    const cels = vals.map(v => {
       if (v == null) return `<span class="rk-cel rk-vazio">—</span>`;
-      const nv = nivelCarga(v, faixasDe(a.nome));
-      return `<span class="rk-cel t${nv.idx}">${nv.icone} ${fmtNum(v)} ${a.cardio ? 'min' : 'kg'}<small>${esc(nv.nome)}</small></span>`;
+      const nv = nivelCarga(v, fx);
+      const isLeader = temLider && v === maxVal;
+      return `<span class="rk-cel t${nv.idx}${isLeader ? ' rk-leader' : ''}">
+        <span class="rk-val">${faixaSVG(nv.idx, 16)}<span>${fmtNum(v)}<em class="rk-un">${un}</em></span></span>
+        <small class="rk-tier-lbl">${esc(nv.nome)}${isLeader ? ' ' + liderCrownSVG(11) : ''}</small>
+      </span>`;
     });
-    if (cels.every(c => c.indexOf('rk-vazio') >= 0)) return '';
-    return `<div class="rk-row"><span class="rk-ex">${esc(a.nome)}<small>${faixasDe(a.nome).map(fmtNum).join(' · ')}</small></span>${cels.join('')}</div>`;
+    return `<div class="rk-row"><span class="rk-ex">${esc(a.nome)}<small>${fx.map(fmtNum).join(' · ')}</small></span>${cels.join('')}</div>`;
   }).filter(Boolean).join('');
+  const legendaItens = [1, 2, 3, 4, 5].map(idx =>
+    `<span class="rk-leg-item">${faixaSVG(idx, 14)}<span>${FAIXA_NOMES[idx]}</span></span>`
+  ).join('');
   const rankHTML = linhasRank
     ? `<div class="dp-sec">RANK DE CARGAS</div>
-       <div class="rk-tabela" style="--n:${resumos.length}">
-         <div class="rk-row rk-head"><span>Exercício</span>${resumos.map(r => `<span>${esc(r.p.nome)}</span>`).join('')}</div>
-         ${linhasRank}
+       <div class="rk-scroll">
+         <div class="rk-tabela" style="--n:${resumos.length}">
+           <div class="rk-row rk-head"><span>Exercício</span>${resumos.map(r => `<span>${esc(r.p.nome)}</span>`).join('')}</div>
+           ${linhasRank}
+         </div>
        </div>
-       <div class="dp-legenda" style="margin-top:8px">🥉 bronze · 🥈 prata · 🥇 ouro · 💎 diamante · 👑 elite — faixas em kg (esteira em min)</div>`
+       <div class="rk-legend">${legendaItens}<span style="margin-left:auto;color:#555">kg · esteira em min</span></div>`
     : '';
 
   const topo = `<div class="dp-topo">
@@ -3915,7 +4176,7 @@ document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', (
 let swX = null, swY = null, swValido = false;
 document.addEventListener('pointerdown', e => {
   if (!e.isPrimary) { swValido = false; return; } // ignora multitouch
-  if (e.target.closest('#timer-widget, #timer-tab, #tabbar, input, textarea, .modal-box, .ev-chips, .sr-quick')) { swValido = false; return; }
+  if (e.target.closest('#timer-widget, #timer-tab, #timer-popup, #tabbar, input, textarea, .modal-box, .ev-chips, .sr-quick, .rk-scroll')) { swValido = false; return; }
   if (document.querySelector('.modal:not([hidden])')) { swValido = false; return; }
   swX = e.clientX; swY = e.clientY; swValido = true;
 }, { passive: true });
@@ -4109,7 +4370,29 @@ el('file-backup').addEventListener('change', ev => {
 // =====================================================================
 // TIMER (wall-clock: não atrasa com tela bloqueada ou app em segundo plano)
 // =====================================================================
-let timerTotal = 60, timerLeft = 60, timerRunning = false, timerInterval = null, timerEndAt = null, audioCtx = null;
+let timerPreset = 60, timerTotal = 60, timerLeft = 60, timerRunning = false, timerInterval = null, timerEndAt = null, audioCtx = null, timerDeltaTid = null;
+
+function showTimerDelta(delta) {
+  if (!delta) return;
+  const txt = (delta > 0 ? '+' : '') + delta + 's';
+  const cls = delta > 0 ? 'pos' : 'neg';
+  ['timer-delta', 'tp-delta'].forEach(id => {
+    const node = el(id);
+    if (!node) return;
+    node.textContent = txt;
+    node.classList.remove('pos', 'neg', 'show');
+    node.classList.add(cls, 'show');
+  });
+  clearTimeout(timerDeltaTid);
+  timerDeltaTid = setTimeout(() => {
+    ['timer-delta', 'tp-delta'].forEach(id => {
+      const node = el(id);
+      if (!node) return;
+      node.classList.remove('show');
+      node.textContent = '';
+    });
+  }, 1200);
+}
 
 function timerAutoAtivo() { const v = ler(LSK.timerAuto); return v == null ? true : !!v; }
 function renderCfgTimerAuto() {
@@ -4160,9 +4443,23 @@ function tickTimer() {
 
 function setPreset(secs, btn) {
   document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
-  btn.classList.add('active-preset');
-  timerTotal = secs; timerLeft = secs; timerRunning = false; timerEndAt = null;
-  clearInterval(timerInterval);
+  if (btn) btn.classList.add('active-preset');
+  if (timerRunning) {
+    const delta = secs - timerPreset;
+    timerPreset = secs;
+    if (delta !== 0) {
+      timerLeft = Math.max(1, timerLeft + delta);
+      timerTotal = Math.max(timerLeft, secs);
+      timerEndAt = Date.now() + timerLeft * 1000;
+      showTimerDelta(delta);
+    }
+  } else {
+    timerPreset = secs;
+    timerTotal = secs;
+    timerLeft = secs;
+    timerEndAt = null;
+    clearInterval(timerInterval);
+  }
   updateTimerDisplay(); updateTimerState();
 }
 
@@ -4179,12 +4476,14 @@ function ajustarTimer(delta) {
       timerEndAt = Date.now() + timerLeft * 1000;
     }
   }
+  if (delta !== 0) showTimerDelta(delta);
   updateTimerDisplay(); updateTimerState();
 }
 
 function iniciarDescansoAuto() {
   clearInterval(timerInterval);
-  timerLeft = timerTotal;
+  timerTotal = timerPreset;
+  timerLeft = timerPreset;
   timerRunning = true;
   timerEndAt = Date.now() + timerLeft * 1000;
   timerInterval = setInterval(tickTimer, 250);
@@ -4211,7 +4510,8 @@ function resetTimer() {
   clearInterval(timerInterval);
   timerRunning = false;
   timerEndAt = null;
-  timerLeft = timerTotal;
+  timerTotal = timerPreset;
+  timerLeft = timerPreset;
   updateTimerDisplay(); updateTimerState();
 }
 
@@ -4220,11 +4520,13 @@ function updateTimerDisplay() {
   const txt = m + ':' + String(s).padStart(2, '0');
   el('timer-display').textContent = txt;
   el('tt-time').textContent = txt;
+  const tpTime = el('tp-time');
+  if (tpTime) tpTime.textContent = txt;
+  const pct = timerTotal > 0 ? Math.max(0, Math.min(100, Math.round(timerLeft / timerTotal * 100))) : 0;
   const fill = el('timer-prog-fill');
-  if (fill) {
-    const pct = timerTotal > 0 ? Math.max(0, Math.min(100, Math.round(timerLeft / timerTotal * 100))) : 0;
-    fill.style.width = pct + '%';
-  }
+  if (fill) fill.style.width = pct + '%';
+  const tpFill = el('tp-prog-fill');
+  if (tpFill) tpFill.style.width = pct + '%';
 }
 
 function updateTimerState() {
@@ -4233,12 +4535,17 @@ function updateTimerState() {
   if (timerLeft === 0) { w.classList.add('finished'); btn.textContent = '↺'; }
   else if (timerRunning) { w.classList.add('running'); btn.textContent = '⏸'; }
   else { btn.textContent = '▶'; }
+  const popup = el('timer-popup');
+  if (popup) popup.classList.toggle('show', timerRunning);
 }
 
 document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click', () => setPreset(+b.dataset.secs, b)));
-document.querySelectorAll('.adj-btn').forEach(b => b.addEventListener('click', () => ajustarTimer(+b.dataset.adj)));
+document.querySelectorAll('.adj-btn, .tp-adj').forEach(b => b.addEventListener('click', () => ajustarTimer(+b.dataset.adj)));
 el('play-btn').addEventListener('click', toggleTimer);
 el('btn-timer-reset').addEventListener('click', resetTimer);
+el('timer-display').addEventListener('click', toggleTimer);
+el('tp-pause').addEventListener('click', toggleTimer);
+el('tp-stop').addEventListener('click', resetTimer);
 el('cfg-timer-auto').addEventListener('click', e => {
   const b = e.target.closest('[data-auto]');
   if (!b) return;
@@ -4293,13 +4600,10 @@ function mostrarTimer(save) {
 }
 timerTab.addEventListener('click', () => mostrarTimer());
 
-// Área de arrasto = grip + mostrador (toda a parte esquerda do timer).
-// Arrastar pro lado esconde; tocar no mostrador (sem arrastar) liga/pausa.
-let dragX0 = null, dragY0 = null, dragDx = 0, dragMoved = false, dragOnDisplay = false;
+// Área de arrasto = grip (arrastar pro lado esconde o timer).
+let dragX0 = null, dragY0 = null, dragDx = 0;
 timerDrag.addEventListener('pointerdown', e => {
-  dragX0 = e.clientX; dragY0 = e.clientY; dragDx = 0; dragMoved = false;
-  // guarda ANTES do setPointerCapture (depois da captura, e.target vira o container)
-  dragOnDisplay = !!(e.target.closest && e.target.closest('#timer-display'));
+  dragX0 = e.clientX; dragY0 = e.clientY; dragDx = 0;
   timerWidget.style.transition = 'none';
   try { timerDrag.setPointerCapture(e.pointerId); } catch (er) {}
 });
@@ -4307,7 +4611,6 @@ timerDrag.addEventListener('pointermove', e => {
   if (dragX0 == null) return;
   const dx = (e.clientX - dragX0) * ladoDeEsconder(); // na esquerda, arrastar pra esquerda esconde
   dragDx = dx > 0 ? dx : 0;
-  if (Math.abs(dx) > 6 || Math.abs(e.clientY - dragY0) > 6) dragMoved = true;
   const desl = dragDx * ladoDeEsconder();
   timerWidget.style.transform = timerPos === 'baixo'
     ? `translateX(calc(-50% + ${desl}px))`
@@ -4315,11 +4618,10 @@ timerDrag.addEventListener('pointermove', e => {
 });
 timerDrag.addEventListener('pointerup', () => {
   if (dragX0 == null) return;
-  const moved = dragDx, wasMoved = dragMoved, onDisp = dragOnDisplay;
+  const moved = dragDx;
   dragX0 = null;
   if (moved > 70) { esconderTimer(); return; }
   mostrarTimer(false);
-  if (!wasMoved && onDisp) toggleTimer();
 });
 timerDrag.addEventListener('pointercancel', () => { dragX0 = null; mostrarTimer(false); });
 
