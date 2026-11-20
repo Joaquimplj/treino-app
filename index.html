@@ -1069,10 +1069,6 @@
     <button type="button" class="preset-btn" data-secs="120">2:00</button>
     <button type="button" class="preset-btn" data-secs="180">3:00</button>
   </div>
-  <div class="timer-disp-row">
-    <div id="timer-display" title="Toque para iniciar ou pausar">1:00</div>
-    <span class="timer-delta" id="timer-delta"></span>
-  </div>
   <div class="timer-prog"><div class="timer-prog-fill" id="timer-prog-fill"></div></div>
 </div>
 
@@ -4518,7 +4514,8 @@ function resetTimer() {
 function updateTimerDisplay() {
   const m = Math.floor(timerLeft / 60), s = timerLeft % 60;
   const txt = m + ':' + String(s).padStart(2, '0');
-  el('timer-display').textContent = txt;
+  const td = el('timer-display');
+  if (td) td.textContent = txt;
   el('tt-time').textContent = txt;
   const tpTime = el('tp-time');
   if (tpTime) tpTime.textContent = txt;
@@ -4543,7 +4540,6 @@ document.querySelectorAll('.preset-btn').forEach(b => b.addEventListener('click'
 document.querySelectorAll('.adj-btn, .tp-adj').forEach(b => b.addEventListener('click', () => ajustarTimer(+b.dataset.adj)));
 el('play-btn').addEventListener('click', toggleTimer);
 el('btn-timer-reset').addEventListener('click', resetTimer);
-el('timer-display').addEventListener('click', toggleTimer);
 el('tp-pause').addEventListener('click', toggleTimer);
 el('tp-stop').addEventListener('click', resetTimer);
 el('cfg-timer-auto').addEventListener('click', e => {
